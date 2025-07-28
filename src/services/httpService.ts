@@ -13,7 +13,6 @@ function getToken(): string | null {
 
 function getAuthHeaders(): HeadersInit {
   const token = getToken();
-  console.log(token);
   return {
     'Content-Type': 'application/json',
     Authorization: token ?? '',

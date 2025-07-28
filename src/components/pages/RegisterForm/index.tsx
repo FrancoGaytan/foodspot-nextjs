@@ -1,9 +1,9 @@
 'use client';
 
 import { useActionState, useEffect } from 'react';
-import { handleRegister } from 'app/[lang]/register/actions';
+import { handleRegister } from 'app/[lang]/(auth)/register/actions';
 import FormLayout from '@components/macro/layout/FormLayout';
-import Button from '@components/micro/Button';
+import Button, { ButtonKind } from '@components/micro/Button';
 import { EmailInput } from '@components/micro/Inputs/EmailInput';
 import { PasswordInput } from '@components/micro/Inputs/PasswordInput';
 import TextInput from '@components/micro/Inputs/TextInput';
@@ -78,7 +78,7 @@ export default function RegisterForm() {
           </div>
         </div>
         <div className={styles.buttonWrapper}>
-          <Button kind="primary" size="large" type="submit">
+          <Button kind={ButtonKind.PRIMARY} size="large" type="submit">
             {t.registerBtn}
           </Button>
         </div>

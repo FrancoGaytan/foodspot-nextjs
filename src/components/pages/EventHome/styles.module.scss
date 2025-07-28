@@ -1,0 +1,70 @@
+@use '/src/styles/variables' as variables;
+@use '/src/styles/shared';
+@use '/src/styles/custom-properties';
+
+.eventHomeContent {
+  display: flex;
+  flex-direction: column;
+  .header {
+    width: 100%;
+    display: flex;
+    margin-top: 30px;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: 'Raleway';
+    font-style: normal;
+    overflow-x: hidden;
+    * {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    h1 {
+      background: var(--iconsSecondary);
+      opacity: 0.9;
+      border-radius: 50px 4px;
+      width: 30%;
+      font-weight: 600;
+      font-size: 56px;
+      line-height: 66px;
+      text-align: center;
+      color: var(--backgroundNeutralLighter);
+      @media #{variables.media-query(max, xl)} {
+        font-size: 4vw;
+      }
+    }
+    Button {
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 27px;
+      max-width: 314px;
+    }
+  }
+  .incomingEventTitle {
+    align-self: center;
+    font-weight: bolder;
+    font-size: 50px;
+    text-align: center;
+    text-decoration: solid underline var(--btnPrimary);
+    text-underline-offset: 5px;
+    line-height: 32px;
+    color: var(--textPrimary);
+    margin: 40px 0;
+    word-break: break-word;
+  }
+  .eventsContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 10px;
+    column-gap: 10px;
+    max-width: 80%;
+    margin: 0 auto;
+    margin-top: 35px;
+
+    @media #{variables.media-query(max, lg)} {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media #{variables.media-query(max, md)} {
+      grid-template-columns: 1fr;
+    }
+  }
+}

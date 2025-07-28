@@ -4,8 +4,23 @@ import { className } from '../../../utils/className';
 
 export type TSize = 'micro' | 'small' | 'short' | 'medium' | 'large' | 'full'; //trata de importarlo bien despoues, desde size
 
+export enum ButtonKind {
+  PRIMARY = 'primary',
+  SECONDARY = 'secondary',
+  TERTIARY = 'tertiary',
+  VALIDATION = 'validation',
+  WHITE_PRIMARY = 'whitePrimary',
+  WHITE_SECONDARY = 'whiteSecondary',
+}
+
 interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  kind?: 'primary' | 'secondary' | 'tertiary' | 'validation' | 'whitePrimary' | 'whiteSecondary';
+  kind?:
+    | ButtonKind.PRIMARY
+    | ButtonKind.SECONDARY
+    | ButtonKind.TERTIARY
+    | ButtonKind.VALIDATION
+    | ButtonKind.WHITE_PRIMARY
+    | ButtonKind.WHITE_SECONDARY;
   size?: TSize;
 }
 

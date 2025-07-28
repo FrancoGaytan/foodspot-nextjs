@@ -73,6 +73,6 @@ export interface EditUserResponse {
 }
 
 export interface IsUserDebtorResponse {
-  eventId: string;
+  eventId: string | null;
   reason: string;
 }

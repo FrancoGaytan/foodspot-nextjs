@@ -1,12 +1,12 @@
 'use client';
 
 import { useActionState, useEffect } from 'react';
-import { handleSetNewPassword } from 'app/[lang]/settingNewPassword/actions';
+import { handleSetNewPassword } from 'app/[lang]/(auth)/settingNewPassword/actions';
 import FormLayout from '@components/macro/layout/FormLayout';
 import { EmailInput } from '@components/micro/Inputs/EmailInput';
 import { PasswordInput } from '@components/micro/Inputs/PasswordInput';
 import TextInput from '@components/micro/Inputs/TextInput';
-import Button from '@components/micro/Button';
+import Button, { ButtonKind } from '@components/micro/Button';
 import styles from './styles.module.scss';
 import { showToast, ToastType } from '@utils/toastService';
 import { useCustomRouter } from '@hooks/useCustomRouter';
@@ -69,7 +69,7 @@ export default function SettingNewPasswordForm() {
 
           <PasswordInput name="confirmPassword" label={t.confirmPassword} placeholder={t.confirmPassword} className={styles.input} />
 
-          <Button type="submit" kind="primary" size="large" id="registerBtn" style={{ marginBottom: 30 }}>
+          <Button type="submit" kind={ButtonKind.PRIMARY} size="large" id="registerBtn" style={{ marginBottom: 30, marginTop: 30 }}>
             {t.setKeyBtn}
           </Button>
         </div>

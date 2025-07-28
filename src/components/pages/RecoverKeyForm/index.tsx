@@ -1,9 +1,9 @@
 'use client';
 
 import { useActionState, useEffect } from 'react';
-import { handleRecoverKey } from 'app/[lang]/recoverKey/actions';
+import { handleRecoverKey } from 'app/[lang]/(auth)/recoverKey/actions';
 import { EmailInput } from '@components/micro/Inputs/EmailInput';
-import Button from '@components/micro/Button';
+import Button, { ButtonKind } from '@components/micro/Button';
 import styles from './styles.module.scss';
 import FormLayout from '@components/macro/layout/FormLayout';
 import { showToast, ToastType } from '@utils/toastService';
@@ -50,7 +50,7 @@ export default function RecoverKeyForm() {
           <p className={styles.mainDesc}>{t.changeDescription}</p>
 
           <EmailInput name="email" label={t.email} placeholder={t.email} className={styles.input} />
-          <Button kind="primary" size="large" type="submit" className={styles.sendBtn}>
+          <Button kind={ButtonKind.PRIMARY} size="large" type="submit" className={styles.sendBtn}>
             {t.sendEmail}
           </Button>
         </div>

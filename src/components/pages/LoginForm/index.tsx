@@ -1,9 +1,9 @@
 'use client';
 
 import { useActionState, useEffect } from 'react';
-import { handleLogin } from 'app/[lang]/login/actions';
+import { handleLogin } from 'app/[lang]/(auth)/login/actions';
 import FormLayout from '@components/macro/layout/FormLayout';
-import Button from '@components/micro/Button';
+import Button, { ButtonKind } from '@components/micro/Button';
 import { EmailInput } from '@components/micro/Inputs/EmailInput';
 import { PasswordInput } from '@components/micro/Inputs/PasswordInput';
 import LinkCustom from '@components/micro/LinkCustom';
@@ -49,7 +49,7 @@ export default function LoginForm() {
         <EmailInput name="email" label={t.email} placeholder={t.email} />
         <PasswordInput name="password" label={t.password} placeholder={t.password} />
 
-        <Button kind="primary" size="large" type="submit">
+        <Button kind={ButtonKind.PRIMARY} size="large" type="submit">
           {t.loginBtn}
         </Button>
 

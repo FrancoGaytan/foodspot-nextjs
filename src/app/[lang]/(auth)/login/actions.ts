@@ -40,9 +40,6 @@ export async function handleLogin(_prevState: LoginFormState, formData: FormData
       secure: process.env.NODE_ENV === 'production',
     });
 
-    const saved = cookieStore.get('jwt');
-    console.log('JWT seteado:', saved?.value);
-
     return { success: true };
   } catch (err) {
     console.log('Login failed:', err);
