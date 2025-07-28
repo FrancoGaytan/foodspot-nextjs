@@ -1,7 +1,6 @@
-//import { getAuthHeaders } from '@utils/authHeaders';
 import { getToken } from '@utils/localeCookiesServer';
 
-const baseURL = process.env.NEXT_PUBLIC_API_ENDPOINT; //TODO: cambiarles el nombre, sacales el Server cuando esten todas los servicios andando
+const baseURL = process.env.NEXT_PUBLIC_API_ENDPOINT;
 
 function buildUrl(path: string) {
   return `${baseURL}${path}`;
@@ -9,19 +8,24 @@ function buildUrl(path: string) {
 
 export async function getAuthHeadersWithAuth(): Promise<HeadersInit> {
   const token = await getToken();
-  return {
+
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    Authorization: token ? `Bearer ${token}` : '',
   };
+
+  if (token) {
+    headers.Authorization = token;
+  }
+
+  return headers;
 }
 
 export async function postServer<T, P = unknown>(path: string, payload?: P, signal?: AbortSignal): Promise<T> {
+  const headers = await getAuthHeadersWithAuth();
   const res = await fetch(buildUrl(path), {
     method: 'POST',
     signal,
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers,
     body: payload ? JSON.stringify(payload) : undefined,
     cache: 'no-store',
   });
@@ -35,28 +39,19 @@ export async function postServer<T, P = unknown>(path: string, payload?: P, sign
 
 export async function getServer<T>(path: string, signal?: AbortSignal): Promise<T> {
   const headers = await getAuthHeadersWithAuth();
-  const fullUrl = buildUrl(path);
-
-  console.log('🔐 JWT_SECRET:', process.env.JWT_SECRET);
-
-  console.log('📡 GET URL:', fullUrl);
-  console.log('📦 Headers:', headers);
-
-  const res = await fetch(fullUrl, {
+  const res = await fetch(buildUrl(path), {
     method: 'GET',
     headers,
     signal,
     cache: 'no-store',
-    credentials: 'same-origin', // ⬅️ CRÍTICO si el backend espera cookies
-    mode: 'cors', // opcional, pero consistente con cliente
+    credentials: 'same-origin',
+    mode: 'cors',
   });
 
   const text = await res.text();
 
   if (!res.ok) {
-    console.error(`❌ GET ${path} failed: ${res.status} - ${res.statusText}`);
-    console.error('🔍 Response body:', text);
-    throw new Error(`GET ${path} failed: ${res.status}`);
+    throw new Error(`GET ${path} failed: ${res.status} - ${text}`);
   }
 
   return JSON.parse(text);
