@@ -14,3 +14,9 @@ export async function getUserFromCookieServer(): Promise<IUserFromCookie | null>
     return null;
   }
 }
+
+export async function getToken(): Promise<string | null> {
+  const cookieStore = cookies();
+  const token = (await cookieStore).get('jwt');
+  return token?.value ?? null;
+}

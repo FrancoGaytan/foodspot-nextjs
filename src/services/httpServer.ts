@@ -1,9 +1,18 @@
-import { getAuthHeaders } from '@utils/authHeaders';
+//import { getAuthHeaders } from '@utils/authHeaders';
+import { getToken } from '@utils/localeCookiesServer';
 
 const baseURL = process.env.NEXT_PUBLIC_API_ENDPOINT; //TODO: cambiarles el nombre, sacales el Server cuando esten todas los servicios andando
 
 function buildUrl(path: string) {
   return `${baseURL}${path}`;
+}
+
+export async function getAuthHeadersWithAuth(): Promise<HeadersInit> {
+  const token = await getToken();
+  return {
+    'Content-Type': 'application/json',
+    Authorization: token ? `Bearer ${token}` : '',
+  };
 }
 
 export async function postServer<T, P = unknown>(path: string, payload?: P, signal?: AbortSignal): Promise<T> {
@@ -25,20 +34,32 @@ export async function postServer<T, P = unknown>(path: string, payload?: P, sign
 }
 
 export async function getServer<T>(path: string, signal?: AbortSignal): Promise<T> {
-  const headers = await getAuthHeaders();
+  const headers = await getAuthHeadersWithAuth();
+  const fullUrl = buildUrl(path);
 
-  const res = await fetch(buildUrl(path), {
+  console.log('🔐 JWT_SECRET:', process.env.JWT_SECRET);
+
+  console.log('📡 GET URL:', fullUrl);
+  console.log('📦 Headers:', headers);
+
+  const res = await fetch(fullUrl, {
     method: 'GET',
     headers,
     signal,
     cache: 'no-store',
+    credentials: 'same-origin', // ⬅️ CRÍTICO si el backend espera cookies
+    mode: 'cors', // opcional, pero consistente con cliente
   });
 
+  const text = await res.text();
+
   if (!res.ok) {
+    console.error(`❌ GET ${path} failed: ${res.status} - ${res.statusText}`);
+    console.error('🔍 Response body:', text);
     throw new Error(`GET ${path} failed: ${res.status}`);
   }
 
-  return res.json();
+  return JSON.parse(text);
 }
 
 export async function getFileServer(path: string, signal?: AbortSignal): Promise<Blob> {
