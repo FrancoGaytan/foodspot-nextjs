@@ -1,5 +1,5 @@
 export default Object.seal({
-  login: 'Login', //TODO: agregar las distintas pages en cuanto se vayan creado
+  login: 'Login',
   register: 'Register',
   recoverKey: 'RecoverKey',
   settingNewPassword: 'SettingNewPassword',

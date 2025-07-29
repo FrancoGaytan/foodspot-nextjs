@@ -60,9 +60,7 @@ export async function getServer<T>(path: string, signal?: AbortSignal): Promise<
 export async function getFileServer(path: string, signal?: AbortSignal): Promise<Blob> {
   const res = await fetch(buildUrl(path), {
     method: 'GET',
-    headers: {
-      // 'Authorization': '...' // si en el futuro agrego auth desde cookie
-    },
+    headers: {},
     signal,
     cache: 'no-store',
   });
@@ -83,7 +81,6 @@ export async function postFileServer<T>(path: string, formFile: File, signal?: A
     body: formData,
     signal,
     cache: 'no-store',
-    // headers: { 'Authorization': '...' } // si luego usás cookie auth
   });
 
   if (!res.ok) {

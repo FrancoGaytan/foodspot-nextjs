@@ -40,7 +40,7 @@ export function useEvent(props: useEventParams) {
   };
 
   function subscribeUserToEvent(): void {
-    if (!props.userId) return;
+    if (!props.userId || !props.eventId) return;
 
     subscribeToAnEvent(props.userId, props.eventId)
       .then(() => {
@@ -89,6 +89,7 @@ export function useEvent(props: useEventParams) {
   const isLoading = !eventLoaded || !debtorLoaded;
 
   useEffect(() => {
+    if (!props.eventId) return;
     getEventById(props.eventId)
       .then(res => {
         setCurrentEvent(res);
@@ -100,6 +101,7 @@ export function useEvent(props: useEventParams) {
   }, [props.eventId]);
 
   useEffect(() => {
+    if (!props.userId) return;
     isUserDebtor(props.userId)
       .then(res => {
         setUserDebtor(res.eventId);

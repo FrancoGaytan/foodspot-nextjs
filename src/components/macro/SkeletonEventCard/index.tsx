@@ -1,4 +1,3 @@
-// components/macro/SkeletonEventCard.tsx
 import styles from '../EventCard/styles.module.scss';
 import skeleton from './styles.module.scss';
 
