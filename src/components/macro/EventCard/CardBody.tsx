@@ -4,14 +4,15 @@ import { IEvent, IPublicEvent } from '@models/event';
 import Tooltip from '@components/micro/Tooltip/Tooltip';
 import { parseMinutes } from '@utils/utilities';
 import styles from './styles.module.scss';
+import { useTranslation } from '@hooks/useTranslation';
 
 interface CardBodyProps {
   event: IPublicEvent;
-  t: Record<string, string>;
   currentEvent: IEvent | null;
 }
 
 export default function CardBody(props: CardBodyProps) {
+  const { t } = useTranslation('eventHome');
   const evDate = new Date(props.event.datetime);
   const evTimeStr = `${evDate.getHours() + 3}:${parseMinutes(evDate.getMinutes().toString())}`;
 
@@ -23,7 +24,7 @@ export default function CardBody(props: CardBodyProps) {
         <div className={styles.eventTitle}>{props.event.title}</div>
 
         {props.currentEvent?.isPrivate && (
-          <Tooltip infoText={props.t.privateEvent}>
+          <Tooltip infoText={t.privateEvent}>
             <div className={styles.privateLogo}></div>
           </Tooltip>
         )}
@@ -32,14 +33,14 @@ export default function CardBody(props: CardBodyProps) {
       <div className={styles.eventDescription}>{props.event.description}</div>
 
       <div className={styles.eventParticipants}>
-        {props.t.currentParticipants}
+        {t.currentParticipants}
         <p className={styles.participantsCount}>
           {props.event.members}/{props.event.memberLimit}
         </p>
       </div>
 
       <div className={styles.eventCook}>
-        {props.t.cook} <p className={styles.chef}>{props.event.chef}</p>
+        {t.cook} <p className={styles.chef}>{props.event.chef}</p>
       </div>
     </section>
   );

@@ -7,6 +7,7 @@ import Button, { ButtonKind } from '@components/micro/Button';
 import StarRating from '@components/micro/StarRating';
 import { EventStatesEnum } from 'enums/EventState.enum';
 import styles from './styles.module.scss';
+import { useTranslation } from '@hooks/useTranslation';
 
 interface CardFooterProps {
   event: IPublicEvent;
@@ -15,11 +16,11 @@ interface CardFooterProps {
   isUserIntoEvent: boolean;
   handleParticipation: () => void;
   handleInfo: () => void;
-  t: Record<string, string>;
 }
 
 export default function CardFooter(props: CardFooterProps) {
   const isRated = props.event.state === EventStatesEnum.FINISHED || props.event.state === EventStatesEnum.CLOSED;
+  const { t } = useTranslation('eventHome');
 
   return (
     <section className={styles.cardFooter}>
@@ -34,7 +35,7 @@ export default function CardFooter(props: CardFooterProps) {
               e.preventDefault();
               props.handleParticipation();
             }}>
-            {props.t.participateBtn}
+            {t.participateBtn}
           </Button>
         </div>
       )}
@@ -50,7 +51,7 @@ export default function CardFooter(props: CardFooterProps) {
               props.handleInfo();
             }
           }}>
-          {props.t.infoBtn}
+          {t.infoBtn}
         </Button>
       </div>
 
@@ -61,7 +62,7 @@ export default function CardFooter(props: CardFooterProps) {
           {props.event.ratings.ratingsAmount > 0 && <p className={styles.ratingAvg}>{Number(props.event.ratings.avgScore).toFixed(1)}</p>}
 
           <span className={styles.ratingRatingsAmoung}>
-            ({props.event.ratings.ratingsAmount} {props.event.ratings.ratingsAmount === 1 ? props.t.reviewText : props.t.reviewTexts})
+            ({props.event.ratings.ratingsAmount} {props.event.ratings.ratingsAmount === 1 ? t.reviewText : t.reviewTexts})
           </span>
         </section>
       )}

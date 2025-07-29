@@ -20,3 +20,8 @@ export async function getToken(): Promise<string | null> {
   const token = (await cookieStore).get('jwt');
   return token?.value ?? null;
 }
+
+export async function getLocaleFromCookieServer(): Promise<string | null> {
+  const cookieStore = await cookies();
+  return cookieStore.get('locale')?.value ?? null;
+}

@@ -1,15 +1,17 @@
 'use client';
 import Button, { ButtonKind } from '@components/micro/Button';
-import styles from '../styles.module.scss'; //chequea si esta bien
+import styles from '../styles.module.scss';
 import { useCustomRouter } from '@hooks/useCustomRouter';
+import { useTranslation } from '@hooks/useTranslation';
 
-export default function HomeHeader(props: { t: Record<string, string> }) {
+export default function HomeHeader() {
   const router = useCustomRouter();
+  const { t } = useTranslation('eventHome');
 
   return (
     <section className={styles.header}>
       <Button kind={ButtonKind.PRIMARY} size="large" onClick={() => router.pushTo('/createEvent')}>
-        {props.t.newEventButton}
+        {t.newEventButton}
       </Button>
     </section>
   );

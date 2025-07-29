@@ -40,6 +40,15 @@ export async function handleLogin(_prevState: LoginFormState, formData: FormData
       secure: process.env.NODE_ENV === 'production',
     });
 
+    cookieStore.set('lang', lang, {
+      //chequear si es este el lang que quiero guardar
+      httpOnly: false,
+      path: '/',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24,
+      secure: process.env.NODE_ENV === 'production',
+    });
+
     return { success: true };
   } catch (err) {
     console.log('Login failed:', err);

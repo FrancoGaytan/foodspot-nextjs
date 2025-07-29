@@ -4,18 +4,19 @@ import { IEvent, IPublicEvent } from '@models/event';
 import { EventStatus } from '@hooks/useEvent';
 import { className } from '@utils/className';
 import styles from './styles.module.scss';
+import { useTranslation } from '@hooks/useTranslation';
 
 interface CardHeaderProps {
   event: IPublicEvent;
   userStatus: EventStatus;
-  t: Record<string, string>;
   currentEvent: IEvent | null;
 }
 
 export default function CardHeader(props: CardHeaderProps) {
+  const { t } = useTranslation('eventHome');
   const evDate = new Date(props.event.datetime);
   const evDateStr = `${evDate.getDate()}. ${evDate.getMonth() + 1}. ${evDate.getFullYear()}.`;
-  const statusLabel = props.t[props.userStatus] ?? '';
+  const statusLabel = t[props.userStatus] ?? '';
 
   return (
     <section className={styles.cardHeader}>
