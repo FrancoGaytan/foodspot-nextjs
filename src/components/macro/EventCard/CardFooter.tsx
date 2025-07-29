@@ -23,10 +23,6 @@ export default function CardFooter(props: CardFooterProps) {
   const isRated = props.event.state === EventStatesEnum.FINISHED || props.event.state === EventStatesEnum.CLOSED;
   const { t } = useTranslation('eventHome');
 
-  if (props.event?._id === '6841d779a641218168d0203f') {
-    console.log('CardFooter props:', props);
-  }
-
   return (
     <section className={styles.cardFooter}>
       {!props.isLoading && props.user && !props.isUserIntoEvent && props.userStatus === EventStatus.AVAILABLE && (
