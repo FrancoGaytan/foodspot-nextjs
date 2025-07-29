@@ -7,6 +7,7 @@ import Button, { ButtonKind } from '@components/micro/Button';
 import StarRating from '@components/micro/StarRating';
 import { EventStatesEnum } from 'enums/EventState.enum';
 import styles from './styles.module.scss';
+import { useTranslation } from '@hooks/useTranslation';
 
 interface CardFooterProps {
   event: IPublicEvent;
@@ -15,15 +16,16 @@ interface CardFooterProps {
   isUserIntoEvent: boolean;
   handleParticipation: () => void;
   handleInfo: () => void;
-  t: Record<string, string>;
+  isLoading: boolean;
 }
 
 export default function CardFooter(props: CardFooterProps) {
   const isRated = props.event.state === EventStatesEnum.FINISHED || props.event.state === EventStatesEnum.CLOSED;
+  const { t } = useTranslation('eventHome');
 
   return (
     <section className={styles.cardFooter}>
-      {props.user && !props.isUserIntoEvent && props.userStatus === EventStatus.AVAILABLE && (
+      {!props.isLoading && props.user && !props.isUserIntoEvent && props.userStatus === EventStatus.AVAILABLE && (
         <div className={styles.participationBtn}>
           <Button
             kind={ButtonKind.SECONDARY}
@@ -34,7 +36,7 @@ export default function CardFooter(props: CardFooterProps) {
               e.preventDefault();
               props.handleParticipation();
             }}>
-            {props.t.participateBtn}
+            {t.participateBtn}
           </Button>
         </div>
       )}
@@ -50,18 +52,18 @@ export default function CardFooter(props: CardFooterProps) {
               props.handleInfo();
             }
           }}>
-          {props.t.infoBtn}
+          {t.infoBtn}
         </Button>
       </div>
 
-      {isRated && (
+      {!props.isLoading && isRated && (
         <section className={styles.ratingSection}>
           <StarRating rating={props.event.ratings.avgScore} />
 
           {props.event.ratings.ratingsAmount > 0 && <p className={styles.ratingAvg}>{Number(props.event.ratings.avgScore).toFixed(1)}</p>}
 
           <span className={styles.ratingRatingsAmoung}>
-            ({props.event.ratings.ratingsAmount} {props.event.ratings.ratingsAmount === 1 ? props.t.reviewText : props.t.reviewTexts})
+            ({props.event.ratings.ratingsAmount} {props.event.ratings.ratingsAmount === 1 ? t.reviewText : t.reviewTexts})
           </span>
         </section>
       )}

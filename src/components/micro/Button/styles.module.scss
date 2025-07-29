@@ -10,8 +10,10 @@
   font-weight: bold;
   cursor: pointer;
   box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+  overflow-x: hidden;
   &:hover {
-    scale: 1.02;
+    transform: scale(1.02);
   }
 
   //kind

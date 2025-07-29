@@ -49,7 +49,7 @@ export default function PrivateHeader() {
     <div className={styles.headerWrapper}>
       <header className={styles.privateHeader}>
         <nav className={styles.navbar}>
-          {user?.name && (
+          {user && (
             <div className={styles.welcomeMsg}>
               {t.headerWelcome} {user.name}
               {userData?.profilePicture && <ProfileButton image={image} />}

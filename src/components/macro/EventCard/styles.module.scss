@@ -24,7 +24,7 @@ $event-states: available, closed, subscribed, readyforpayment, full, finished;
   width: 325px;
   min-height: 340px;
   background-color: var(--backgroundNeutralLighter);
-  border-top: 5px solid var(--availabilityPrimary);
+  border-top: 5px solid var(--backgroundNeutral);
 
   &:hover {
     background-color: rgb(232, 231, 231);
@@ -118,7 +118,7 @@ $event-states: available, closed, subscribed, readyforpayment, full, finished;
   }
 
   .cardFooter {
-    margin: 0 20px 0px 20px;
+    margin: 0px 20px 0px 20px;
     position: relative;
     display: flex;
     margin-top: auto;
