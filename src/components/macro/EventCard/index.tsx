@@ -40,6 +40,7 @@ export default function EventCard(props: EventCardProps) {
         isUserIntoEvent={eventContext.isUserIntoEvent}
         handleParticipation={eventContext.handleParticipation}
         handleInfo={eventContext.handleInfo}
+        isLoading={eventContext.isLoading}
       />
     </div>
   );

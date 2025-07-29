@@ -28,6 +28,8 @@ export enum EventStatus {
 export function useEvent(props: useEventParams) {
   const [currentEvent, setCurrentEvent] = useState<IEvent | null>(null);
   const [userDebtor, setUserDebtor] = useState<string | null>(null);
+  const [eventLoaded, setEventLoaded] = useState(false);
+  const [debtorLoaded, setDebtorLoaded] = useState(false);
   const { t } = useTranslation('eventHome');
   const { pushTo } = useCustomRouter();
 
@@ -84,11 +86,13 @@ export function useEvent(props: useEventParams) {
     }
   };
   const userStatusInEvent: EventStatus = getMyEventStatus();
+  const isLoading = !eventLoaded || !debtorLoaded;
 
   useEffect(() => {
     getEventById(props.eventId)
       .then(res => {
         setCurrentEvent(res);
+        setEventLoaded(true);
       })
       .catch(e => {
         console.error('Catch in context: ', e);
@@ -99,11 +103,12 @@ export function useEvent(props: useEventParams) {
     isUserDebtor(props.userId)
       .then(res => {
         setUserDebtor(res.eventId);
+        setDebtorLoaded(true);
       })
       .catch(e => {
         console.error('Catch in context: ', e);
       });
   }, [props.userId]);
 
-  return { userStatusInEvent, currentEvent, isUserIntoEvent, handleParticipation, handleInfo };
+  return { userStatusInEvent, currentEvent, isUserIntoEvent, handleParticipation, handleInfo, isLoading };
 }
