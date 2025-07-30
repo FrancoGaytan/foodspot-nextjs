@@ -66,4 +66,10 @@
       grid-template-columns: 1fr;
     }
   }
+  .carruselContainer {
+    margin: 40px 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
 }
