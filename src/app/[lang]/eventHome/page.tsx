@@ -1,6 +1,6 @@
-import PrivateFooter from '@components/macro/layout/PrivateFooter';
-import PrivateHeader from '@components/macro/layout/PrivateHeader';
-import EventHome from '@components/pages/EventHome';
+import PrivateFooter from '@components/Shared/layout/PrivateFooter';
+import PrivateHeader from '@components/Shared/layout/PrivateHeader';
+import EventHome from '@components/Modules/EventHome';
 
 export default async function EventHomePage() {
   return (

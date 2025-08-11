@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { recoverPassword, verifyCode } from '@services/password';
-import { showToast, ToastType } from '@utils/toastService';
+import { showToast, ToastType } from '@utils/services/toastService';
 
 interface InitialNewPasswordInterface {
   userEmail: string;

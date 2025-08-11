@@ -1,4 +1,4 @@
-import { getToken } from '@utils/localeCookiesServer';
+import { getToken } from '@utils/cookies/localeCookiesServer';
 
 const baseURL = process.env.NEXT_PUBLIC_API_ENDPOINT;
 

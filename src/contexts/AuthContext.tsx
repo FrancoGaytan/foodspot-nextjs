@@ -1,10 +1,10 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { createContext, useContext, useState, SetStateAction, useEffect, JSX } from 'react';
-import { localStorageKeys } from '.././utils/localStorageKeys';
+import { localStorageKeys } from '../utils/common/localStorageKeys';
 import { LoginResponse } from '../models/user';
 import { _login } from '../services';
-import { ToastType, showToast } from '@utils/toastService';
+import { ToastType, showToast } from '@utils/services/toastService';
 import { useTranslation } from '@hooks/useTranslation';
 
 interface IAuthContext {

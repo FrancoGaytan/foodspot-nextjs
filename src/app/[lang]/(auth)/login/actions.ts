@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers';
 import { loginServerSide } from '@services/authServerService';
 import { LoginRequest } from '@models/user';
-import type { LoginFormState } from '@components/pages/LoginForm';
+import type { LoginFormState } from '@components/Modules/LoginForm';
 
 export async function handleLogin(_prevState: LoginFormState, formData: FormData): Promise<LoginFormState> {
   const email = formData.get('email') as string;

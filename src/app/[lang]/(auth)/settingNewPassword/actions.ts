@@ -1,8 +1,8 @@
 'use server';
 
-import type { SettingNewPasswordFormState } from '@components/pages/SettingNewPasswordForm';
+import type { SettingNewPasswordFormState } from '@components/Modules/SettingNewPasswordForm';
 import { recoverPassword, verifyCode } from '@services/passwordServerService';
-import { validatePassword } from '@utils/utilities';
+import { validatePassword } from '@utils/common/utilities';
 
 export async function handleSetNewPassword(_prevState: SettingNewPasswordFormState, formData: FormData): Promise<SettingNewPasswordFormState> {
   const email = formData.get('email');

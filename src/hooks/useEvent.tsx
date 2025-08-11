@@ -3,7 +3,7 @@
 import { IEvent } from '@models/event';
 import { getEventById, subscribeToAnEvent } from '@services/eventService';
 import { isUserDebtor } from '@services/userService';
-import { showToast, ToastType } from '@utils/toastService';
+import { showToast, ToastType } from '@utils/services/toastService';
 import { useEffect, useState } from 'react';
 import { useTranslation } from './useTranslation';
 import { useCustomRouter } from './useCustomRouter';
