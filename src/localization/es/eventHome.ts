@@ -15,7 +15,7 @@ export default Object.seal({
     title: 'ENTRÁ A LA APP',
     description: 'Creá un usuario y logueate',
   },
-  joinToAnBarbecue: {
+  joinToABarbecue: {
     title: 'ANOTATE A UN ASADO',
     description: 'Inscribite a un evento',
   },

@@ -17,7 +17,7 @@ export default async function eventHome() {
       <section className={styles.eventsContainer}>
         <EventsContainer />
       </section>
-      <section className={styles.carruselContainer}>
+      <section className={styles.carouselContainer}>
         <ImageSlider images={eventImages} altText="Event image" />
         <div className={styles.appDescription}>
           <h1 className={styles.participationInfoTitle}>{t.participationInfoTitle}</h1>

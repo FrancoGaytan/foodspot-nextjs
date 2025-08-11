@@ -17,8 +17,8 @@ export default function HomeInfo() {
       imagePath: '/images/icons/joinAppLogo.png',
     },
     {
-      title: t.joinToAnBarbecue.title,
-      description: t.joinToAnBarbecue.description,
+      title: t.joinToABarbecue.title,
+      description: t.joinToABarbecue.description,
       imagePath: '/images/icons/calendarLogo.png',
     },
     {
