@@ -15,16 +15,6 @@ export default function ImageSlider(props: ImageSliderProps) {
   const total = props.images.length;
   const altText = props.altText ?? 'slide';
 
-  const prevSlide = () => {
-    setTransitionEnabled(true);
-    setCurrent(prev => (prev === 0 ? total - 1 : prev - 1));
-  };
-
-  const nextSlide = () => {
-    setTransitionEnabled(true);
-    setCurrent(prev => (prev === total - 1 ? 0 : prev + 1));
-  };
-
   useEffect(() => {
     const interval = setInterval(() => {
       setTransitionEnabled(true);
@@ -47,13 +37,6 @@ export default function ImageSlider(props: ImageSliderProps) {
           </div>
         ))}
       </div>
-
-      <button onClick={prevSlide} className={`${styles.arrow} ${styles.left}`}>
-        ‹
-      </button>
-      <button onClick={nextSlide} className={`${styles.arrow} ${styles.right}`}>
-        ›
-      </button>
     </div>
   );
 }

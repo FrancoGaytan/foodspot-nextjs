@@ -1,0 +1,77 @@
+@use '/src/styles/variables' as variables;
+@use '/src/styles/shared';
+@use '/src/styles/custom-properties';
+
+.participationSteps {
+  padding-top: 56px;
+  width: 70vw;
+  max-width: 1013px;
+  font-family: 'Raleway';
+  font-style: normal;
+
+  .container {
+    background: #ffffff;
+    border: 2px solid var(--iconsSecondary);
+    border-radius: 4px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 60px 40px;
+
+    .title {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      width: fit-content;
+      height: fit-content;
+      background: #ffffff;
+      font-family: 'Della Respira';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 60px;
+      color: var(--btnPrimaryDarker);
+      white-space: nowrap;
+      line-height: 82px;
+      text-align: center;
+      padding: 0 40px;
+
+      @media #{variables.media-query(max, xl)} {
+        font-size: 4vw;
+      }
+    }
+
+    .participateButton {
+      background: #ffffff;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 47%;
+
+      Button {
+        margin: 0;
+        width: 82%;
+        overflow: hidden;
+      }
+    }
+  }
+
+  .icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+    @media #{variables.media-query(max, lg)} {
+      flex-direction: column;
+      padding: 0;
+    }
+  }
+}

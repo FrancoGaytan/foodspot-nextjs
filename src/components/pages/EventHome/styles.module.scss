@@ -5,6 +5,7 @@
 .eventHomeContent {
   display: flex;
   flex-direction: column;
+
   .header {
     width: 100%;
     display: flex;
@@ -13,10 +14,7 @@
     justify-content: space-between;
     font-family: 'Raleway';
     font-style: normal;
-    * {
-      margin-left: auto;
-      margin-right: auto;
-    }
+
     h1 {
       background: var(--iconsSecondary);
       opacity: 0.9;
@@ -27,6 +25,8 @@
       line-height: 66px;
       text-align: center;
       color: var(--backgroundNeutralLighter);
+      margin-left: auto;
+      margin-right: auto;
       @media #{variables.media-query(max, xl)} {
         font-size: 4vw;
       }
@@ -36,8 +36,11 @@
       font-size: 20px;
       line-height: 27px;
       max-width: 314px;
+      margin-left: auto;
+      margin-right: auto;
     }
   }
+
   .incomingEventTitle {
     align-self: center;
     font-weight: bolder;
@@ -50,6 +53,7 @@
     margin: 40px 0;
     word-break: break-word;
   }
+
   .eventsContainer {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -66,10 +70,77 @@
       grid-template-columns: 1fr;
     }
   }
+
   .carruselContainer {
     margin: 40px 0;
     display: flex;
     justify-content: center;
     width: 100%;
+    position: relative;
+
+    @media #{variables.media-query(max, md)} {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .appDescription {
+      padding: 10px 23px 10px 36px;
+      width: 440px;
+      height: auto;
+      background: #f6faf9;
+      border-radius: 50px 4px;
+      position: absolute;
+      top: 50%;
+      left: 80%;
+      transform: translate(-50%, -50%);
+      &:hover {
+        background-color: #f6faf9a5;
+      }
+
+      @media #{variables.media-query(max, xl)} {
+        left: 50%;
+        width: 56%;
+        height: initial;
+      }
+
+      @media #{variables.media-query(max, md)} {
+        position: relative;
+        top: initial;
+        left: initial;
+        transform: none;
+        width: 80vw;
+        height: auto;
+        border: 2px solid #5787a5b5;
+        margin-right: 30px;
+        margin-left: 15px;
+        margin-top: 30px;
+      }
+
+      .participationInfoTitle {
+        font-family: 'Della Respira';
+        font-weight: 500;
+        font-size: 32px;
+        line-height: 44px;
+        color: var(--btnPrimaryDarker);
+      }
+      .participationInfoDescription {
+        font-family: 'Raleway';
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 18px;
+        margin-bottom: 30px;
+      }
+      .buttonContainer {
+        display: flex;
+        justify-content: center;
+        & Button {
+          max-width: 100%;
+        }
+      }
+    }
+  }
+  .homeInfoContainer {
+    align-self: center;
+    margin-bottom: 150px;
   }
 }
