@@ -34,8 +34,8 @@
   --event-readyforpayment: var(--subscribedPrimary);
   --event-full: var(--btnPrimaryDarker);
   --event-finished: var(--btnPrimaryDarker);
-
-  //Mono
+  --event-debtor: var(--backgroundNeutralDarker);
+  --event-blocked: var(--backgroundNeutral);
   --transparent: rgba(#111111, 0%);
 
   // Layout
