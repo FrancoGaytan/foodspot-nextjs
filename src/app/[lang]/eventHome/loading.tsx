@@ -1,8 +1,8 @@
-import SkeletonEventCard from '@components/macro/SkeletonEventCard';
-import styles from '../../../components/pages/EventHome/styles.module.scss';
-import HomeHeader from '@components/pages/EventHome/HomeHeader';
-import PrivateHeader from '@components/macro/layout/PrivateHeader';
-import { getTranslation } from '@utils/getTranslation';
+import SkeletonEventCard from '@components/Shared/SkeletonEventCard';
+import styles from '../../../components/Modules/EventHome/styles.module.scss';
+import HomeHeader from '@components/Modules/EventHome/HomeHeader';
+import PrivateHeader from '@components/Shared/layout/PrivateHeader';
+import { getTranslation } from '@utils/common/getTranslation';
 
 export default async function LoadingEventHome() {
   const { t } = await getTranslation('eventHome');

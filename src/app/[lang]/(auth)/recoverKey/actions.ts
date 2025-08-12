@@ -1,7 +1,7 @@
 'use server';
 
 import { forgotPassword } from '@services/passwordServerService';
-import { RecoverKeyFormState } from '@components/pages/RecoverKeyForm';
+import { RecoverKeyFormState } from '@components/Modules/RecoverKeyForm';
 
 export async function handleRecoverKey(_prevState: RecoverKeyFormState, formData: FormData): Promise<RecoverKeyFormState> {
   const email = formData.get('email');

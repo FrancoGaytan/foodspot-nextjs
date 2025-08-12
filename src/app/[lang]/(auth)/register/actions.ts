@@ -2,7 +2,7 @@
 
 import { registerServerSide } from '@services/authServerService';
 import { RegisterRequest } from '@models/user';
-import type { RegisterFormState } from '@components/pages/RegisterForm';
+import type { RegisterFormState } from '@components/Modules/RegisterForm';
 
 export async function handleRegister(prevState: RegisterFormState, formData: FormData): Promise<RegisterFormState> {
   const email = formData.get('email');
