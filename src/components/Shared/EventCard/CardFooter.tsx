@@ -2,7 +2,7 @@
 
 import { IPublicEvent } from '@models/event';
 import { IUserFromCookie } from '@utils/cookies/localeCookies';
-import { EventStatus } from '@hooks/useEvent';
+import { EventStatus } from '@hooks/useEventHome';
 import Button, { ButtonKind } from '@components/UI/Button';
 import StarRating from '@components/UI/StarRating';
 import { EventStatesEnum } from 'enums/EventState.enum';

@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from './useTranslation';
 import { useCustomRouter } from './useCustomRouter';
 
-interface useEventParams {
+interface useEventHomeParams {
   eventId: string;
   userId: string;
 }
@@ -25,7 +25,7 @@ export enum EventStatus {
   BLOCKED = 'blocked',
 }
 
-export function useEvent(props: useEventParams) {
+export function useEventHome(props: useEventHomeParams) {
   const [currentEvent, setCurrentEvent] = useState<IEvent | null>(null);
   const [userDebtor, setUserDebtor] = useState<string | null>(null);
   const [eventLoaded, setEventLoaded] = useState(false);

@@ -26,6 +26,7 @@ export interface IPublicEvent {
   chef: string;
   datetime: Date;
   description: string;
+  shoppingDesignee?: IUser[];
   members: number;
   memberLimit: number;
   state: EventStatesEnum;
