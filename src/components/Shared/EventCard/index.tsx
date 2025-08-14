@@ -4,7 +4,7 @@ import { IPublicEvent } from '@models/event';
 import { IUserFromCookie } from '@utils/cookies/localeCookies';
 import { className } from '@utils/common/className';
 import styles from './styles.module.scss';
-import { useEvent } from '@hooks/useEvent';
+import { useEventHome } from '@hooks/useEventHome';
 import CardHeader from './CardHeader';
 import CardBody from './CardBody';
 import CardFooter from './CardFooter';
@@ -17,7 +17,7 @@ interface EventCardProps {
 export default function EventCard(props: EventCardProps) {
   const event = props.event;
   const user = props.user;
-  const eventContext = useEvent({
+  const eventContext = useEventHome({
     eventId: event._id,
     userId: user?.id ?? '',
   });

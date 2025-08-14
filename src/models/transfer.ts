@@ -48,3 +48,18 @@ export interface ITransferReceiptResponse {
 export interface IUploadFileResponse {
   imageId: string;
 }
+
+export interface IUserReceiverInfo {
+  receiverAlias: string;
+  receiverCbu: string;
+  receiverId: string;
+  receiverLastName: string;
+  receiverName: string;
+}
+
+export interface PayCheckInfoResponse {
+  userId: string;
+  userName: string;
+  amount: number;
+  receiver: IUserReceiverInfo;
+}

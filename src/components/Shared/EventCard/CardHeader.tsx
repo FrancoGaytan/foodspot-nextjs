@@ -1,7 +1,7 @@
 'use client';
 
 import { IEvent, IPublicEvent } from '@models/event';
-import { EventStatus } from '@hooks/useEvent';
+import { EventStatus } from '@hooks/useEventHome';
 import { className } from '@utils/common/className';
 import styles from './styles.module.scss';
 import { useTranslation } from '@hooks/useTranslation';

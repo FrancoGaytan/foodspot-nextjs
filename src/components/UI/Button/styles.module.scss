@@ -6,12 +6,15 @@
   border: none;
   border-radius: 45px;
   color: white;
+  font-size: 15px;
   font-family: var(--secondaryFont);
   font-weight: bold;
+  overflow-y: hidden;
   cursor: pointer;
   box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s ease;
   overflow-x: hidden;
+  line-height: 1.1;
   &:hover {
     transform: scale(1.02);
   }
