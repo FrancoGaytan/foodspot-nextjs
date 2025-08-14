@@ -1,67 +1,79 @@
 import Button, { ButtonKind } from '@components/UI/Button';
 import styles from '../styles.module.scss';
 import { getTranslation } from '@utils/common/getTranslation';
+import { IEvent } from '@models/event';
+import { getMembersAmount, getMembersAndReceiptsInfo } from '@services/eventServiceServer';
+import { PayCheckInfoResponse } from '@models/transfer';
+import {
+  showCloseEventBtn,
+  showDeleteEventBtn,
+  showModifyPayBtn,
+  showNewPurchaseReceiptBtn,
+  showParticipationBtn,
+  showPayBtn,
+  showQuitEventBtn,
+  showReadyToPayBtn,
+  showReopenEventBtn,
+} from './eventBtnsActions';
+import { IUserFromCookie } from '@utils/cookies/localeCookies';
+import { getUserById } from '@services/userServiceServer';
 
 interface EventBtnsProps {
-  showBtns: {
-    payBtn: boolean;
-    closeBtn: boolean;
-    reopenBtn: boolean;
-    deleteBtn: boolean;
-    participateBtn: boolean;
-    quitBtn: boolean;
-    newPurchaseReceiptBtn: boolean;
-    readyToPayBtn: boolean;
-    modifyPayBtn: boolean;
-  };
+  event: IEvent;
+  user: IUserFromCookie;
 }
 
 export default async function EventBtns(props: EventBtnsProps) {
+  const eventPaymentInfo = await getMembersAmount(props.event._id);
+  const eventParticipantsInfo = await getMembersAndReceiptsInfo(props.event._id);
+  const user = await getUserById(props.user.id);
+  const myInfo = eventPaymentInfo.find((member: PayCheckInfoResponse) => member.userId === props.user.id);
+
   const { t } = await getTranslation('eventHome');
   return (
     <section className={styles.btnSection}>
-      {props.showBtns.payBtn && (
+      {showPayBtn(props.event, user, eventParticipantsInfo, myInfo) && (
         <Button className={styles.btnEvent} kind={ButtonKind.PRIMARY} size="short">
           {t.payBtn}
         </Button>
       )}
-      {props.showBtns.closeBtn && (
+      {showCloseEventBtn(props.event, user) && (
         <Button className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
           {t.closeEventBtn}
         </Button>
       )}
-      {props.showBtns.reopenBtn && (
+      {showReopenEventBtn(props.event, user) && (
         <Button className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
           {t.reopenEventBtn}
         </Button>
       )}
-      {props.showBtns.deleteBtn && (
+      {showDeleteEventBtn(props.event, user) && (
         <Button className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
           {t.deleteEventBtn}
         </Button>
       )}
-      {props.showBtns.participateBtn && (
+      {showParticipationBtn(props.event, user) && (
         <Button className={styles.btnEvent} kind={ButtonKind.PRIMARY} size="short">
           {t.participationBtn}
         </Button>
       )}
-      {props.showBtns.quitBtn && (
+      {showQuitEventBtn(props.event, user) && (
         <Button className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
           {t.quitEventBtn}
         </Button>
       )}
 
-      {props.showBtns.readyToPayBtn && (
+      {showReadyToPayBtn(props.event, user) && (
         <Button className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
           {t.readyforpayment}
         </Button>
       )}
-      {props.showBtns.modifyPayBtn && (
+      {showModifyPayBtn(props.event, user, eventParticipantsInfo, myInfo) && (
         <Button className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
           {t.modifyPay}
         </Button>
       )}
-      {props.showBtns.newPurchaseReceiptBtn && (
+      {showNewPurchaseReceiptBtn(props.event, user) && (
         <Button className={styles.btnEvent} kind={ButtonKind.PRIMARY} size="short">
           {t.loadPurchase}
         </Button>

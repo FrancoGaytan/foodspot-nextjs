@@ -1,7 +1,6 @@
 import BackBtn from '@components/UI/BackBtn';
 import styles from './styles.module.scss';
 import { getEventById } from '@services/eventServiceServer';
-import { getButtonsInfo } from '@components/Modules/Event/EventBtns/eventBtnsActions';
 import { getUserFromCookieServer } from '@utils/cookies/localeCookiesServer';
 import EventBtns from '@components/Modules/Event/EventBtns';
 
@@ -12,15 +11,14 @@ type EventProps = {
 export default async function Event(props: EventProps) {
   const params = await props.params;
   const eventId = params.id;
-  const user = await getUserFromCookieServer();
-  const { showBtns } = await getButtonsInfo({ eventId, userId: user?.id ?? '' });
+  const userFromCookie = await getUserFromCookieServer();
   const event = await getEventById(eventId);
 
   return (
     <div className={styles.eventContainer}>
       <BackBtn />
       <h1 className={styles.eventTitle}>{event.title}</h1>
-      <EventBtns showBtns={showBtns} />
+      {userFromCookie && <EventBtns event={event} user={userFromCookie} />}
     </div>
   );
 }
