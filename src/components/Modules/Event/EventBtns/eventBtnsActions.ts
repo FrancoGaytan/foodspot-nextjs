@@ -3,23 +3,6 @@ import { ITransferReceiptInfoResponse, PayCheckInfoResponse } from '@models/tran
 import { IUser } from '@models/user';
 import { EventStatesEnum } from 'enums/EventState.enum';
 
-/* export interface useEventParams {
-  eventId: string;
-  userId: string;
-}
-
-export async function getEventContext(props: useEventParams) {
-  const event = await getEventById(props.eventId);
-  const user = await getUserById(props.userId);
-  const eventPaymentInfo = await getMembersAmount(event._id);
-  const eventParticipantsInfo = await getMembersAndReceiptsInfo(event._id);
-  const myInfo = eventPaymentInfo.find((member: PayCheckInfoResponse) => member.userId === props.userId);
-
-  return { event, user, eventPaymentInfo, eventParticipantsInfo, myInfo, props };
-}
-
-// Exporta cada función individualmente, recibiendo el contexto necesario
- */
 export function showDeleteEventBtn(event: IEvent, user: IUser): boolean {
   return userIsTheOrganizer(event, user);
 }
