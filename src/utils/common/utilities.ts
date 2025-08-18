@@ -31,3 +31,11 @@ export function validatePassword(password: string): boolean {
   const expReg = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W_]).{8,}$');
   return expReg.test(password);
 }
+
+export function getOnlyDate(evDateTime: Date) {
+  return evDateTime.getDate().toString() + '. ' + (evDateTime.getMonth() + 1).toString() + '. ' + evDateTime.getFullYear().toString() + '.';
+}
+
+export function getOnlyHour(evDateTime: Date) {
+  return (evDateTime.getHours() + 3).toString() + ':' + parseMinutes(evDateTime.getMinutes().toString());
+}

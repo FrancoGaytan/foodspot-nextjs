@@ -9,6 +9,7 @@
   display: flex;
   flex-direction: column;
   margin-top: 20px;
+  font-family: 'Raleway';
 
   .eventTitle {
     font-family: 'Raleway';
@@ -21,6 +22,29 @@
     margin-right: auto;
     margin-top: 30px;
     text-decoration: solid underline var(--btnPrimary);
+  }
+  .eventContent {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    gap: 20px;
+
+    @media #{variables.media-query(max, md)} {
+      flex-direction: column;
+    }
+
+    .leftColumn {
+      max-height: fit-content;
+      width: 100%;
+      background-color: var(--eventPrimaryBackground);
+      border-radius: 10px;
+    }
+    .rightColumn {
+      max-height: fit-content;
+      width: 100%;
+      background-color: var(--eventPrimaryBackground);
+      border-radius: 10px;
+    }
   }
   .btnSection {
     gap: 5px;
