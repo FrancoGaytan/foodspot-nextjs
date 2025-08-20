@@ -2,9 +2,12 @@ import { IEvent } from '@models/event';
 import styles from './styles.module.scss';
 import { getTranslation } from '@utils/common/getTranslation';
 import { getOnlyDate, getOnlyHour } from '@utils/common/utilities';
+import CopyLinkBtn from '@components/UI/CopyLinkBtn';
+import EditEventBtn from '@components/UI/EditEventBtn';
 
 interface EventDataProps {
   event: IEvent;
+  userId?: string;
 }
 
 export default async function EventData(props: EventDataProps) {
@@ -13,6 +16,8 @@ export default async function EventData(props: EventDataProps) {
 
   return (
     <div className={styles.eventDataContainer}>
+      {event.organizer?._id === props.userId && <EditEventBtn eventId={event._id} />}
+      {!event.isPrivate && <CopyLinkBtn />}
       <section className={styles.eventDataTitle}>
         <div className={styles.calendarLogo}></div>
         <h3 className={styles.logoTitle}>{t.organizationTitle}</h3>

@@ -22,7 +22,7 @@ export default async function Event(props: EventProps) {
       <h1 className={styles.eventTitle}>{event.title}</h1>
       <div className={styles.eventContent}>
         <section className={styles.leftColumn}>
-          <EventData event={event} />
+          <EventData event={event} userId={userFromCookie?.id} />
           {userFromCookie && <PurchasesData event={event} user={userFromCookie} />}
         </section>
         <section className={styles.rightColumn}></section>

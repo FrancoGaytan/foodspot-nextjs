@@ -3,6 +3,7 @@
 @use '/src/styles/custom-properties';
 
 .eventDataContainer {
+  position: relative;
   .eventDataTitle {
     display: flex;
     align-items: center;

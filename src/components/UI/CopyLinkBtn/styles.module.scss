@@ -1,0 +1,19 @@
+@use '/src/styles/variables';
+@use '/src/styles/shared';
+@use '/src/styles/custom-properties';
+
+.copyLinkBtn {
+  position: absolute;
+  top: -15px;
+  right: 40px;
+  width: 25px;
+  height: 25px;
+  border-radius: 0;
+  background-size: contain;
+  background-color: transparent;
+  box-shadow: none;
+  background-image: url('/images/icons/icons-copiar.png');
+  &:hover {
+    scale: 1.05;
+  }
+}
