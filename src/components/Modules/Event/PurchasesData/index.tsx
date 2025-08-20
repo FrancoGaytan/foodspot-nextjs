@@ -15,7 +15,6 @@ interface PurchasesDataProps {
 }
 
 export default async function PurchasesData(props: PurchasesDataProps) {
-  // const purchasesMade = props.event.purchaseReceipts;
   const event = props.event;
   const user = await getUserById(props.user?.id);
   const purchasesMade = await getPurchaseReceipts(props.event._id);

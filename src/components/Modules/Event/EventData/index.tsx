@@ -2,8 +2,8 @@ import { IEvent } from '@models/event';
 import styles from './styles.module.scss';
 import { getTranslation } from '@utils/common/getTranslation';
 import { getOnlyDate, getOnlyHour } from '@utils/common/utilities';
-import CopyLinkBtn from '@components/UI/CopyLinkBtn';
-import EditEventBtn from '@components/UI/EditEventBtn';
+import CopyLinkBtn from '@components/Modules/Event/EventData/CopyLinkBtn';
+import EditEventBtn from '@components/Modules/Event/EventData/EditEventBtn';
 
 interface EventDataProps {
   event: IEvent;
