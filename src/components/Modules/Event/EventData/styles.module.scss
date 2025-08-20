@@ -1,0 +1,40 @@
+@use '/src/styles/variables' as variables;
+@use '/src/styles/shared';
+@use '/src/styles/custom-properties';
+
+.eventDataContainer {
+  position: relative;
+  .eventDataTitle {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    gap: 10px;
+    @media #{variables.media-query(max, md)} {
+      justify-content: center;
+    }
+    .calendarLogo {
+      margin-left: 15px;
+      width: 36px;
+      height: 40px;
+      background-image: url('/images/icons/calendarLogo2.png');
+    }
+    .restaurantLogo {
+      margin-left: 15px;
+      width: 39px;
+      height: 40px;
+      background-image: url('/images/icons/restaurantLogo.png');
+    }
+    .logoTitle {
+      font-weight: bold;
+      font-size: larger;
+    }
+  }
+  .infoData {
+    margin: 10px 25px;
+    font-size: 0.83em;
+    font-weight: bold;
+    @media #{variables.media-query(max, md)} {
+      justify-self: center;
+    }
+  }
+}
