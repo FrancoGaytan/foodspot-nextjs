@@ -1,0 +1,37 @@
+@use '/src/styles/variables' as variables;
+@use '/src/styles/shared';
+@use '/src/styles/custom-properties';
+
+.responsibilitiesContainer {
+  .eventResponsibilitiesTitle {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    gap: 10px;
+    @media #{variables.media-query(max, md)} {
+      justify-content: center;
+    }
+    .inChargeLogo {
+      width: 40px;
+      margin-left: 15px;
+      height: 43px;
+      background-image: url('/images/icons/inChargeLogo.png');
+    }
+    .logoTitle {
+      font-weight: bold;
+      font-size: larger;
+    }
+  }
+  .chefDesigneeSection {
+    display: flex;
+    align-items: center;
+    .infoData {
+      margin: 10px 25px;
+      font-size: 0.83em;
+      font-weight: bold;
+      @media #{variables.media-query(max, md)} {
+        justify-self: center;
+      }
+    }
+  }
+}
