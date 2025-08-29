@@ -97,4 +97,5 @@ export default Object.seal({
   sdCanNotRemove: 'No podés desasignarte si tenés compras registradas',
   awaitingNoti: 'EN ESPERA',
   backBtn: 'VOLVER',
+  addmeOpt: 'Agregame'
 });

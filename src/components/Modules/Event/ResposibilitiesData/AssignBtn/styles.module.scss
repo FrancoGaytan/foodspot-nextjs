@@ -47,6 +47,7 @@
 
     &.assign {
       color: var(--backgroundNeutral);
+      background-color: white;
       background-image: url('/images/icons/checkIcon.png');
     }
     &.unAssign {
