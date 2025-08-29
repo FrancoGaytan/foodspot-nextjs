@@ -1,0 +1,91 @@
+@use '/src/styles/variables' as variables;
+@use '/src/styles/shared';
+@use '/src/styles/custom-properties';
+
+.responsibilitiesContainer {
+  .eventResponsibilitiesTitle {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    gap: 10px;
+    @media #{variables.media-query(max, md)} {
+      justify-content: center;
+    }
+    .inChargeLogo {
+      width: 40px;
+      margin-left: 15px;
+      height: 43px;
+      background-image: url('/images/icons/inChargeLogo.png');
+    }
+    .logoTitle {
+      font-weight: bold;
+      font-size: larger;
+    }
+  }
+  .chefDesigneeSection {
+    display: flex;
+    align-items: center;
+    .infoData {
+      margin: 10px 10px 10px 25px;
+      font-size: 0.83em;
+      font-weight: bold;
+      @media #{variables.media-query(max, md)} {
+        justify-self: center;
+      }
+    }
+    @media #{variables.media-query(max, md)} {
+        justify-content: center;
+      }
+  }
+  .shoppingDesigneeSection {
+    display: flex;
+    align-items: center;
+    .infoData {
+      margin: 10px 10px 10px 25px;
+      font-size: 0.83em;
+      font-weight: bold;
+      @media #{variables.media-query(max, md)} {
+        justify-self: center;
+      }
+    }
+    @media #{variables.media-query(max, md)} {
+        justify-content: center;
+      }
+  }
+  .assignTransitionWrapper {
+    transition:
+      opacity 1s ease,
+      transform 1s ease;
+
+    :global(button) {
+      animation: fadeInAssign 1s ease;
+    }
+
+    @keyframes fadeInAssign {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  }
+  .shoppingDesigneeListSection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 35px;
+    @media #{variables.media-query(max, md)} {
+        align-items: center;
+      }
+    .singleDesigneeSection {
+      display: flex;
+      align-items: center;
+      min-height: 25px;
+      font-size: 0.83em;
+      font-weight: bold;
+    }
+  }
+}

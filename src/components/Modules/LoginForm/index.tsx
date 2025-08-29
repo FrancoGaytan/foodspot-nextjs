@@ -49,7 +49,7 @@ export default function LoginForm() {
         <EmailInput name="email" label={t.email} placeholder={t.email} />
         <PasswordInput name="password" label={t.password} placeholder={t.password} />
 
-        <Button kind={ButtonKind.PRIMARY} size="large" type="submit">
+        <Button kind={ButtonKind.PRIMARY} size="large" type="submit" className={styles.submitButton}>
           {t.loginBtn}
         </Button>
 

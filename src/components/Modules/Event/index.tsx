@@ -5,6 +5,7 @@ import { getUserFromCookieServer } from '@utils/cookies/localeCookiesServer';
 import EventBtns from '@components/Modules/Event/EventBtns';
 import EventData from './EventData';
 import PurchasesData from './PurchasesData';
+import ResponsibilitiesData from './ResposibilitiesData';
 
 type EventProps = {
   params: { id: string };
@@ -25,7 +26,9 @@ export default async function Event(props: EventProps) {
           <EventData event={event} userId={userFromCookie?.id} />
           {userFromCookie && <PurchasesData event={event} user={userFromCookie} />}
         </section>
-        <section className={styles.rightColumn}></section>
+        <section className={styles.rightColumn}>
+          <ResponsibilitiesData event={event} userId={userFromCookie?.id} />
+        </section>
       </div>
       {userFromCookie && <EventBtns event={event} user={userFromCookie} />}
     </div>

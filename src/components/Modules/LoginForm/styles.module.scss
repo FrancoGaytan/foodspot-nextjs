@@ -19,13 +19,17 @@
   }
 }
 
+.submitButton{
+  margin-top: 15px;
+}
+
 .forgotPassword {
   font-size: 16px;
   font-family: var(--secondaryFont);
   font-weight: variables.font-weight(bold);
   text-decoration: none;
   color: var(--backgroundNeutralLighter);
-  margin: 30px auto;
+  margin: 20px auto;
   align-self: flex-end;
 }
 
@@ -49,7 +53,7 @@
   }
 }
 .linksContainer {
-  margin-top: 1rem;
+  margin-top: 0rem;
   display: flex;
   justify-content: space-between;
 }
