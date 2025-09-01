@@ -6,7 +6,6 @@
   display: flex;
   align-items: center;
   position: relative;
-  display: flex;
   flex-direction: column;
   margin-top: 20px;
   font-family: 'Raleway';
@@ -31,25 +30,34 @@
       }
     }
   }
+
   .eventContent {
     display: flex;
     flex-direction: row;
     width: 90%;
     gap: 20px;
+    min-height: 400px;
+    align-items: stretch;
 
     @media #{variables.media-query(max, md)} {
       flex-direction: column;
+      min-height: unset;
     }
 
-    .leftColumn {
-      max-height: fit-content;
+    .leftColumn,
+    .rightColumn {
+      flex: 1;
       width: 100%;
       background-color: var(--eventPrimaryBackground);
       border-radius: 10px;
+      display: flex;
+      flex-direction: column;
       opacity: 0;
       transform: translate(10px, 10px);
-      animation: fadeInLeftColumn 1s ease forwards;
+    }
 
+    .leftColumn {
+      animation: fadeInLeftColumn 1s ease forwards;
       @keyframes fadeInLeftColumn {
         to {
           opacity: 1;
@@ -58,12 +66,6 @@
       }
     }
     .rightColumn {
-      max-height: fit-content;
-      width: 100%;
-      background-color: var(--eventPrimaryBackground);
-      border-radius: 10px;
-      opacity: 0;
-      transform: translate(10px, 10px);
       animation: fadeInRightColumn 1s ease forwards;
       animation-delay: 0.7s;
       @keyframes fadeInRightColumn {
@@ -74,29 +76,7 @@
       }
     }
   }
-  .eventContent {
-    display: flex;
-    flex-direction: row;
-    width: 90%;
-    gap: 20px;
 
-    @media #{variables.media-query(max, md)} {
-      flex-direction: column;
-    }
-
-    .leftColumn {
-      max-height: fit-content;
-      width: 100%;
-      background-color: var(--eventPrimaryBackground);
-      border-radius: 10px;
-    }
-    .rightColumn {
-      max-height: fit-content;
-      width: 100%;
-      background-color: var(--eventPrimaryBackground);
-      border-radius: 10px;
-    }
-  }
   .btnSection {
     gap: 5px;
     display: flex;
