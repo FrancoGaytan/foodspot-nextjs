@@ -92,7 +92,7 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
       .catch(e => {
         console.error('Catch in context: ', e);
       });
-  }, [props.event]);
+  }, [props.event, user?._id]);
 
   return (
     <div className={styles.participantsDataContent}>

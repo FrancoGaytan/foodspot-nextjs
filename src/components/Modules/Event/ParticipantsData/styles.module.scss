@@ -23,6 +23,17 @@
       font-size: larger;
     }
   }
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.554);
+    border-radius: 1px;
+  }
   .eventParticipants {
     overflow-y: auto;
     margin: 10px 25px;
@@ -30,6 +41,7 @@
     font-family: 'Raleway';
     font-size: 12px;
     font-weight: bold;
+    max-height: 180px;
 
     .infoDataRow {
       display: flex;
