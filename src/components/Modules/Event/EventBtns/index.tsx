@@ -96,7 +96,7 @@ export default function EventBtns(props: EventBtnsProps) {
           )}
           {showReadyToPayBtn(props.event, user) && (
             <Button className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
-              {t.readyforpayment}
+              {t.READY_FOR_PAYMENT}
             </Button>
           )}
           {showModifyPayBtn(props.event, user, eventParticipantsInfo, myInfo) && (

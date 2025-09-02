@@ -5,7 +5,7 @@ export type TEventState =
   | EventStatesEnum.CLOSED
   | EventStatesEnum.CANCELED
   | EventStatesEnum.FINISHED
-  | EventStatesEnum.READYFORPAYMENT;
+  | EventStatesEnum.READY_FOR_PAYMENT;
 
 export type TSubscribedState = 'subscribed' | 'not-subscribed';
 

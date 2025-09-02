@@ -4,6 +4,6 @@ export enum EventStatesEnum {
 	AVAILABLE = 'available',
 	CANCELED = 'canceled',
 	INCOMPLETED = 'incompleted',
-	READYFORPAYMENT = 'readyforpayment',
+	READY_FOR_PAYMENT = 'readyforpayment',
 	FINISHED = 'finished'
 }

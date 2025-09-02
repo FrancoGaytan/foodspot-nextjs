@@ -1,0 +1,84 @@
+@use '/src/styles/variables' as variables;
+@use '/src/styles/shared';
+@use '/src/styles/custom-properties';
+
+.participantsDataContent {
+  .participantsDataTitle {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    gap: 10px;
+    @media #{variables.media-query(max, md)} {
+      justify-content: center;
+    }
+    .participantsLogo {
+      margin-left: 15px;
+      width: 40px;
+      height: 40px;
+      background-image: url('/images/icons/peopleLogo.png');
+      background-size: cover;
+    }
+    .logoTitle {
+      font-weight: bold;
+      font-size: larger;
+    }
+  }
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.554);
+    border-radius: 1px;
+  }
+  .eventParticipants {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    margin: 10px 25px;
+    flex-grow: 1;
+    font-family: 'Raleway';
+    font-size: 12px;
+    font-weight: bold;
+    max-height: 180px;
+    @media #{variables.media-query(max, md)} {
+      align-items: center;
+    }
+
+    .infoDataRow {
+      display: flex;
+      margin-top: 15px;
+
+      .infoDataUsernamePayed {
+        margin: 0 0 0 10px;
+        color: green;
+        align-self: center;
+      }
+      .infoDataUsernameDidntPay {
+        margin: 0 0 0 10px;
+        color: red;
+        align-self: center;
+      }
+      .waitingValidationPay {
+        margin: 0 0 0 10px;
+        color: blue;
+        align-self: center;
+      }
+      .fastAproveBtn {
+        background-image: url('/images/icons/icons-fastAprove.png');
+        width: 25px;
+        height: 25px;
+        background-size: 70% 70%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: white;
+        margin-left: 15px;
+        border-radius: 50%;
+        box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.15);
+      }
+    }
+  }
+}

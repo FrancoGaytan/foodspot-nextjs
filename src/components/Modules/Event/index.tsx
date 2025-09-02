@@ -6,6 +6,7 @@ import EventBtns from '@components/Modules/Event/EventBtns';
 import EventData from './EventData';
 import PurchasesData from './PurchasesData';
 import ResponsibilitiesData from './ResposibilitiesData';
+import ParticipantsData from './ParticipantsData';
 
 type EventProps = {
   params: { id: string };
@@ -28,6 +29,7 @@ export default async function Event(props: EventProps) {
         </section>
         <section className={styles.rightColumn}>
           <ResponsibilitiesData event={event} userId={userFromCookie?.id} />
+          <ParticipantsData event={event} userId={userFromCookie?.id}/>
         </section>
       </div>
       {userFromCookie && <EventBtns event={event} user={userFromCookie} />}
