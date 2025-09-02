@@ -35,6 +35,8 @@
     border-radius: 1px;
   }
   .eventParticipants {
+    display: flex;
+    flex-direction: column;
     overflow-y: auto;
     margin: 10px 25px;
     flex-grow: 1;
@@ -42,6 +44,9 @@
     font-size: 12px;
     font-weight: bold;
     max-height: 180px;
+    @media #{variables.media-query(max, md)} {
+      align-items: center;
+    }
 
     .infoDataRow {
       display: flex;

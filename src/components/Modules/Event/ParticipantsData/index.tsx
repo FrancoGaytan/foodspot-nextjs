@@ -26,7 +26,7 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
   function showPaymentData() {
     if (!props.event) return false;
     return (
-      props.event.state === EventStatesEnum.READYFORPAYMENT &&
+      props.event.state === EventStatesEnum.READY_FOR_PAYMENT &&
       props.event.shoppingDesignee &&
       props.event.shoppingDesignee.some((d: IUser) => d._id === user?._id)
     );
@@ -94,6 +94,36 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
       });
   }, [props.event, user?._id]);
 
+/*   useEffect(() => {
+  if (!props.event || !props.event._id || !props.userId) return;
+  const abortController = new AbortController();
+
+  Promise.all([
+    getUserById(props.userId),
+    getMembersAndReceiptsInfo(props.event._id, abortController.signal),
+    getMembersAmount(props.event._id, abortController.signal)
+  ])
+    .then(([userRes, participantsRes, paymentRes]) => {
+      setUser(userRes);
+      setEventParticipants(participantsRes);
+
+      const myInfo = paymentRes.find((member: PayCheckInfoResponse) => member.userId === userRes?._id);
+      setTotalPaymentInfo(paymentRes);
+      if (myInfo?.amount === 0) {
+        setPaymentInfo({ amount: 0, receiver: {} as IUserReceiverInfo });
+      } else {
+        setPaymentInfo({ amount: myInfo?.amount ?? 0, receiver: myInfo?.receiver ?? ({} as IUserReceiverInfo) });
+      }
+    })
+    .catch(e => {
+      console.error('Catch in context: ', e);
+    });
+
+  return () => {
+    abortController.abort();
+  };
+}, [props.event, props.userId]); */
+
   return (
     <div className={styles.participantsDataContent}>
       <section className={styles.participantsDataTitle}>
@@ -143,7 +173,7 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
             )}
 
             {user && props.event.shoppingDesignee &&
-              props.event.state === EventStatesEnum.READYFORPAYMENT &&
+              props.event.state === EventStatesEnum.READY_FOR_PAYMENT &&
               isUserIntoEvent(props.event, user) &&
               paymentInfo.amount !== 0 &&
               (props.event.purchaseReceipts.length as number) !== 0 &&

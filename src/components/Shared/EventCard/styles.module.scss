@@ -67,7 +67,7 @@ $event-states: available, closed, subscribed, readyforpayment, full, finished;
       &.subscribed {
         color: var(--event-subscribed);
       }
-      &.readyforpayment {
+      &.READY_FOR_PAYMENT {
         color: var(--event-readyforpayment);
       }
       &.full {

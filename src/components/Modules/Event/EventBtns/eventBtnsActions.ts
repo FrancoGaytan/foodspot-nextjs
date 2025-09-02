@@ -28,7 +28,7 @@ export function showCloseEventBtn(event: IEvent, user: IPublicUser): boolean {
   return (
     isUserIntoEvent(event, user) &&
     (event.organizer._id === user._id || userIsAShoppingDesignee(event, user)) &&
-    (event.state === EventStatesEnum.AVAILABLE || event.state === EventStatesEnum.READYFORPAYMENT)
+    (event.state === EventStatesEnum.AVAILABLE || event.state === EventStatesEnum.READY_FOR_PAYMENT)
   );
 }
 
@@ -69,7 +69,7 @@ export function showPayBtn(
 ): boolean {
   return (
     isUserIntoEvent(event, user) &&
-    event.state === EventStatesEnum.READYFORPAYMENT &&
+    event.state === EventStatesEnum.READY_FOR_PAYMENT &&
     event.purchaseReceipts.length > 0 &&
     !checkIfUserHasUploaded(eventParticipantsInfo, user._id) &&
     typeof myInfo?.amount === 'number' &&
@@ -80,7 +80,7 @@ export function showPayBtn(
 export function showModifyPayBtn(event: IEvent, user: IPublicUser, eventParticipantsInfo: ITransferReceiptInfoResponse[], myInfo: any): boolean {
   return (
     isUserIntoEvent(event, user) &&
-    event.state === EventStatesEnum.READYFORPAYMENT &&
+    event.state === EventStatesEnum.READY_FOR_PAYMENT &&
     event.purchaseReceipts.length > 0 &&
     checkIfUserHasUploaded(eventParticipantsInfo, user._id) &&
     typeof myInfo?.amount === 'number' &&
