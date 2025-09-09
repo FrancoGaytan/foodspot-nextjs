@@ -1,4 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
 "use client";
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -6,8 +5,8 @@ import { createPortal } from "react-dom";
 export type ModalOptions = {
   title?: string;
   isBlocking?: boolean;
-  width?: number | string; // ej: 520 o "42rem"
-  maxHeight?: number | string; // ej: "80vh"
+  width?: number | string;
+  maxHeight?: number | string;
   onClose?: () => void;
 };
 
@@ -27,7 +26,7 @@ export const useModal = (): ModalContextType => {
   return ctx;
 };
 
-export function ModalProvider({ children }: { children: React.ReactNode }) {
+export function ModalProvider(props: { children: React.ReactNode }) {
   const [content, setContent] = useState<React.ReactNode | null>(null);
   const [opts, setOpts] = useState<ModalOptions | undefined>(undefined);
   const isOpen = !!content;
@@ -54,7 +53,7 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <ModalContext.Provider value={value}>
-      {children}
+      {props.children}
       {portalEl && isOpen && createPortal(
         <ModalShell
           title={opts?.title}
@@ -71,15 +70,8 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-// --------------------------- Shell ---------------------------
-function ModalShell({
-  title,
-  isBlocking,
-  width = 560,
-  maxHeight = "80vh",
-  onClose,
-  children,
-}: {
+
+function ModalShell(props: {
   title?: string;
   isBlocking: boolean;
   width?: number | string;
@@ -87,6 +79,13 @@ function ModalShell({
   onClose: () => void;
   children: React.ReactNode;
 }) {
+  const title = props.title;
+  const isBlocking = props.isBlocking;
+  const width = props.width !== undefined ? props.width : 560;
+  const maxHeight = props.maxHeight !== undefined ? props.maxHeight : "80vh";
+  const onClose = props.onClose;
+  const children = props.children;
+
   const dialogRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
