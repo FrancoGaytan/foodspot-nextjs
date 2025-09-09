@@ -54,7 +54,7 @@ const FilesPreview: React.FC<FilesPreviewProps> = (props) => {
 						height={imgDimensions.height}
 						style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }}
 						onLoad={handleImageLoad}
-						unoptimized // Remove this if you want Next.js to optimize remote images and you have set up domains
+						unoptimized
 					/>
 				</div>
 			) : (
