@@ -7,9 +7,11 @@ import { useTranslation } from '@hooks/useTranslation';
 import { IEvent } from '@models/event';
 import { EventStatesEnum } from 'enums/EventState.enum';
 import { getUserById } from '@services/userService';
-import { IUserReceiverInfo, PayCheckInfoResponse } from '@models/transfer';
+import { PayCheckInfoResponse } from '@models/transfer';
 import Button, { ButtonKind } from '@components/UI/Button';
-import { isUserIntoEvent } from '../EventBtns/eventBtnsActions';
+import { useModal } from '@contexts/ModalContext';
+import FastAprovalForm from '@components/Modules/FastApprovalForm';
+import ConfirmationPayForm from '@components/Modules/ConfirmationPayForm';
 
 interface ParticipantsDataProps {
   event: IEvent;
@@ -21,7 +23,8 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
   const [user, setUser] = useState<IPublicUser>();
   const [eventParticipants, setEventParticipants] = useState<EventUserResponse[]>([]);
   const [totalPaymentInfo, setTotalPaymentInfo] = useState<PayCheckInfoResponse[]>([]);
-  const [paymentInfo, setPaymentInfo] = useState({ amount: 0, receiver: {} as IUserReceiverInfo });
+/*   const [paymentInfo, setPaymentInfo] = useState({ amount: 0, receiver: {} as IUserReceiverInfo }); */
+  const { open, close } = useModal();
 
   function showPaymentData() {
     if (!props.event) return false;
@@ -42,15 +45,37 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
     );
   }
 
-  	function checkIfUserHasUploaded() {
-		const myReceipt = eventParticipants.find(member => member.userId === user?._id);
-		return myReceipt?.hasUploaded;
-	}
+  function refetchMembersAndReceiptInfo() {
+    if (!props.event) return;
+    const abortController = new AbortController();
+    getMembersAndReceiptsInfo(props.event._id, abortController.signal)
+      .then(res => {
+        setEventParticipants(res);
+      })
+      .catch(e => {
+        console.error('Catch in context: ', e);
+      });
+  }
 
-	function checkIfUserHasPaid() {
-		const myReceipt = eventParticipants.find(member => member.userId === user?._id);
-		return myReceipt?.hasReceiptApproved;
-	}
+  function openConfirmationPayForm(transferReceiptId: string | undefined, userToApprove: string) {
+    open(
+      <div style={{ padding: 32, textAlign: 'center' }}>
+        {user && <ConfirmationPayForm event={props.event} transferReceiptId={transferReceiptId} userToApprove={userToApprove} closeModal={close} refetchEvent={refetchMembersAndReceiptInfo}/>}
+      </div>,
+      { title: 'Validate Payment' }
+    );
+  }
+
+  function openModalFastAproval(userId: string) {
+    open(
+      <div style={{ padding: 32, textAlign: 'center' }}>
+        {user && (
+          <FastAprovalForm eventId={props.event._id} userId={userId} closeModal={close} refetchMembersAndReceiptInfo={refetchMembersAndReceiptInfo} />
+        )}
+      </div>,
+      { title: 'Fast Approval' }
+    );
+  }
 
   useEffect(() => {
     getUserById(props.userId)
@@ -81,54 +106,27 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
     const abortController = new AbortController();
     getMembersAmount(props.event?._id, abortController.signal)
       .then(res => {
-        const myInfo = res.find((member: PayCheckInfoResponse) => member.userId === user?._id);
+/*         const myInfo = res.find((member: PayCheckInfoResponse) => member.userId === user?._id); */
         setTotalPaymentInfo(res);
-        if (myInfo?.amount === 0) {
+/*         if (myInfo?.amount === 0) {
           setPaymentInfo({ amount: 0, receiver: {} as IUserReceiverInfo });
         } else {
           setPaymentInfo({ amount: myInfo?.amount ?? 0, receiver: myInfo?.receiver ?? ({} as IUserReceiverInfo) });
-        }
+        } */
       })
       .catch(e => {
         console.error('Catch in context: ', e);
       });
   }, [props.event, user?._id]);
 
-/*   useEffect(() => {
-  if (!props.event || !props.event._id || !props.userId) return;
-  const abortController = new AbortController();
-
-  Promise.all([
-    getUserById(props.userId),
-    getMembersAndReceiptsInfo(props.event._id, abortController.signal),
-    getMembersAmount(props.event._id, abortController.signal)
-  ])
-    .then(([userRes, participantsRes, paymentRes]) => {
-      setUser(userRes);
-      setEventParticipants(participantsRes);
-
-      const myInfo = paymentRes.find((member: PayCheckInfoResponse) => member.userId === userRes?._id);
-      setTotalPaymentInfo(paymentRes);
-      if (myInfo?.amount === 0) {
-        setPaymentInfo({ amount: 0, receiver: {} as IUserReceiverInfo });
-      } else {
-        setPaymentInfo({ amount: myInfo?.amount ?? 0, receiver: myInfo?.receiver ?? ({} as IUserReceiverInfo) });
-      }
-    })
-    .catch(e => {
-      console.error('Catch in context: ', e);
-    });
-
-  return () => {
-    abortController.abort();
-  };
-}, [props.event, props.userId]); */
-
   return (
     <div className={styles.participantsDataContent}>
       <section className={styles.participantsDataTitle}>
         <div className={styles.participantsLogo}></div>
-        <h3 className={styles.logoTitle}>{t.organizationTitle}</h3>
+        <h3 className={styles.logoTitle}>
+          {t.diners}
+          {props.event.members.length}/{props.event.memberLimit}
+        </h3>
       </section>
       <section className={styles.eventParticipants}>
         {eventParticipants.map((member: EventUserResponse, i: number) => (
@@ -146,10 +144,9 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
                       className={styles.btnEvent}
                       kind={ButtonKind.VALIDATION}
                       size="micro"
-                      onClick={() => {
-                        /* setTransferReceiptId(member.transferReceipt as string);
-                     setUserToApprove(member.userId);
-                     openValidationPopup(); */
+                      onClick={e => {
+                        e.preventDefault();
+                        openConfirmationPayForm(member.transferReceipt as string, member.userId);
                       }}>
                       {t.validateBtn}
                     </Button>
@@ -164,30 +161,13 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
                         className={styles.fastAproveBtn}
                         onClick={e => {
                           e.preventDefault();
-                          /* openModalFastAproval(member.userId); */
+                          openModalFastAproval(member.userId);
                         }}></button>
                     )}
                   </>
                 )}
               </>
             )}
-
-            {user && props.event.shoppingDesignee &&
-              props.event.state === EventStatesEnum.READY_FOR_PAYMENT &&
-              isUserIntoEvent(props.event, user) &&
-              paymentInfo.amount !== 0 &&
-              (props.event.purchaseReceipts.length as number) !== 0 &&
-              (!checkIfUserHasUploaded() ? (
-                <Button className={styles.btnEvent} kind={ButtonKind.PRIMARY} size="short" /* onClick={() => payCheck()} */>
-                  {t.payBtn}
-                </Button>
-              ) : (
-                !checkIfUserHasPaid() && (
-                  <Button className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short" /* onClick={() => payCheck()} */>
-                    {t.modifyPay}
-                  </Button>
-                )
-              ))}
           </div>
         ))}
       </section>

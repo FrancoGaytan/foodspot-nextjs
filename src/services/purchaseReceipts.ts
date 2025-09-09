@@ -28,7 +28,6 @@ export async function deleteEventPurchase(idPurchaseReceipt: string, event: stri
 }
 
 export async function getImage(idImage: string | undefined, signal?: AbortSignal): Promise<any> {
-  //esta funcion no es propia de purchase, moverla a un service Image
   const url = `/images/getImage/${idImage}`;
   return await __getFiles(url, signal);
 }
