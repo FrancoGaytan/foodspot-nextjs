@@ -23,7 +23,6 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
   const [user, setUser] = useState<IPublicUser>();
   const [eventParticipants, setEventParticipants] = useState<EventUserResponse[]>([]);
   const [totalPaymentInfo, setTotalPaymentInfo] = useState<PayCheckInfoResponse[]>([]);
-/*   const [paymentInfo, setPaymentInfo] = useState({ amount: 0, receiver: {} as IUserReceiverInfo }); */
   const { open, close } = useModal();
 
   function showPaymentData() {
@@ -106,13 +105,7 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
     const abortController = new AbortController();
     getMembersAmount(props.event?._id, abortController.signal)
       .then(res => {
-/*         const myInfo = res.find((member: PayCheckInfoResponse) => member.userId === user?._id); */
         setTotalPaymentInfo(res);
-/*         if (myInfo?.amount === 0) {
-          setPaymentInfo({ amount: 0, receiver: {} as IUserReceiverInfo });
-        } else {
-          setPaymentInfo({ amount: myInfo?.amount ?? 0, receiver: myInfo?.receiver ?? ({} as IUserReceiverInfo) });
-        } */
       })
       .catch(e => {
         console.error('Catch in context: ', e);
