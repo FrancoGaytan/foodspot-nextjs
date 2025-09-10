@@ -97,5 +97,7 @@ export default Object.seal({
   sdCanNotRemove: 'You cannot unassign yourself if you have made purchases',
   awaitingNoti: 'AWAITING',
   backBtn: 'BACK',
-  addmeOpt: 'Add myself'
+  addmeOpt: 'Add myself',
+  fastApprovalTitle: 'Fast Approval',
+  validatePaymentTitle: 'Validate Payment'
 });

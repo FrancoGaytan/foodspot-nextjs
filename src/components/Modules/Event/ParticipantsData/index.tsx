@@ -10,8 +10,8 @@ import { getUserById } from '@services/userService';
 import { PayCheckInfoResponse } from '@models/transfer';
 import Button, { ButtonKind } from '@components/UI/Button';
 import { useModal } from '@contexts/ModalContext';
-import FastAprovalForm from '@components/Modules/FastApprovalForm';
-import ConfirmationPayForm from '@components/Modules/ConfirmationPayForm';
+import FastApprovalModal from './Modals/FastApprovalModal';
+import ConfirmationPayModal from './Modals/ConfirmationPayModal';
 
 interface ParticipantsDataProps {
   event: IEvent;
@@ -58,21 +58,22 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
 
   function openConfirmationPayForm(transferReceiptId: string | undefined, userToApprove: string) {
     open(
-      <div style={{ padding: 32, textAlign: 'center' }}>
-        {user && <ConfirmationPayForm event={props.event} transferReceiptId={transferReceiptId} userToApprove={userToApprove} closeModal={close} refetchEvent={refetchMembersAndReceiptInfo}/>}
-      </div>,
-      { title: 'Validate Payment' }
+      <ConfirmationPayModal
+        event={props.event}
+        transferReceiptId={transferReceiptId}
+        userToApprove={userToApprove}
+        closeModal={close}
+        refetchEvent={refetchMembersAndReceiptInfo}
+        user={user}
+      />,
+      { title: t.validatePaymentTitle }
     );
   }
 
   function openModalFastAproval(userId: string) {
     open(
-      <div style={{ padding: 32, textAlign: 'center' }}>
-        {user && (
-          <FastAprovalForm eventId={props.event._id} userId={userId} closeModal={close} refetchMembersAndReceiptInfo={refetchMembersAndReceiptInfo} />
-        )}
-      </div>,
-      { title: 'Fast Approval' }
+      <FastApprovalModal eventId={props.event._id} userId={userId} closeModal={close} refetchMembersAndReceiptInfo={refetchMembersAndReceiptInfo} />,
+      { title: t.fastApprovalTitle }
     );
   }
 
