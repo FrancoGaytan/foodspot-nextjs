@@ -39,3 +39,16 @@ export function getOnlyDate(evDateTime: Date) {
 export function getOnlyHour(evDateTime: Date) {
   return (evDateTime.getHours() + 3).toString() + ':' + parseMinutes(evDateTime.getMinutes().toString());
 }
+
+export function gettingDateDiference(penalizationStartDate: Date): number {
+		const startingDate = new Date(penalizationStartDate);
+		const todayDate = new Date();
+
+		const start = new Date(startingDate.getFullYear(), startingDate.getMonth(), startingDate.getDate());
+		const today = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate());
+
+		if (today <= start) return 0;
+
+		const diffInMilliseconds = today.getTime() - start.getTime();
+		return diffInMilliseconds / (1000 * 60 * 60 * 24);
+	}

@@ -4,6 +4,7 @@ import '@styles/main.scss';
 import '@styles/globals.css';
 import ToastContainer from '@components/UI/Toaster';
 import { AuthProvider } from '@contexts/AuthContext';
+import { ModalProvider } from '@contexts/ModalContext';
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] });
@@ -30,7 +31,9 @@ export default async function RootLayout(props: RootLayoutProps) {
 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <AuthProvider>
+          <ModalProvider>
           <ToastContainer /> {props.children}
+          </ModalProvider>
         </AuthProvider>
       </body>
     </html>
