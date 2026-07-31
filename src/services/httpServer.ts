@@ -22,18 +22,25 @@ function buildUrl(path: string) {
   return `${baseURL}${path}`;
 }
 
-export async function getAuthHeadersWithAuth(): Promise<HeadersInit> {
+export async function getAuthHeadersWithAuth(includeContentType = true): Promise<HeadersInit> {
   const token = await getToken();
 
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-  };
+  const headers: Record<string, string> = {};
+
+  if (includeContentType) {
+    headers['Content-Type'] = 'application/json';
+  }
 
   if (token) {
     headers.Authorization = token;
   }
 
   return headers;
+}
+
+async function getErrorResponseBody(response: Response): Promise<string | undefined> {
+  const responseBody = await response.text();
+  return responseBody || undefined;
 }
 
 export async function postServer<T, P = unknown>(path: string, payload?: P, signal?: AbortSignal): Promise<T> {
@@ -47,7 +54,7 @@ export async function postServer<T, P = unknown>(path: string, payload?: P, sign
   });
 
   if (!res.ok) {
-    throw new ServerHttpError('POST', path, res.status, await res.text());
+    throw new ServerHttpError('POST', path, res.status, await getErrorResponseBody(res));
   }
 
   return res.json();
@@ -64,13 +71,11 @@ export async function getServer<T>(path: string, signal?: AbortSignal): Promise<
     mode: 'cors',
   });
 
-  const text = await res.text();
-
   if (!res.ok) {
-    throw new Error(`GET ${path} failed: ${res.status} - ${text}`);
+    throw new ServerHttpError('GET', path, res.status, await getErrorResponseBody(res));
   }
 
-  return JSON.parse(text);
+  return res.json();
 }
 
 export async function getFileServer(path: string, signal?: AbortSignal): Promise<Blob> {
@@ -83,7 +88,7 @@ export async function getFileServer(path: string, signal?: AbortSignal): Promise
   });
 
   if (!res.ok) {
-    throw new Error(`GET file ${path} failed: ${res.status}`);
+    throw new ServerHttpError('GET', path, res.status, await getErrorResponseBody(res));
   }
 
   return res.blob();
@@ -92,16 +97,18 @@ export async function getFileServer(path: string, signal?: AbortSignal): Promise
 export async function postFileServer<T>(path: string, formFile: File, signal?: AbortSignal): Promise<T> {
   const formData = new FormData();
   formData.append('file', formFile);
+  const headers = await getAuthHeadersWithAuth(false);
 
   const res = await fetch(buildUrl(path), {
     method: 'POST',
     body: formData,
     signal,
+    headers,
     cache: 'no-store',
   });
 
   if (!res.ok) {
-    throw new Error(`POST file ${path} failed: ${res.status}`);
+    throw new ServerHttpError('POST', path, res.status, await getErrorResponseBody(res));
   }
 
   return res.json();
@@ -118,7 +125,7 @@ export async function putServer<T, P = unknown>(path: string, payload?: P, signa
   });
 
   if (!res.ok) {
-    throw new Error(`PUT ${path} failed: ${res.status}`);
+    throw new ServerHttpError('PUT', path, res.status, await getErrorResponseBody(res));
   }
 
   return res.json();
@@ -127,33 +134,35 @@ export async function putServer<T, P = unknown>(path: string, payload?: P, signa
 export async function putFileServer<T>(path: string, formFile: File, signal?: AbortSignal): Promise<T> {
   const formData = new FormData();
   formData.append('file', formFile);
+  const headers = await getAuthHeadersWithAuth(false);
 
   const res = await fetch(buildUrl(path), {
     method: 'PUT',
     body: formData,
     signal,
+    headers,
     cache: 'no-store',
   });
 
   if (!res.ok) {
-    throw new Error(`PUT file ${path} failed: ${res.status}`);
+    throw new ServerHttpError('PUT', path, res.status, await getErrorResponseBody(res));
   }
 
   return res.json();
 }
 
 export async function deleteServer<T = any>(path: string, signal?: AbortSignal): Promise<T> {
+  const headers = await getAuthHeadersWithAuth();
+
   const res = await fetch(buildUrl(path), {
     method: 'DELETE',
     signal,
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers,
     cache: 'no-store',
   });
 
   if (!res.ok) {
-    throw new Error(`DELETE ${path} failed: ${res.status}`);
+    throw new ServerHttpError('DELETE', path, res.status, await getErrorResponseBody(res));
   }
 
   return res.json();
