@@ -2,9 +2,9 @@
 
 .loginLabel {
   align-self: flex-start;
-  color: var(--backgroundNeutralLighter);
+  color: var(--color-text);
   font-family: var(--secondaryFont);
-  margin-bottom: 10px;
+  margin-bottom: 0.45rem;
 }
 
 .inputPasswordSection {
@@ -13,13 +13,13 @@
 
   .loginInput {
     width: 100%;
-    background: none;
-    border: 1px solid white;
-    color: var(--backgroundNeutralLighter);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
     font-family: var(--secondaryFont);
-    min-height: 40px;
+    min-height: 2.5rem;
     padding-left: 15px;
-    margin-bottom: 15px;
+    margin-bottom: 0.9rem;
     border-radius: 6px;
 
     &::placeholder {
@@ -27,7 +27,8 @@
     }
 
     &:focus {
-      box-shadow: var(--inputShadow);
+      border-color: var(--color-primary);
+      box-shadow: var(--focus-ring);
     }
   }
 
@@ -43,7 +44,7 @@
 
   .passwordEyeCrossedLine {
     position: absolute;
-    background-color: white;
+    background-color: var(--color-text);
     transform: rotate(135deg);
     right: 16px;
     top: 11px;

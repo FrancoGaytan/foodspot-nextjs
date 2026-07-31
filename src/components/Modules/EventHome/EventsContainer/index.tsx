@@ -1,10 +1,15 @@
 import EventCard from '@components/Shared/EventCard';
-import { IEvent, IPublicEvent } from '@models/event';
+import { IEventHomeDetails, IPublicEvent } from '@models/event';
 import { getEventById, getPublicAndPrivateEvents, getPublicEvents } from '@services/eventServiceServer';
 import { isUserDebtor } from '@services/userServiceServer';
 import { getUserFromCookieServer } from '@utils/cookies/localeCookiesServer';
+import { EventHomeFilter } from '../EventsFilters';
 
-export default async function EventsContainer() {
+interface EventsContainerProps {
+  filter: EventHomeFilter;
+}
+
+export default async function EventsContainer(props: EventsContainerProps) {
   const user = await getUserFromCookieServer();
   let eventsToShow: IPublicEvent[] = [];
   let debtorEventId: string | null = null;
@@ -22,19 +27,35 @@ export default async function EventsContainer() {
   const eventsWithDetails = await Promise.all(
     eventsToShow.map(async event => {
       try {
-        return { event, currentEvent: await getEventById(event._id) };
+        const eventDetails = await getEventById(event._id);
+        const currentEvent: IEventHomeDetails = {
+          _id: eventDetails._id,
+          memberLimit: eventDetails.memberLimit,
+          state: eventDetails.state,
+          members: eventDetails.members.map(member => ({ _id: member._id })),
+          isPrivate: eventDetails.isPrivate,
+        };
+
+        return { event, currentEvent };
       } catch (e) {
         console.error(`Error loading event ${event._id}:`, e);
-        return { event, currentEvent: null as IEvent | null };
+        return { event, currentEvent: null as IEventHomeDetails | null };
       }
     })
   );
 
   return (
     <>
-      {eventsWithDetails.map(({ event, currentEvent }) => (
+      {eventsWithDetails
+        .filter(({ currentEvent }) => {
+          if (!currentEvent) return false;
+          if (props.filter === 'subscribed') return Boolean(user && currentEvent.members.some(member => member._id === user.id));
+
+          return currentEvent.state !== 'canceled';
+        })
+        .map(({ event, currentEvent }) => (
         <EventCard key={event._id} event={event} user={user} currentEvent={currentEvent} debtorEventId={debtorEventId} />
-      ))}
+        ))}
     </>
   );
 }

@@ -6,6 +6,7 @@ import Image from 'next/image';
 
 interface LogButtonProps {
   image: string;
+  className?: string;
 }
 
 export default function ProfileButton(props: LogButtonProps) {
@@ -15,5 +16,15 @@ export default function ProfileButton(props: LogButtonProps) {
     pushTo(`/userProfile`);
   };
 
-  return <Image className={styles.profileBtn} src={props.image} alt="profile" onClick={handleGoToProfile} width={40} height={40} unoptimized />;
+  return (
+    <Image
+      className={`${styles.profileBtn} ${props.className ?? ''}`}
+      src={props.image}
+      alt="profile"
+      onClick={handleGoToProfile}
+      width={40}
+      height={40}
+      unoptimized
+    />
+  );
 }

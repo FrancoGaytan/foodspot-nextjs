@@ -8,6 +8,7 @@ import { handleLogout } from 'app/[lang]/logout/actions';
 
 interface LogButtonProps {
   user: IUserFromCookie | null;
+  className?: string;
 }
 
 export default function LogButton(props: LogButtonProps) {
@@ -22,7 +23,7 @@ export default function LogButton(props: LogButtonProps) {
   };
 
   return (
-    <div className={styles.logBtnSection}>
+    <div className={`${styles.logBtnSection} ${props.className ?? ''}`}>
       {!!user?.name ? (
         <>
           <button className={styles.logoutBtn} onClick={handleLogoutClick}></button>

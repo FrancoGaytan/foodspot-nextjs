@@ -35,3 +35,11 @@ export interface IPublicEvent {
   isPrivate: boolean;
   ratings: EventRatingData;
 }
+
+export interface IEventHomeDetails {
+  _id: string;
+  memberLimit: number;
+  state: string;
+  members: Pick<IUser, '_id'>[];
+  isPrivate?: boolean;
+}

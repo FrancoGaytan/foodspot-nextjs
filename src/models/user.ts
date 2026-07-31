@@ -39,10 +39,17 @@ export interface IPublicUser {
   name: string;
   lastName: string;
   email: string;
+  alternativeEmail?: string | null;
   specialDiet: string[];
   cbu?: string;
   alias?: string;
   profilePicture?: string;
+  notifications?: {
+    newEvent: boolean;
+    eventStart: boolean;
+    penalizationStart: boolean;
+    penalizationOneWeek: boolean;
+  };
 }
 
 export interface RegisterRequest {

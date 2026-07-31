@@ -1,8 +1,8 @@
 @use './custom-properties';
 @use './theme.scss';
-
-// Global styles
 @use './global';
+
+@include custom-properties.define;
 
 @font-face {
   font-family: 'Della Respira';
