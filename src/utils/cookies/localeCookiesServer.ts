@@ -14,8 +14,8 @@ const AUTH_COOKIE_OPTIONS = {
 };
 
 export async function getUserFromCookieServer(): Promise<IUserFromCookie | null> {
-  const cookieStore = cookies();
-  const cookie = (await cookieStore).get(AUTH_COOKIE_NAMES.user);
+  const cookieStore = await cookies();
+  const cookie = cookieStore.get(AUTH_COOKIE_NAMES.user);
   if (!cookie) return null;
 
   try {
@@ -37,8 +37,8 @@ export async function getUserFromCookieServer(): Promise<IUserFromCookie | null>
 }
 
 export async function getToken(): Promise<string | null> {
-  const cookieStore = cookies();
-  const token = (await cookieStore).get(AUTH_COOKIE_NAMES.token);
+  const cookieStore = await cookies();
+  const token = cookieStore.get(AUTH_COOKIE_NAMES.token);
   return token?.value ?? null;
 }
 

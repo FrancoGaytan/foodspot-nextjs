@@ -1,57 +1,55 @@
 @use '/src/styles/variables';
 
-/* @font-face {
-	font-family: 'della respira';
-	src: url('./variables/fonts/DellaRespira-Regular.ttf') format('truetype');
-}
+@mixin define {
+  :root {
+  --primaryFont: var(--font-geist-sans), sans-serif;
+  --secondaryFont: var(--font-geist-sans), sans-serif;
 
-@font-face {
-	font-family: 'raleway';
-	src: url('./variables/fonts/Raleway-VariableFont_wght.ttf') format('truetype');
-} */
+  --color-text: #0f172a;
+  --color-text-secondary: #475569;
+  --color-surface: #ffffff;
+  --color-bg: #f8fafc;
+  --color-border: #cbd5e1;
+  --color-brand: #dc2626;
+  --color-brand-hover: #b91c1c;
+  --color-primary: #1d4ed8;
+  --color-primary-hover: #1e3a8a;
+  --color-success: #15803d;
+  --color-on-dark: #ffffff;
+  --color-on-dark-secondary: #e2e8f0;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 18px 40px -12px rgba(15, 23, 42, 0.24);
+  --focus-ring: 0 0 0 3px #bfdbfe;
 
-/* :root {
-  --primaryFont: 'raleway', sans-serif;
-  --secondaryFont: 'raleway', sans-serif;
-
-  // Colors
-  // ====================
-  --btnPrimary: #bf334d;
-  --btnPrimaryDarker: #a50321;
-  --iconsSecondary: #5787a5;
-  --backgroundMain: #333333;
-  --backgroundSecondaryLighter: #d88f8f;
-  --backgroundNeutralDarker: #0c0c20;
-  --backgroundNeutralLighter: #f2f2f2;
-  --backgroundNeutral: #4f5d2f;
-  --placeholderColor: #d2d2d2;
-  --availabilityPrimary: #52b69a;
-  --subscribedPrimary: #5787a5;
-
-  //Colors for message popup
-  // =======================
-  --messageSuccessPrimary: #5cd65c;
-  --messageSuccessSecondary: #c2f0c2;
-  --messageInfoPrimary: #5c5cd6;
-  --messageInfoSecondary: #c2c9f0;
-  --messageErrorPrimary: #d65c5c;
-  --messageErrorSecondary: #f0c2c2;
-  --messageWarningPrimary: #fdb11a;
-  --messageWarningSecondary: #f0dbc2;
-
-  //Mono
-  --transparent: rgba(#111111, 0%);
-
-  // Layout
-  // =====================
-  --borderRadiusPrimary: 8px;
+  /* Compatibility aliases for the existing component library. */
+  --btnPrimary: var(--color-brand);
+  --btnPrimaryDarker: var(--color-brand-hover);
+  --iconsSecondary: var(--color-primary);
+  --backgroundMain: var(--color-bg);
+  --backgroundSecondaryLighter: #dbeafe;
+  --backgroundNeutralDarker: #0f172a;
+  --backgroundNeutralLighter: var(--color-on-dark);
+  --backgroundNeutral: #e2e8f0;
+  --textPrimary: var(--color-text);
+  --placeholderColor: #64748b;
+  --availabilityPrimary: var(--color-success);
+  --subscribedPrimary: var(--color-primary);
+  --messageSuccessPrimary: var(--color-success);
+  --messageSuccessSecondary: #dcfce7;
+  --messageInfoPrimary: #0369a1;
+  --messageInfoSecondary: #e0f2fe;
+  --messageErrorPrimary: var(--color-brand);
+  --messageErrorSecondary: #fee2e2;
+  --messageWarningPrimary: #b45309;
+  --messageWarningSecondary: #fef3c7;
+  --borderRadiusPrimary: var(--radius-md);
   --menuPadding: 15px;
-
-  // Shadows
-  // ======================
-  --dropShadow: 0px 4px 8px rgba(246, 250, 249, 0.15);
-  --dropShadow1: 0px 4px 8px rgba(246, 250, 249, 0.1);
-  --dropShadow2: 0px 2px 4px rgba(246, 250, 249, 0.1);
-  --inputShadow: 0px 4px 4px rgba(183, 183, 183, 0.864);
+  --dropShadow: var(--shadow-lg);
+  --dropShadow1: var(--shadow-sm);
+  --dropShadow2: 0 1px 2px rgba(15, 23, 42, 0.08);
+    --inputShadow: 0 1px 2px rgba(15, 23, 42, 0.12);
+  }
 }
- */

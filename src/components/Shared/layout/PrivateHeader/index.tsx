@@ -1,28 +1,14 @@
-import { getUserById } from '@services/userServiceServer';
-import { getImage } from '@services/purchaseReceiptsServer';
 import { getUserFromCookieServer } from '@utils/cookies/localeCookiesServer';
+import { getUserById } from '@services/userServiceServer';
 import PrivateHeaderClient from './PrivateHeaderClient';
 
 export default async function PrivateHeader() {
   const user = await getUserFromCookieServer();
 
   if (!user) {
-    return <PrivateHeaderClient user={null} />;
+    return <PrivateHeaderClient user={null} hasProfilePicture={false} />;
   }
 
-  let profileImage: string | undefined;
-
-  try {
-    const userData = await getUserById(user.id);
-
-    if (userData.profilePicture) {
-      const image = await getImage(userData.profilePicture);
-      const imageBuffer = Buffer.from(await image.arrayBuffer()).toString('base64');
-      profileImage = `data:${image.type};base64,${imageBuffer}`;
-    }
-  } catch (error) {
-    console.error('Error loading private header data:', error);
-  }
-
-  return <PrivateHeaderClient user={user} profileImage={profileImage} />;
+  const profile = await getUserById(user.id).catch(() => null);
+  return <PrivateHeaderClient user={user} hasProfilePicture={Boolean(profile?.profilePicture)} />;
 }

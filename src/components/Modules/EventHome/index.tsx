@@ -7,15 +7,20 @@ import Button from '@components/UI/Button';
 import { ButtonKind } from '@components/UI/Button';
 import ImageSlider from '@components/Shared/Slider';
 import HomeInfo from '@components/Shared/HomeInfo';
+import EventsFilters, { EventHomeFilter } from './EventsFilters';
 
-export default async function eventHome() {
+interface EventHomeProps {
+  filter?: EventHomeFilter;
+}
+
+export default async function eventHome({ filter = 'available' }: EventHomeProps) {
   const { t } = await getTranslation('eventHome');
   return (
     <div className={styles.eventHomeContent}>
       <HomeHeader />
-      <h1 className={styles.incomingEventTitle}>{t.incomingEvents}</h1>
+      <EventsFilters currentFilter={filter} availableLabel={t.availableFilter} subscribedLabel={t.subscribedFilter} />
       <section className={styles.eventsContainer}>
-        <EventsContainer />
+        <EventsContainer filter={filter} />
       </section>
       <section className={styles.carouselContainer}>
         <ImageSlider images={eventImages} altText="Event image" />

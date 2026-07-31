@@ -3,13 +3,12 @@
 @use '/src/styles/custom-properties';
 
 .title {
-  color: white;
+  color: var(--color-text);
   font-family: var(--secondaryFont);
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   gap: 0.5rem;
-  margin-bottom: 2rem;
-  margin-top: 15px;
+  margin: 0 0 1.25rem;
 
   @media #{variables.media-query(max, lg)} {
     margin-top: 0;
@@ -20,7 +19,7 @@
 }
 
 .submitButton{
-  margin-top: 15px;
+  margin-top: 0.5rem;
 }
 
 .forgotPassword {
@@ -28,8 +27,8 @@
   font-family: var(--secondaryFont);
   font-weight: variables.font-weight(bold);
   text-decoration: none;
-  color: var(--backgroundNeutralLighter);
-  margin: 20px auto;
+  color: var(--color-primary);
+  margin: 1.1rem auto;
   align-self: flex-end;
 }
 
@@ -38,8 +37,8 @@
   font-family: var(--secondaryFont);
   font-weight: variables.font-weight(bold);
   text-decoration: none;
-  color: var(--backgroundNeutralLighter);
-  margin: 0px auto 30px auto;
+  color: var(--color-text-secondary);
+  margin: 0 auto 0.25rem;
   align-self: flex-end;
 
   .registerHighlighted {

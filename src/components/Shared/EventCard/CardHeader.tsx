@@ -1,6 +1,6 @@
 'use client';
 
-import { IEvent, IPublicEvent } from '@models/event';
+import { IEventHomeDetails, IPublicEvent } from '@models/event';
 import { EventStatus } from '@hooks/useEventHome';
 import { className } from '@utils/common/className';
 import styles from './styles.module.scss';
@@ -9,7 +9,7 @@ import { useTranslation } from '@hooks/useTranslation';
 interface CardHeaderProps {
   event: IPublicEvent;
   userStatus: EventStatus;
-  currentEvent: IEvent | null;
+  currentEvent: IEventHomeDetails | null;
 }
 
 export default function CardHeader(props: CardHeaderProps) {

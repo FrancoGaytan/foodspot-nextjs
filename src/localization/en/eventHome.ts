@@ -2,6 +2,8 @@ export default Object.seal({
   messageBanner: 'Welcome!',
   newEventButton: 'Create new event',
   incomingEvents: 'Incoming events',
+  availableFilter: 'Available',
+  subscribedFilter: 'Subscribed',
   participationInfoTitle: 'What is FoodSpot?',
   participationInfoDescription:
     'FoodSpot is here to help you better organize your office meals. You can create events for your colleagues to join, choose the chef and the person in charge of the shopping, upload transfer receipts, and split the expenses. The organizer will be able to upload purchase receipts and view and approve payments received. Members will be able to join the event and, once the tickets are uploaded, they will see the total amount to be paid. No matter what your dietary restrictions are, you can clarify them in your profile for the chef to take them into consideration.',

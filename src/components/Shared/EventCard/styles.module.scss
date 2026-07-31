@@ -19,31 +19,40 @@ $event-states: available, closed, subscribed, readyforpayment, full, finished;
 .cardContainer {
   display: flex;
   flex-direction: column;
-  border-radius: 8px;
+  min-width: 0;
+  border-radius: var(--radius-md);
   position: relative;
-  width: 325px;
-  min-height: 340px;
-  background-color: var(--backgroundNeutralLighter);
+  width: 100%;
+  min-height: 20rem;
+  overflow: hidden;
+  background-color: var(--color-surface);
   border-top: 5px solid var(--backgroundNeutral);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   &.debtor {
     border-top: 5px solid black;
   }
 
   &:hover {
-    background-color: rgb(232, 231, 231);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
   }
   .cardHeader {
     display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1rem 0;
     .stateTab {
-      color: var(--backgroundNeutralLighter);
-      height: 28px;
-      width: 120px;
-      margin-left: 15px;
-      margin-top: 20px;
-      border-radius: 5px;
+      color: var(--color-on-dark);
+      min-height: 1.65rem;
+      padding: 0 0.65rem;
+      border-radius: var(--radius-sm);
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 0.6875rem;
+      font-weight: 700;
 
       &.debtor {
         background-color: var(--event-debtor);
@@ -53,10 +62,8 @@ $event-states: available, closed, subscribed, readyforpayment, full, finished;
       }
     }
     .dateSection {
-      margin-left: 15px;
-      margin-top: 25px;
-      font-size: 14px;
-      color: var(--textPrimary);
+      font-size: 0.75rem;
+      color: var(--color-text-secondary);
       font-weight: 600;
       &.available {
         color: var(--event-available);
@@ -85,32 +92,45 @@ $event-states: available, closed, subscribed, readyforpayment, full, finished;
     }
   }
   .cardBody {
-    margin-left: 20px;
-    margin-top: 15px;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 0.9rem 1rem 1rem;
     .mainRow {
       display: flex;
       justify-content: space-between;
-      margin-right: 8%;
+      align-items: flex-start;
+      gap: 0.75rem;
       .eventTitle {
-        font-size: 23px;
-        margin-top: 5px;
-        min-height: 50px;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-size: 1.125rem;
+        min-height: 2.75rem;
+        font-family: var(--secondaryFont);
+        font-weight: 750;
+        line-height: 1.25;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 90%;
+        max-width: 100%;
       }
       .privateLogo {
-        width: 30px;
-        height: 30px;
+        flex: 0 0 1.25rem;
+        width: 1.25rem;
+        height: 1.25rem;
         background-size: contain;
         background-image: url('/images/icons/icons-candado.png');
       }
     }
+    .eventTime {
+      margin-bottom: 0.5rem;
+      color: var(--color-primary);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
     .eventDescription {
-      margin-top: 15px;
-      font-size: 12px;
+      margin-top: 0.35rem;
+      font-size: 0.8125rem;
+      line-height: 1.45;
+      color: var(--color-text-secondary);
       display: -webkit-box;
       -webkit-line-clamp: 3;
       line-clamp: 3;
@@ -120,8 +140,8 @@ $event-states: available, closed, subscribed, readyforpayment, full, finished;
     }
 
     .eventParticipants {
-      margin-top: 5px;
-      font-size: 12px;
+      margin-top: 0.85rem;
+      font-size: 0.8125rem;
 
       .participantsCount {
         font-weight: bold;
@@ -129,8 +149,8 @@ $event-states: available, closed, subscribed, readyforpayment, full, finished;
       }
     }
     .eventCook {
-      margin-top: 10px;
-      font-size: 13px;
+      margin-top: 0.35rem;
+      font-size: 0.8125rem;
 
       .chef {
         font-weight: bold;
@@ -140,40 +160,37 @@ $event-states: available, closed, subscribed, readyforpayment, full, finished;
   }
 
   .cardFooter {
-    margin: 0px 20px 0px 20px;
-    position: relative;
     display: flex;
-    margin-top: auto;
-    transform: translateY(-60px);
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 3rem;
+    padding: 0.75rem 1rem 1rem;
+    border-top: 1px solid var(--color-border);
 
     .participationBtn {
-      position: absolute;
-      left: 15px;
+      display: flex;
     }
     .infoBtn {
-      position: absolute;
-      right: 15px;
+      display: flex;
+      margin-left: auto;
     }
     .ratingSection {
       display: flex;
       align-items: center;
-      position: absolute;
-      left: 0%;
-      min-height: 65px;
-      bottom: -50px;
-      color: grey;
+      gap: 0.25rem;
+      min-width: 0;
+      color: var(--color-text-secondary);
 
       .ratingAvg {
         display: flex;
-        font-size: 20px;
-        padding-top: 1px;
+        margin: 0;
+        font-size: 0.875rem;
       }
 
       .ratingRatingsAmoung {
         display: flex;
-        font-size: 12px;
-        margin-left: 5px;
-        margin-top: 5px;
+        font-size: 0.6875rem;
       }
     }
   }

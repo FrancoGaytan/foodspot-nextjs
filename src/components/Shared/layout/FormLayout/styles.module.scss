@@ -2,52 +2,78 @@
 @use '/src/styles/shared';
 @use '/src/styles/custom-properties';
 
-/* body {
-  margin: 0;
-} */
-
 .formLayout {
-  background: #7e7d7d
-    url('https://img.freepik.com/free-photo/lamb-steak-pieces-with-sauces-grilled-pepper-fresh-salad-wooden-board_140725-10580.jpg?w=996&t=st=1671126816~exp=1671127416~hmac=9240892c9c1e4ba45c248cd00be82377b16d791a242bd33d76dd835eee67612b');
-  background-blend-mode: multiply;
-  background-repeat: no-repeat;
   min-height: 100vh;
-  min-width: 100vw;
-  background-size: cover;
-  overflow: hidden;
-  background-position: center;
-  margin: 0;
-  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(10px);
-  padding: 3rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  padding: 5rem 1rem 2rem;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(220, 38, 38, 0.26), transparent 42%),
+    radial-gradient(circle at 85% 75%, rgba(37, 99, 235, 0.28), transparent 38%),
+    linear-gradient(145deg, #0f172a 0%, #1e3a8a 52%, #0369a1 100%);
 
   @media #{variables.media-query(max, lg)} {
-    background: none;
-    background-color: var(--backgroundMain);
+    align-items: flex-start;
+    padding-top: 1.5rem;
   }
-  .closeBtn {
-    height: 35px;
-    width: 35px;
-    background-image: url('/images/icons/white-close-icon.png');
-    background-size: contain;
-    position: absolute;
-    right: 30px;
-    top: 30px;
-    cursor: pointer;
-    transition: opacity 0.3s;
 
-    @media #{variables.media-query(max, lg)} {
-      right: 0;
-      top: 0;
-    }
+  .publicHeader {
+    height: 3rem;
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    background: #020617;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+  }
+
+  .brand,
+  .formBrand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #f8fafc;
+    font-family: var(--secondaryFont);
+    font-weight: 750;
+    text-decoration: none;
+  }
+
+  .brandMark,
+  .formBrandMark {
+    width: 1rem;
+    height: 1.35rem;
+    background: #ef2020;
+    clip-path: polygon(54% 0, 80% 35%, 67% 45%, 92% 68%, 54% 100%, 13% 75%, 32% 53%, 8% 39%);
+  }
+
+  .loginLink {
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    background: #60a5fa;
+    color: #eff6ff;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .closeBtn {
+    height: 2.5rem;
+    width: 2.5rem;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    cursor: pointer;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.72) url('/images/icons/white-close-icon.png') center / 1.25rem no-repeat;
+    transition: background-color 0.2s ease, transform 0.2s ease;
 
     &:hover {
-      opacity: 0.8;
+      background-color: rgba(15, 23, 42, 0.92);
+      transform: scale(1.04);
     }
   }
 }
@@ -64,19 +90,46 @@
 }
 
 .containerLayout {
-  animation: fadeInUp 1.5s ease;
-  border-radius: 30px;
-  background-color: var(--backgroundMain);
+  --color-text: #f8fafc;
+  --color-text-secondary: #94a3b8;
+  --color-surface: #1e293b;
+  --color-border: #52637d;
+  --color-primary: #60a5fa;
+  --color-brand: #60a5fa;
+  --color-brand-hover: #3b82f6;
+  --btnPrimary: #60a5fa;
+  --btnPrimaryDarker: #3b82f6;
+  --focus-ring: 0 0 0 3px rgba(96, 165, 250, 0.3);
+  width: min(100%, 25rem);
+  animation: fadeInUp 0.45s ease-out both;
+  border: 1px solid #334155;
+  border-top: 4px solid transparent;
+  border-radius: 0.65rem;
+  background-color: var(--color-surface);
+  background-image: linear-gradient(var(--color-surface), var(--color-surface)), linear-gradient(90deg, #f87171, #60a5fa, #4ade80);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: 0 24px 50px -22px rgba(2, 6, 23, 0.72);
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
   position: relative;
-  padding: 50px;
-  max-width: 70vw;
+  padding: 1.75rem 1.6rem 1.5rem;
+  box-sizing: border-box;
 
   @media #{variables.media-query(max, lg)} {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .formBrand {
     justify-content: center;
-    padding: 0px 50px 30px 50px;
+    margin: 0.15rem 0 1.2rem;
+    font-size: 1.25rem;
+  }
+
+  .formBrandMark {
+    width: 1.35rem;
+    height: 1.8rem;
   }
 }

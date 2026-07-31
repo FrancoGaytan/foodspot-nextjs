@@ -1,6 +1,6 @@
 'use client';
 
-import { IEvent } from '@models/event';
+import { IEventHomeDetails } from '@models/event';
 import { subscribeToAnEventAction } from 'app/[lang]/event/actions';
 import { showToast, ToastType } from '@utils/services/toastService';
 import { useState } from 'react';
@@ -10,7 +10,7 @@ import { useCustomRouter } from './useCustomRouter';
 interface useEventHomeParams {
   eventId: string;
   userId: string;
-  initialEvent: IEvent | null;
+  initialEvent: IEventHomeDetails | null;
   debtorEventId: string | null;
 }
 
@@ -27,7 +27,7 @@ export enum EventStatus {
 }
 
 export function useEventHome(props: useEventHomeParams) {
-  const [currentEvent] = useState<IEvent | null>(props.initialEvent);
+  const [currentEvent] = useState<IEventHomeDetails | null>(props.initialEvent);
   const userDebtor = props.debtorEventId;
   const { t } = useTranslation('eventHome');
   const { pushTo } = useCustomRouter();

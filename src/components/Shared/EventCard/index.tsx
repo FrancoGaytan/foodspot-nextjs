@@ -1,6 +1,6 @@
 'use client';
 
-import { IEvent, IPublicEvent } from '@models/event';
+import { IEventHomeDetails, IPublicEvent } from '@models/event';
 import { IUserFromCookie } from '@utils/cookies/localeCookies';
 import { className } from '@utils/common/className';
 import styles from './styles.module.scss';
@@ -12,7 +12,7 @@ import CardFooter from './CardFooter';
 interface EventCardProps {
   event: IPublicEvent;
   user: IUserFromCookie | null;
-  currentEvent: IEvent | null;
+  currentEvent: IEventHomeDetails | null;
   debtorEventId: string | null;
 }
 

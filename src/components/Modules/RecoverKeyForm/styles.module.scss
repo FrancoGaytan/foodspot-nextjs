@@ -15,7 +15,7 @@
   justify-content: center;
 
   h1 {
-    color: var(--backgroundNeutralLighter);
+    color: var(--color-text);
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 1rem;
@@ -24,14 +24,14 @@
 
   .mainDesc {
     margin-bottom: 30px;
-    color: var(--backgroundNeutralLighter);
+    color: var(--color-text-secondary);
     font-size: 1rem;
     text-align: center;
   }
 
   .input {
     margin-top: 5px;
-    color: var(--backgroundNeutralLighter);
+    color: var(--color-text);
     font-family: var(--secondaryFont);
     width: 100%;
     min-height: 40px;

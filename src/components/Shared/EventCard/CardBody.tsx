@@ -1,6 +1,6 @@
 'use client';
 
-import { IEvent, IPublicEvent } from '@models/event';
+import { IEventHomeDetails, IPublicEvent } from '@models/event';
 import Tooltip from '@components/UI/Tooltip/Tooltip';
 import { parseMinutes } from '@utils/common/utilities';
 import styles from './styles.module.scss';
@@ -8,7 +8,7 @@ import { useTranslation } from '@hooks/useTranslation';
 
 interface CardBodyProps {
   event: IPublicEvent;
-  currentEvent: IEvent | null;
+  currentEvent: IEventHomeDetails | null;
 }
 
 export default function CardBody(props: CardBodyProps) {

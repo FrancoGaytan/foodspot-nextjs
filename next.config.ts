@@ -1,7 +1,10 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
+import { PHASE_DEVELOPMENT_SERVER } from 'next/constants';
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
+export default function nextConfig(phase: string): NextConfig {
+  return {
+    // Keep development chunks separate from production builds.
+    distDir: phase === PHASE_DEVELOPMENT_SERVER ? '.next-dev' : '.next',
+  };
+}
 
-export default nextConfig;

@@ -11,7 +11,7 @@
   width: 100%;
 
   h1 {
-    color: var(--backgroundNeutralLighter);
+    color: var(--color-text);
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 2rem;
@@ -21,14 +21,14 @@
   .mainDesc {
     margin: 10px 0 30px 0;
     max-width: 350px;
-    color: var(--backgroundNeutralLighter);
+    color: var(--color-text-secondary);
     font-size: 1rem;
     align-self: flex-start;
   }
 
   .input {
     margin-top: 5px;
-    color: var(--backgroundNeutralLighter);
+    color: var(--color-text);
     font-family: var(--secondaryFont);
     min-height: 40px;
 
