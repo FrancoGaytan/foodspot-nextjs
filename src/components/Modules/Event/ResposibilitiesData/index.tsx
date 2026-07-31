@@ -4,11 +4,10 @@ import styles from './styles.module.scss';
 import { EventStatesEnum } from 'enums/EventState.enum';
 import AssignBtn from './AssignBtn/AssignBtn';
 import { isUserIntoEvent } from '../EventBtns/eventBtnsActions';
-import { getUserById } from '@services/userService';
+import { editRolesAction, getEventByIdAction, getUserByIdAction } from 'app/[lang]/event/actions';
 import { useTranslation } from '@hooks/useTranslation';
 import { useEffect, useState } from 'react';
 import { IPublicUser, IUser } from '@models/user';
-import { editRoles, getEventById } from '@services/eventService';
 import { showToast, ToastType } from '@utils/services/toastService';
 
 interface ResponsibilitiesDataProps {
@@ -68,7 +67,7 @@ export default function ResponsibilitiesData(props: ResponsibilitiesDataProps) {
       updatedDesignees = [...currentDesignees, user];
     }
 
-    editRoles(event._id, { ...event, shoppingDesignee: updatedDesignees, isPrivate: event.isPrivate ?? false })
+    editRolesAction(event._id, { ...event, shoppingDesignee: updatedDesignees, isPrivate: event.isPrivate ?? false })
       .then(() => {
         showToast(`${t.userResponsabilityChange}!`, ToastType.SUCCESS);
       })
@@ -79,7 +78,7 @@ export default function ResponsibilitiesData(props: ResponsibilitiesDataProps) {
   function refetchEvent(): void {
     if (!event) return;
 
-    getEventById(event._id)
+    getEventByIdAction(event._id)
       .then(res => setEvent(res))
       .catch(err => {
         console.error('Error refreshing event:', err);
@@ -89,14 +88,14 @@ export default function ResponsibilitiesData(props: ResponsibilitiesDataProps) {
   function toogleChef(): void {
     if (!event) return;
     if (!event.chef) {
-      editRoles(event._id, { ...event, chef: user ?? null, isPrivate: event.isPrivate ?? false })
+      editRolesAction(event._id, { ...event, chef: user ?? null, isPrivate: event.isPrivate ?? false })
         .then(() => {
           showToast(t.userResponsabilityChange, ToastType.SUCCESS);
         })
         .catch(() => showToast(`${t.userResponsabilityFailure}`, ToastType.ERROR))
         .finally(() => refetchEvent());
     } else {
-      editRoles(event._id, { ...event, chef: null, isPrivate: event.isPrivate ?? false })
+      editRolesAction(event._id, { ...event, chef: null, isPrivate: event.isPrivate ?? false })
         .then(() => {
           showToast(`${t.userResponsabilityChange}!`, ToastType.SUCCESS);
         })
@@ -106,7 +105,7 @@ export default function ResponsibilitiesData(props: ResponsibilitiesDataProps) {
   }
 
   useEffect(() => {
-    getUserById(props.userId)
+    getUserByIdAction(props.userId as string)
       .then(res => setUser(res))
       .catch(e => {
         console.error('Catch in context: ', e);

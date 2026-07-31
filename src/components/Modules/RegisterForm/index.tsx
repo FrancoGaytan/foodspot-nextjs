@@ -12,7 +12,10 @@ import { showToast, ToastType } from '@utils/services/toastService';
 import { useTranslation } from '@hooks/useTranslation';
 import { useCustomRouter } from '@hooks/useCustomRouter';
 
-export type RegisterFormState = { success: true; error?: undefined } | { success?: false; error: '' | 'passwordMismatch' | 'registerFailed' };
+export type RegisterFormState = {
+  success: true;
+  error?: undefined;
+} | { success?: false; error: '' | 'passwordMismatch' | 'invalidEmailDomain' | 'registerFailed' };
 
 export default function RegisterForm() {
   const { pushTo } = useCustomRouter();
@@ -28,6 +31,10 @@ export default function RegisterForm() {
 
     if (formState.error === 'registerFailed') {
       showToast(t.failureMsg, ToastType.ERROR);
+    }
+
+    if (formState.error === 'invalidEmailDomain') {
+      showToast(t.invalidEmailDomain, ToastType.ERROR);
     }
 
     if (formState.error === 'passwordMismatch') {

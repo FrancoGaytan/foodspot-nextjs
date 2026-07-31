@@ -3,6 +3,7 @@
 import { registerServerSide } from '@services/authServerService';
 import { RegisterRequest } from '@models/user';
 import type { RegisterFormState } from '@components/Modules/RegisterForm';
+import { ServerHttpError } from '@services/httpServer';
 
 export async function handleRegister(prevState: RegisterFormState, formData: FormData): Promise<RegisterFormState> {
   const email = formData.get('email');
@@ -26,6 +27,10 @@ export async function handleRegister(prevState: RegisterFormState, formData: For
     return { error: 'passwordMismatch' };
   }
 
+  if (!email.toLowerCase().endsWith('@endava.com')) {
+    return { error: 'invalidEmailDomain' };
+  }
+
   try {
     const payload: RegisterRequest = {
       email: email,
@@ -42,6 +47,10 @@ export async function handleRegister(prevState: RegisterFormState, formData: For
       return { error: 'registerFailed' };
     }
   } catch (err) {
+    if (err instanceof ServerHttpError && err.responseBody?.toLowerCase().includes('not a valid endava email')) {
+      return { error: 'invalidEmailDomain' };
+    }
+
     console.error('Registration failed', err);
     return { error: 'registerFailed' };
   }

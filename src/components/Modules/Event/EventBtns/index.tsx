@@ -3,7 +3,7 @@
 import Button, { ButtonKind } from '@components/UI/Button';
 import styles from '../styles.module.scss';
 import { IEvent } from '@models/event';
-import { getMembersAmount, getMembersAndReceiptsInfo } from '@services/eventService';
+import { getMembersAmountAction, getMembersAndReceiptsInfoAction, getUserByIdAction } from 'app/[lang]/event/actions';
 import { ITransferReceiptInfoResponse, PayCheckInfoResponse } from '@models/transfer';
 import {
   showCloseEventBtn,
@@ -17,7 +17,6 @@ import {
   showReopenEventBtn,
 } from './eventBtnsActions';
 import { IUserFromCookie } from '@utils/cookies/localeCookies';
-import { getUserById } from '@services/userService';
 import { IPublicUser } from '@models/user';
 import { useEffect, useState } from 'react';
 import { useTranslation } from '@hooks/useTranslation';
@@ -36,7 +35,7 @@ export default function EventBtns(props: EventBtnsProps) {
 
   useEffect(() => {
     async function fetchUser() {
-      const fetchedUser = await getUserById(props.user.id);
+      const fetchedUser = await getUserByIdAction(props.user.id);
       setUser(fetchedUser);
     }
     fetchUser();
@@ -44,7 +43,7 @@ export default function EventBtns(props: EventBtnsProps) {
 
   useEffect(() => {
     async function fetchEventParticipantsInfo() {
-      const fetchedEventParticipantsInfo = await getMembersAndReceiptsInfo(props.event._id);
+      const fetchedEventParticipantsInfo = await getMembersAndReceiptsInfoAction(props.event._id);
       setEventParticipantsInfo(fetchedEventParticipantsInfo);
     }
     fetchEventParticipantsInfo();
@@ -52,7 +51,7 @@ export default function EventBtns(props: EventBtnsProps) {
 
   useEffect(() => {
     async function fetchEventPaymentInfo() {
-      const fetchedEventPaymentInfo = await getMembersAmount(props.event._id);
+      const fetchedEventPaymentInfo = await getMembersAmountAction(props.event._id);
       setEventPaymentInfo(fetchedEventPaymentInfo);
     }
     fetchEventPaymentInfo();

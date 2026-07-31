@@ -1,4 +1,4 @@
-import { IPublicUser } from '@models/user';
+import { IPublicUser, IsUserDebtorResponse } from '@models/user';
 import { getServer } from './httpServer';
 
 /**
@@ -7,4 +7,9 @@ import { getServer } from './httpServer';
 export async function getUserById(id: unknown, signal?: AbortSignal): Promise<IPublicUser> {
   const url = `/users/getUserById/${id}`;
   return await getServer(url, signal);
+}
+
+export async function isUserDebtor(idUser: string, signal?: AbortSignal): Promise<IsUserDebtorResponse> {
+  const url = `/users/isDebtor/${idUser}`;
+  return await getServer<IsUserDebtorResponse>(url, signal);
 }

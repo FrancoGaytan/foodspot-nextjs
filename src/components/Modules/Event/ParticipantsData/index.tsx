@@ -1,12 +1,11 @@
 'use client';
-import { getMembersAmount, getMembersAndReceiptsInfo } from '@services/eventService';
+import { getMembersAmountAction, getMembersAndReceiptsInfoAction, getUserByIdAction } from 'app/[lang]/event/actions';
 import styles from './styles.module.scss';
 import { useEffect, useState } from 'react';
 import { EventUserResponse, IPublicUser, IUser } from '@models/user';
 import { useTranslation } from '@hooks/useTranslation';
 import { IEvent } from '@models/event';
 import { EventStatesEnum } from 'enums/EventState.enum';
-import { getUserById } from '@services/userService';
 import { PayCheckInfoResponse } from '@models/transfer';
 import Button, { ButtonKind } from '@components/UI/Button';
 import { useModal } from '@contexts/ModalContext';
@@ -47,7 +46,7 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
   function refetchMembersAndReceiptInfo() {
     if (!props.event) return;
     const abortController = new AbortController();
-    getMembersAndReceiptsInfo(props.event._id, abortController.signal)
+    getMembersAndReceiptsInfoAction(props.event._id)
       .then(res => {
         setEventParticipants(res);
       })
@@ -78,7 +77,7 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
   }
 
   useEffect(() => {
-    getUserById(props.userId)
+    getUserByIdAction(props.userId as string)
       .then(res => setUser(res))
       .catch(e => {
         console.error('Catch in context: ', e);
@@ -90,7 +89,7 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
       return;
     }
     const abortController = new AbortController();
-    getMembersAndReceiptsInfo(props.event._id, abortController.signal)
+    getMembersAndReceiptsInfoAction(props.event._id)
       .then(res => {
         setEventParticipants(res);
       })
@@ -104,7 +103,7 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
       return;
     }
     const abortController = new AbortController();
-    getMembersAmount(props.event?._id, abortController.signal)
+    getMembersAmountAction(props.event?._id)
       .then(res => {
         setTotalPaymentInfo(res);
       })

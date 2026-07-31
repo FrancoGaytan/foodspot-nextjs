@@ -1,6 +1,6 @@
 'use client';
 
-import { IPublicEvent } from '@models/event';
+import { IEvent, IPublicEvent } from '@models/event';
 import { IUserFromCookie } from '@utils/cookies/localeCookies';
 import { className } from '@utils/common/className';
 import styles from './styles.module.scss';
@@ -12,6 +12,8 @@ import CardFooter from './CardFooter';
 interface EventCardProps {
   event: IPublicEvent;
   user: IUserFromCookie | null;
+  currentEvent: IEvent | null;
+  debtorEventId: string | null;
 }
 
 export default function EventCard(props: EventCardProps) {
@@ -20,6 +22,8 @@ export default function EventCard(props: EventCardProps) {
   const eventContext = useEventHome({
     eventId: event._id,
     userId: user?.id ?? '',
+    initialEvent: props.currentEvent,
+    debtorEventId: props.debtorEventId,
   });
 
   const containerClass =
