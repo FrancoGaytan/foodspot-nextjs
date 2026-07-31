@@ -1,9 +1,10 @@
 'use server';
 
-import { cookies } from 'next/headers';
 import { loginServerSide } from '@services/authServerService';
 import { LoginRequest } from '@models/user';
 import type { LoginFormState } from '@components/Modules/LoginForm';
+import { setAuthCookies } from '@utils/cookies/localeCookiesServer';
+import { ServerHttpError } from '@services/httpServer';
 
 export async function handleLogin(_prevState: LoginFormState, formData: FormData): Promise<LoginFormState> {
   const email = formData.get('email') as string;
@@ -20,28 +21,14 @@ export async function handleLogin(_prevState: LoginFormState, formData: FormData
 
     if (!jwt) return { error: 'invalidCredentials' };
 
-    const cookieStore = await cookies();
-
-    // Cookie visible por el cliente
-    cookieStore.set('jwt', jwt, {
-      httpOnly: false, //lo cambie porque necesito el token en todos los endpoints x tema de autorizacion del backend
-      path: '/',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24,
-      secure: process.env.NODE_ENV === 'production',
-    });
-
-    // Cookie visible por el cliente
-    cookieStore.set('user', JSON.stringify({ id, name }), {
-      httpOnly: false,
-      path: '/',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24,
-      secure: process.env.NODE_ENV === 'production',
-    });
+    await setAuthCookies(jwt, { id, name });
 
     return { success: true };
   } catch (err) {
+    if (err instanceof ServerHttpError && err.status === 400) {
+      return { error: 'invalidCredentials' };
+    }
+
     console.log('Login failed:', err);
     return { error: 'loginFailed' };
   }

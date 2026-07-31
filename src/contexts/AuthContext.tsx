@@ -1,23 +1,17 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { createContext, useContext, useState, SetStateAction, useEffect, JSX } from 'react';
-import { localStorageKeys } from '../utils/common/localStorageKeys';
+import { createContext, useContext, useState, SetStateAction, JSX } from 'react';
 import { LoginResponse } from '../models/user';
-import { _login } from '../services';
-import { ToastType, showToast } from '@utils/services/toastService';
-import { useTranslation } from '@hooks/useTranslation';
+import { handleLogout } from 'app/[lang]/logout/actions';
 
 interface IAuthContext {
   user: LoginResponse | null;
   isLoading: boolean;
   setIsLoading: React.Dispatch<SetStateAction<boolean>>;
-  getUserFromLocalStorage: () => LoginResponse | null;
-  isAuthenticated: () => boolean;
   isRedirecting: string | null;
   setRedirection: (currentDirection: string | null) => void;
   setUser: React.Dispatch<SetStateAction<LoginResponse | null>>;
-  logout: (langId: string) => void;
-  login: (email: string, password: string) => void;
+  logout: (langId: string) => Promise<void>;
 }
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);
@@ -27,46 +21,11 @@ export function AuthProvider(props: { children: React.ReactNode }): JSX.Element 
   const [user, setUser] = useState<LoginResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState<string | null>(null);
-  const { t } = useTranslation('login');
 
-  function login(email: string, password: string): void {
-    setIsLoading(true);
-
-    _login({ email, password })
-      .then(res => {
-        localStorage.setItem(localStorageKeys.user, JSON.stringify(res));
-        localStorage.setItem(localStorageKeys.token, JSON.stringify(res.jwt));
-        setUser(res);
-        showToast(`${t.welcomeMessage} ${res.name}!`, ToastType.SUCCESS);
-
-        if (isRedirecting) {
-          router.push(`${isRedirecting}`);
-          setIsRedirecting(null);
-        } else {
-          router.push('/');
-        }
-        router.refresh();
-      })
-      .catch(error => {
-        console.error(error);
-        showToast(t.loginErrorMessage, ToastType.ERROR);
-      })
-      .finally(() => setIsLoading(false));
-  }
-
-  function logout(langId: string) {
-    localStorage.removeItem(localStorageKeys.user);
-    localStorage.removeItem(localStorageKeys.token);
+  async function logout(langId: string): Promise<void> {
+    await handleLogout();
     setUser(null);
     router.push(`/${langId}/login`);
-  }
-
-  function getUserFromLocalStorage(): LoginResponse {
-    return JSON.parse(localStorage.getItem(localStorageKeys.user) ?? '{}');
-  }
-
-  function isAuthenticated(): boolean {
-    return !!getUserFromLocalStorage();
   }
 
   function setRedirection(currentDirection: string | null) {
@@ -77,12 +36,6 @@ export function AuthProvider(props: { children: React.ReactNode }): JSX.Element 
     }
   }
 
-  useEffect(() => {
-    if (!user) {
-      setUser(getUserFromLocalStorage());
-    }
-  }, [user]);
-
   return (
     <AuthContext.Provider
       value={{
@@ -90,12 +43,9 @@ export function AuthProvider(props: { children: React.ReactNode }): JSX.Element 
         isLoading,
         isRedirecting,
         setRedirection,
-        getUserFromLocalStorage,
         setIsLoading,
-        isAuthenticated,
         setUser,
         logout,
-        login,
       }}>
       {props.children}
     </AuthContext.Provider>

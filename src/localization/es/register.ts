@@ -20,6 +20,7 @@ export default Object.seal({
   registerBtn: 'REGISTRO',
   successMsg: 'Se ha registrado con éxito',
   failureMsg: 'No se pudo completar el registro correctamente',
+  invalidEmailDomain: 'Por favor, utilizá tu mail de Endava',
   wrongPassword: 'Formato de contraseña incorrecto',
   passwordArentMatching: 'Las contraseñas ingresadas no coinciden',
 });

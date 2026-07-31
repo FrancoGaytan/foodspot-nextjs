@@ -2,14 +2,18 @@
 import Button, { ButtonKind } from '@components/UI/Button';
 import { useTranslation } from '@hooks/useTranslation';
 import { showToast, ToastType } from '@utils/services/toastService';
-import { approveTransferReceipts, deleteTransferReceipt, getTransferReceipt } from '@services/transferReceiptsService';
+import {
+  approveTransferReceiptsAction,
+  deleteTransferReceiptAction,
+  getImageAction,
+  getMembersAmountAction,
+  getTransferReceiptAction,
+} from 'app/[lang]/event/actions';
 import styles from './styles.module.scss';
 import { useEffect, useState } from 'react';
 import { ITransferReceiptResponse } from '@models/transfer';
 import { IEvent } from '@models/event';
-import { getMembersAmount } from '@services/eventService';
 import { gettingDateDiference } from '@utils/common/utilities';
-import { getImage } from '@services/purchaseReceipts';
 import FilesPreview from '@components/Shared/FilesPreview/FilesPreview';
 
 interface ConfirmationPayProps {
@@ -33,9 +37,8 @@ export default function ConfirmationPayForm(props: ConfirmationPayProps) {
   const [amountToValidate, setAmountToValidate] = useState<number>(0);
 
   async function confirmPayment(receiptId: string | undefined): Promise<void> {
-    const abortController = new AbortController();
     try {
-      await approveTransferReceipts(receiptId, props.event._id, abortController.signal);
+      await approveTransferReceiptsAction(receiptId, props.event._id);
       showToast(t.payApprovedSuccessfully, ToastType.SUCCESS);
       props.closeModal();
       props.refetchEvent();
@@ -47,7 +50,7 @@ export default function ConfirmationPayForm(props: ConfirmationPayProps) {
 
   async function rejectPayment(receiptId: string | undefined): Promise<void> {
     try {
-      await deleteTransferReceipt(receiptId);
+      await deleteTransferReceiptAction(receiptId);
       showToast(t.payRejectedSuccessfully, ToastType.SUCCESS);
       props.closeModal();
       props.refetchEvent();
@@ -78,11 +81,10 @@ export default function ConfirmationPayForm(props: ConfirmationPayProps) {
 
   async function PreviewTransfer(transfer: ITransferReceiptResponse) {
     try {
-      const transferImage = await getImage(transfer.image);
-      const objectURL = URL.createObjectURL(transferImage);
+      const transferImage = await getImageAction(transfer.image);
       setFilePreview({
-        uri: objectURL,
-        fileType: transferImage.type.split('/')[1],
+        uri: transferImage.dataUrl,
+        fileType: transferImage.fileType,
         fileName: 'File Preview',
       });
     } catch (e) {
@@ -94,7 +96,7 @@ export default function ConfirmationPayForm(props: ConfirmationPayProps) {
     if (!props.transferReceiptId) {
       return;
     }
-    getTransferReceipt(props.transferReceiptId)
+    getTransferReceiptAction(props.transferReceiptId)
       .then(res => {
         setTransferReceipt(res);
       })
@@ -105,7 +107,7 @@ export default function ConfirmationPayForm(props: ConfirmationPayProps) {
 
   useEffect(() => {
     if (!props.event?._id) return;
-    getMembersAmount(props.event._id)
+    getMembersAmountAction(props.event._id)
       .then(res => {
         const userToValidate = res.find(member => member.userId === props.userToApprove);
         setAmountToValidate(userToValidate?.amount || 0);

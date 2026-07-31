@@ -1,8 +1,24 @@
 import { getToken } from '@utils/cookies/localeCookiesServer';
 
-const baseURL = process.env.NEXT_PUBLIC_API_ENDPOINT;
+const baseURL = process.env.NEXT_PUBLIC_API_ENDPOINT?.replace(/\/$/, '');
+
+export class ServerHttpError extends Error {
+  constructor(
+    public readonly method: string,
+    public readonly path: string,
+    public readonly status: number,
+    public readonly responseBody?: string
+  ) {
+    super(`${method} ${path} failed: ${status}`);
+    this.name = 'ServerHttpError';
+  }
+}
 
 function buildUrl(path: string) {
+  if (!baseURL) {
+    throw new Error('Missing NEXT_PUBLIC_API_ENDPOINT environment variable');
+  }
+
   return `${baseURL}${path}`;
 }
 
@@ -31,7 +47,7 @@ export async function postServer<T, P = unknown>(path: string, payload?: P, sign
   });
 
   if (!res.ok) {
-    throw new Error(`POST ${path} failed: ${res.status}`);
+    throw new ServerHttpError('POST', path, res.status, await res.text());
   }
 
   return res.json();
@@ -58,9 +74,10 @@ export async function getServer<T>(path: string, signal?: AbortSignal): Promise<
 }
 
 export async function getFileServer(path: string, signal?: AbortSignal): Promise<Blob> {
+  const headers = await getAuthHeadersWithAuth();
   const res = await fetch(buildUrl(path), {
     method: 'GET',
-    headers: {},
+    headers,
     signal,
     cache: 'no-store',
   });
@@ -90,14 +107,13 @@ export async function postFileServer<T>(path: string, formFile: File, signal?: A
   return res.json();
 }
 
-export async function putServer<T, P = any>(path: string, payload: P, signal?: AbortSignal): Promise<T> {
+export async function putServer<T, P = unknown>(path: string, payload?: P, signal?: AbortSignal): Promise<T> {
+  const headers = await getAuthHeadersWithAuth();
   const res = await fetch(buildUrl(path), {
     method: 'PUT',
     signal,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
+    headers,
+    body: payload === undefined ? undefined : JSON.stringify(payload),
     cache: 'no-store',
   });
 

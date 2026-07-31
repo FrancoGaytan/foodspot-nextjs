@@ -1,7 +1,7 @@
 import Button, { ButtonKind } from '@components/UI/Button';
 import { useTranslation } from '@hooks/useTranslation';
 import { showToast, ToastType } from '@utils/services/toastService';
-import { approvePaymentWithoutReceipt } from '@services/transferReceiptsService';
+import { approvePaymentWithoutReceiptAction } from 'app/[lang]/event/actions';
 import styles from './styles.module.scss';
 
 interface FastAprovalFormProps {
@@ -15,9 +15,8 @@ export default function FastAprovalForm(props: FastAprovalFormProps) {
   const { t } = useTranslation('event');
 
   async function aprovePayment(): Promise<void> {
-    const abortController = new AbortController();
     try {
-      await approvePaymentWithoutReceipt(props.userId, props.eventId, abortController.signal);
+      await approvePaymentWithoutReceiptAction(props.userId, props.eventId);
       showToast(t.payApprovedSuccessfully, ToastType.SUCCESS);
       props.closeModal();
       props.refetchMembersAndReceiptInfo();

@@ -20,14 +20,6 @@ export function getBrowserName(): string {
   }
 }
 
-/**
- * this function is used to clear the cookies related to only if they are httpOnly=false
- */
-export function logoutClient() {
-  document.cookie = 'jwt=; Max-Age=0; path=/';
-  document.cookie = 'user=; Max-Age=0; path=/';
-}
-
 export const handleScrollToStart = () => {
   window.scrollTo({
     top: 0,

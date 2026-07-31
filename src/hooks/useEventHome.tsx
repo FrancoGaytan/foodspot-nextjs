@@ -1,16 +1,17 @@
 'use client';
 
 import { IEvent } from '@models/event';
-import { getEventById, subscribeToAnEvent } from '@services/eventService';
-import { isUserDebtor } from '@services/userService';
+import { subscribeToAnEventAction } from 'app/[lang]/event/actions';
 import { showToast, ToastType } from '@utils/services/toastService';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from './useTranslation';
 import { useCustomRouter } from './useCustomRouter';
 
 interface useEventHomeParams {
   eventId: string;
   userId: string;
+  initialEvent: IEvent | null;
+  debtorEventId: string | null;
 }
 
 export enum EventStatus {
@@ -26,10 +27,8 @@ export enum EventStatus {
 }
 
 export function useEventHome(props: useEventHomeParams) {
-  const [currentEvent, setCurrentEvent] = useState<IEvent | null>(null);
-  const [userDebtor, setUserDebtor] = useState<string | null>(null);
-  const [eventLoaded, setEventLoaded] = useState(false);
-  const [debtorLoaded, setDebtorLoaded] = useState(false);
+  const [currentEvent] = useState<IEvent | null>(props.initialEvent);
+  const userDebtor = props.debtorEventId;
   const { t } = useTranslation('eventHome');
   const { pushTo } = useCustomRouter();
 
@@ -42,7 +41,7 @@ export function useEventHome(props: useEventHomeParams) {
   function subscribeUserToEvent(): void {
     if (!props.userId || !props.eventId) return;
 
-    subscribeToAnEvent(props.userId, props.eventId)
+    subscribeToAnEventAction(props.userId, props.eventId)
       .then(() => {
         pushTo(`/event/${props.eventId}`);
         showToast(t.userAddedSuccessfully, ToastType.SUCCESS);
@@ -86,31 +85,7 @@ export function useEventHome(props: useEventHomeParams) {
     }
   };
   const userStatusInEvent: EventStatus = getMyEventStatus();
-  const isLoading = !eventLoaded || !debtorLoaded;
-
-  useEffect(() => {
-    if (!props.eventId) return;
-    getEventById(props.eventId)
-      .then(res => {
-        setCurrentEvent(res);
-        setEventLoaded(true);
-      })
-      .catch(e => {
-        console.error('Catch in context: ', e);
-      });
-  }, [props.eventId]);
-
-  useEffect(() => {
-    if (!props.userId) return;
-    isUserDebtor(props.userId)
-      .then(res => {
-        setUserDebtor(res.eventId);
-        setDebtorLoaded(true);
-      })
-      .catch(e => {
-        console.error('Catch in context: ', e);
-      });
-  }, [props.userId]);
+  const isLoading = !currentEvent;
 
   return { userStatusInEvent, currentEvent, isUserIntoEvent, handleParticipation, handleInfo, isLoading };
 }
