@@ -52,7 +52,7 @@ export async function setAuthCookies(jwt: string, user: IUserFromCookie): Promis
 
   cookieStore.set(AUTH_COOKIE_NAMES.user, encodeURIComponent(JSON.stringify(user)), {
     ...AUTH_COOKIE_OPTIONS,
-    httpOnly: false,
+    httpOnly: true,
   });
 }
 
