@@ -92,11 +92,13 @@ export async function getFileServer(path: string, signal?: AbortSignal): Promise
 export async function postFileServer<T>(path: string, formFile: File, signal?: AbortSignal): Promise<T> {
   const formData = new FormData();
   formData.append('file', formFile);
+  const token = await getToken();
 
   const res = await fetch(buildUrl(path), {
     method: 'POST',
     body: formData,
     signal,
+    headers: token ? { Authorization: token } : undefined,
     cache: 'no-store',
   });
 

@@ -1,22 +1,21 @@
 'use client';
 import styles from './styles.module.scss';
 import { useModal } from '@contexts/ModalContext';
+import { IEvent } from '@models/event';
+import EditEventForm from '@components/Modules/Event/EditEventForm';
+import { useRouter } from 'next/navigation';
 
 interface EditEventBtnProps {
-  eventId: string;
+  event: IEvent;
 }
 
 export default function EditEventBtn(props: EditEventBtnProps) {
-  const { open } = useModal();
+  const { open, close } = useModal();
+  const router = useRouter();
 
   function goToEdit() {
     open(
-      <div style={{ padding: 32, textAlign: 'center' }}>
-        <h2>Edit Event</h2>
-        <button onClick={() => alert(`Editing event ${props.eventId}`)}>
-          Simple Modal Button
-        </button>
-      </div>,
+      <EditEventForm event={props.event} closeModal={close} refetchEvent={() => router.refresh()} />,
       { title: 'Edit Event' }
     );
   }

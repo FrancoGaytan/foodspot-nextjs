@@ -101,5 +101,6 @@ export default Object.seal({
   backBtn: 'BACK',
   addmeOpt: 'Add myself',
   fastApprovalTitle: 'Fast Approval',
-  validatePaymentTitle: 'Validate Payment'
+  validatePaymentTitle: 'Validate Payment',
+  surveyBtn: 'Food Survey'
 });

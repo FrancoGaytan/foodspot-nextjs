@@ -1,6 +1,7 @@
 import { EventStatesEnum } from '../enums/EventState.enum';
 import { EventRatingData } from './ratings';
 import { IUser } from './user';
+import { IOption } from './options';
 
 export interface IEvent {
   title: string;
@@ -15,6 +16,7 @@ export interface IEvent {
   transferReceipts: [];
   purchaseReceipts: [];
   ratings: [];
+  options?: IOption[];
   _id: string;
   __v: 0;
   isPrivate?: boolean;

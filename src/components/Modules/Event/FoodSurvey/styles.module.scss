@@ -1,0 +1,7 @@
+.wrapper { display: grid; gap: 16px; min-width: min(100%, 420px); }
+.options { display: grid; gap: 8px; }
+.option { display: flex; align-items: center; gap: 8px; }
+.option > :first-child { flex: 1; }
+.option > button:last-child { border: 0; background: transparent; cursor: pointer; }
+.add { display: flex; gap: 8px; }
+.add input { flex: 1; min-width: 0; padding: 8px; }

@@ -14,13 +14,26 @@ import {
 } from '@services/eventServiceServer';
 import { ITransferReceiptInfoResponse, PayCheckInfoResponse } from '@models/transfer';
 import { isUserDebtor } from '@services/userServiceServer';
-import { getImage } from '@services/purchaseReceiptsServer';
+import {
+  assignMembersToReceipt,
+  createPurchaseReceipt,
+  deletePurchaseReceipt,
+  getImage,
+  getPurchaseReceipts,
+  uploadPurchaseReceiptFile,
+} from '@services/purchaseReceiptsServer';
 import {
   approvePaymentWithoutReceipt,
   approveTransferReceipts,
   deleteTransferReceipt,
   getTransferReceipt,
+  createTransferReceipt,
+  uploadTransferReceiptFile,
 } from '@services/transferReceiptsServer';
+import { IPurchaseReceiptRequest, IPurchaseByEvent } from '@models/purchases';
+import { ITransferReceiptRequest, ITransferReceiptResponse, IUploadFileResponse } from '@models/transfer';
+import { IOption, ISurveyParticipant } from '@models/options';
+import { createOption, deleteOption, editOption, getMembersWhoHaventVoted } from '@services/optionsServer';
 
 export async function getEventByIdAction(eventId: string): Promise<IEvent> {
   return await getEventById(eventId);
@@ -87,4 +100,54 @@ export async function getImageAction(imageId: string | undefined): Promise<{ dat
     dataUrl: `data:${image.type};base64,${imageBuffer}`,
     fileType: image.type.split('/')[1] ?? 'bin',
   };
+}
+
+export async function createTransferReceiptAction(
+  eventId: string,
+  payload: Omit<ITransferReceiptRequest, 'file'> & { receiver: string }
+): Promise<ITransferReceiptResponse> {
+  return await createTransferReceipt(eventId, payload);
+}
+
+export async function uploadTransferReceiptFileAction(receiptId: string, file: File): Promise<IUploadFileResponse> {
+  return await uploadTransferReceiptFile(receiptId, file);
+}
+
+export async function createPurchaseReceiptAction(
+  eventId: string,
+  payload: Omit<IPurchaseReceiptRequest, 'file'>
+) {
+  return await createPurchaseReceipt(eventId, payload);
+}
+
+export async function uploadPurchaseReceiptFileAction(receiptId: string, file: File): Promise<{ imageId: string }> {
+  return await uploadPurchaseReceiptFile(receiptId, file);
+}
+
+export async function deletePurchaseReceiptAction(receiptId: string, eventId: string) {
+  return await deletePurchaseReceipt(receiptId, eventId);
+}
+
+export async function assignMembersToReceiptAction(payload: { receipts: IPurchaseByEvent[] }) {
+  return await assignMembersToReceipt(payload);
+}
+
+export async function createOptionAction(eventId: string, title: string): Promise<IOption> {
+  return await createOption(eventId, title);
+}
+
+export async function editOptionAction(optionId: string, payload: { title?: string; participants?: string[] }): Promise<IOption> {
+  return await editOption(optionId, payload);
+}
+
+export async function deleteOptionAction(optionId: string): Promise<IOption> {
+  return await deleteOption(optionId);
+}
+
+export async function getMembersWhoHaventVotedAction(eventId: string): Promise<{ membersWhoHaventVoted: ISurveyParticipant[] }> {
+  return await getMembersWhoHaventVoted(eventId);
+}
+
+export async function getPurchaseReceiptsAction(eventId: string) {
+  return await getPurchaseReceipts(eventId);
 }
