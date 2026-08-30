@@ -68,6 +68,27 @@ export default function FoodSurvey(props: FoodSurveyProps) {
     }
   }
 
+  async function toggleAllVotes() {
+    const allVoted = options.length > 0 && options.every(option => option.participants.some(participant => participant._id === props.userId));
+    setIsPending(true);
+    try {
+      const updated = await Promise.all(options.map(option => {
+        const hasVote = option.participants.some(participant => participant._id === props.userId);
+        const participants = allVoted
+          ? option.participants.filter(participant => participant._id !== props.userId).map(participant => participant._id)
+          : hasVote
+            ? option.participants.map(participant => participant._id)
+            : [...option.participants.map(participant => participant._id), props.userId];
+        return editOptionAction(option._id, { participants });
+      }));
+      setOptions(updated);
+      refreshMissing();
+    } catch (error) {
+      console.error('Unable to update all survey votes:', error);
+      showToast('No se pudieron actualizar los votos', ToastType.ERROR);
+    } finally { setIsPending(false); }
+  }
+
   async function saveTitle(option: IOption) {
     const title = editingTitle.trim();
     if (!title || title === option.title) { setEditingId(null); return; }
@@ -83,7 +104,7 @@ export default function FoodSurvey(props: FoodSurveyProps) {
 
   return <div className={styles.wrapper}>
     <div className={styles.options}>
-      <div className={styles.heading}><span>Opción</span><span>Votos</span><span>Mi voto</span><span /></div>
+      <div className={styles.heading}><span>Opción</span><span>Votos</span><span>Mi voto</span><button type="button" onClick={toggleAllVotes} disabled={isPending}>{options.length > 0 && options.every(option => option.participants.some(participant => participant._id === props.userId)) ? 'Quitar todos' : 'Seleccionar todos'}</button></div>
       {options.map(option => {
         const voted = option.participants.some(participant => participant._id === props.userId);
         const totalVotes = options.reduce((total, item) => total + item.participants.length, 0);

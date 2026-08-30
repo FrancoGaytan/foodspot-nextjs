@@ -43,7 +43,7 @@ export default async function eventHome({ filter = 'available' }: EventHomeProps
       <section className={styles.homeInfoContainer}>
         <HomeInfo />
       </section>
-      {pendingTransferEventIds[0] && <PendingTransferWarning eventId={pendingTransferEventIds[0]} />}
+      {pendingTransferEventIds.length > 0 && <PendingTransferWarning eventIds={pendingTransferEventIds} />}
     </div>
   );
 }

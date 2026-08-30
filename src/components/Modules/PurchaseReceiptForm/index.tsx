@@ -7,6 +7,7 @@ import { showToast, ToastType } from '@utils/services/toastService';
 import { createPurchaseReceiptAction, uploadPurchaseReceiptFileAction } from 'app/[lang]/event/actions';
 import { IEvent } from '@models/event';
 import styles from './styles.module.scss';
+import DragAndDrop from '@components/UI/DragAndDrop';
 
 interface PurchaseReceiptFormProps {
   event: IEvent;
@@ -47,7 +48,7 @@ export default function PurchaseReceiptForm(props: PurchaseReceiptFormProps) {
     <form className={styles.form} onSubmit={submit}>
       <label>{t.description}<input value={description} onChange={event => setDescription(event.target.value)} required /></label>
       <label>{t.amountLabel}<input type="number" min="0.01" step="0.01" value={amount} onChange={event => setAmount(event.target.value)} required /></label>
-      <label className={styles.fileInput}>{t.uploadPurchaseReceipt}<input type="file" accept="image/jpeg,image/png,application/pdf" onChange={event => setFile(event.target.files?.[0] ?? null)} required /><span className={styles.uploadRow}><span className={styles.uploadBtn} />{file?.name || t.uploadPurchaseReceipt}</span></label>
+      <div><span>{t.uploadPurchaseReceipt}</span><DragAndDrop accept="image/jpeg,image/png,application/pdf" onFile={setFile}><span className={styles.uploadRow}><span className={styles.uploadBtn} />{file?.name || t.uploadPurchaseReceipt}</span></DragAndDrop></div>
       <Button type="submit" kind={ButtonKind.PRIMARY} size="medium" disabled={isPending}>{isPending ? '...' : t.confirmPayBtn}</Button>
     </form>
   );

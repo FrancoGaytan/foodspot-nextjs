@@ -8,7 +8,8 @@ export interface EventRatingData {
 }
 
 export interface IRatingResponse {
-	id: string;
+	id?: string;
+	_id?: string;
 	user: string;
 	score: number;
 }

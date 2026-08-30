@@ -57,6 +57,10 @@ export default function ResponsibilitiesData(props: ResponsibilitiesDataProps) {
 
   function toogleShopDesignee() {
     if (!event || !user) return;
+    if (!(user.cbu || user.alias)) {
+      showToast(t.paymentDataIsNecessary, ToastType.INFO);
+      return;
+    }
     const currentDesignees = event.shoppingDesignee || [];
     const isUserAlreadyDesignee = currentDesignees.some((designee: IPublicUser) => designee._id === user._id);
 

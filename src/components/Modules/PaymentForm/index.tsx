@@ -8,6 +8,7 @@ import { createTransferReceiptAction, deleteTransferReceiptAction, uploadTransfe
 import { IEvent } from '@models/event';
 import { PayCheckInfoResponse } from '@models/transfer';
 import styles from './styles.module.scss';
+import DragAndDrop from '@components/UI/DragAndDrop';
 
 interface PaymentFormProps {
   event: IEvent;
@@ -79,7 +80,7 @@ export default function PaymentForm(props: PaymentFormProps) {
         <label><input type="radio" checked={method === 'cash'} onChange={() => setMethod('cash')} /> {t.cashRadioBtn}</label>
       </fieldset>
       <label>{t.description}<input value={description} onChange={event => setDescription(event.target.value)} /></label>
-      {method === 'transfer' && <label className={styles.fileInput}>{t.uploadTransferReceipt}<input type="file" accept="image/jpeg,image/png,application/pdf" onChange={event => setFile(event.target.files?.[0] ?? null)} required /><span className={styles.uploadRow}><span className={styles.uploadBtn} />{file?.name || t.uploadTransferReceipt}</span></label>}
+      {method === 'transfer' && <div><span>{t.uploadTransferReceipt}</span><DragAndDrop accept="image/jpeg,image/png,application/pdf" onFile={setFile}><span className={styles.uploadRow}><span className={styles.uploadBtn} />{file?.name || t.uploadTransferReceipt}</span></DragAndDrop></div>}
       <Button type="submit" kind={ButtonKind.PRIMARY} size="medium" disabled={isPending}>{isPending ? '...' : t.confirmPayBtn}</Button>
       </form>
       </div>

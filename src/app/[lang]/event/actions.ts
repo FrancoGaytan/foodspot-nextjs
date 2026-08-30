@@ -34,6 +34,8 @@ import { IPurchaseReceiptRequest, IPurchaseByEvent } from '@models/purchases';
 import { ITransferReceiptRequest, ITransferReceiptResponse, IUploadFileResponse } from '@models/transfer';
 import { IOption, ISurveyParticipant } from '@models/options';
 import { createOption, deleteOption, editOption, getMembersWhoHaventVoted } from '@services/optionsServer';
+import { createRating, getRatingFromUser } from '@services/ratingServiceServer';
+import { IRatingRequest, IRatingResponse } from '@models/ratings';
 
 export async function getEventByIdAction(eventId: string): Promise<IEvent> {
   return await getEventById(eventId);
@@ -154,4 +156,12 @@ export async function getPurchaseReceiptsAction(eventId: string) {
 
 export async function getPendingTransferEventIdsAction(userId: string): Promise<string[]> {
   return await getPendingTransferEventIds(userId);
+}
+
+export async function createRatingAction(eventId: string, userId: string, payload: IRatingRequest): Promise<IRatingResponse> {
+  return await createRating(eventId, userId, payload);
+}
+
+export async function getRatingFromUserAction(eventId: string, userId: string): Promise<IRatingResponse> {
+  return await getRatingFromUser(eventId, userId);
 }
