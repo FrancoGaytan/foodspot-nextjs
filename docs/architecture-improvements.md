@@ -64,6 +64,14 @@ Vitest, Testing Library, and `jsdom` are now available through `pnpm test`. The 
 
 The suite also covers the registration Server Action with a mocked server service: password mismatch, invalid email domain, and successful registration. Tests intentionally mock the service boundary; deployed backend validation remains a separate integration check against the mock API environment.
 
+#### 2026-08-30: Complete the first event workflow migration
+
+The event detail now includes the missing payment, purchase receipt, participant assignment, food survey, event editing, and pending-transfer warning flows. The implementation keeps the existing Next.js boundaries: server-only authenticated services, Server Actions for mutations, server-rendered event data, and client components only for forms and modal interactions.
+
+The migrated UI follows the legacy event patterns for payment and purchase forms, including the highlighted amount, receiver information, copy controls, upload affordance, survey progress, inline option editing, participant details, and lifecycle validation. Modifying a payment creates and uploads the replacement first, then removes the previous receipt because the backend exposes no receipt update endpoint.
+
+Focused tests now cover event button visibility rules in addition to middleware and registration behavior. Backend-dependent manual verification is still required after deployment for file uploads, receipt replacement, assignment persistence, and pending-transfer detection.
+
 ### Validation workflow
 
 Run the following commands before each test deployment:
