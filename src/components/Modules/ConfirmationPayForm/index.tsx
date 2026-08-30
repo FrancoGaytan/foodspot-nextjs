@@ -84,14 +84,19 @@ export default function ConfirmationPayForm(props: ConfirmationPayProps) {
 
   async function PreviewTransfer(transfer: ITransferReceiptResponse) {
     try {
+      if (!transfer.image) {
+        showToast(t.downloadingImageError, ToastType.ERROR);
+        return;
+      }
       const transferImage = await getImageAction(transfer.image);
       setFilePreview({
         uri: transferImage.dataUrl,
-        fileType: transferImage.fileType,
+        fileType: transferImage.fileType === 'jpeg' ? 'jpg' : transferImage.fileType,
         fileName: 'File Preview',
       });
     } catch (e) {
-      console.log(e);
+      console.error('Unable to preview transfer receipt:', e);
+      showToast(t.downloadingImageError, ToastType.ERROR);
     }
   }
 
@@ -136,7 +141,9 @@ export default function ConfirmationPayForm(props: ConfirmationPayProps) {
                 className={styles.previewBtn}
                 onClick={e => {
                   e.preventDefault();
-                  PreviewTransfer(transferReceipt as ITransferReceiptResponse);
+                  if (transferReceipt) {
+                    PreviewTransfer(transferReceipt);
+                  }
                 }}
                 style={{ cursor: 'pointer' }}></button>
               <p className={styles.downloadText}>{t.previewText}</p>

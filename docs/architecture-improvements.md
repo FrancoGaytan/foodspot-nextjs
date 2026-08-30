@@ -46,6 +46,16 @@ The unused legacy preview implementation in `utils/common/filesUtilities.jsx` wa
 
 The payment confirmation flow now loads `FilesPreview` dynamically on the client. This keeps the document viewer out of the initial route bundle and loads it only when the payment preview flow is rendered. Image previews continue to use `next/image`.
 
+#### 2026-08-30: Restore event action wiring and receipt preview resilience
+
+The event action buttons were rendered without `onClick` handlers. The frontend now connects participation, leaving an available event, closing/reopening an event, and deleting an event to the existing backend endpoints. Successful mutations refresh the server-rendered event view, and failures are reported through the existing toast service. The server-side DELETE helper now sends the authenticated JWT, which is required by the event deletion endpoint.
+
+Receipt previews now handle missing image IDs, normalize `jpeg` previews for the image renderer, guard against an absent transfer receipt, and show a toast when image retrieval fails instead of failing silently. The document viewer remains dynamically loaded.
+
+The `Pay`, `Modify Payment`, `Ready to Pay`, and `New Purchase Receipt` buttons still require their upload/payment forms to be implemented in `foodspot-nextjs`; no matching frontend components or Server Actions existed to connect without inventing a new contract. Backend changes were not made.
+
+Validation: `pnpm test`, `pnpm lint`, `pnpm exec tsc --noEmit`, and `pnpm build` pass.
+
 #### 2026-08-30: Add the frontend test harness
 
 Vitest, Testing Library, and `jsdom` are now available through `pnpm test`. The initial suite covers middleware behavior with deterministic `NextRequest` instances, including locale redirect, protected routes, authenticated access, and public access. Vite's native `tsconfig` path resolution is used instead of an additional alias plugin.
