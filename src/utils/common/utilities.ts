@@ -1,5 +1,3 @@
-import '@cyntler/react-doc-viewer/dist/index.css';
-
 export function parseMinutes(minutes: string) {
   let newMinutes = minutes;
   if (Number(minutes) < 10) {

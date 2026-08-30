@@ -130,7 +130,8 @@ function ModalShell(props: {
 }
 
 function usePortalRoot() {
-  const ref = useRef<HTMLElement | null>(null);
+  const [portalEl, setPortalEl] = useState<HTMLElement | null>(null);
+
   useEffect(() => {
     let el = document.getElementById("app-portal");
     if (!el) {
@@ -138,9 +139,10 @@ function usePortalRoot() {
       el.id = "app-portal";
       document.body.appendChild(el);
     }
-    ref.current = el;
+    setPortalEl(el);
   }, []);
-  return ref.current;
+
+  return portalEl;
 }
 
 const styles: Record<string, React.CSSProperties> = {

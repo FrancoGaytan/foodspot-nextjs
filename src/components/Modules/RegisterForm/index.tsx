@@ -40,7 +40,7 @@ export default function RegisterForm() {
     if (formState.error === 'passwordMismatch') {
       showToast(t.passwordArentMatching, ToastType.WARNING);
     }
-  }, [formState]);
+  }, [formState, pushTo, t.failureMsg, t.invalidEmailDomain, t.passwordArentMatching, t.successMsg]);
 
   return (
     <FormLayout>

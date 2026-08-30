@@ -50,7 +50,16 @@ export default function SettingNewPasswordForm() {
     if (formState.error === 'updateFailed') {
       showToast(t.couldntUpdatePassword, ToastType.ERROR);
     }
-  }, [formState]);
+  }, [
+    formState,
+    pushTo,
+    t.couldntUpdatePassword,
+    t.invalidVerificationCode,
+    t.missingFields,
+    t.passwordsDontMatch,
+    t.successMsg,
+    t.wrongPassword,
+  ]);
 
   return (
     <FormLayout>

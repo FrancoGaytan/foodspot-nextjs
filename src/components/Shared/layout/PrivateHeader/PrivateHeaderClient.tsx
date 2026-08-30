@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import styles from './styles.module.scss';
 import { useTranslation } from '@hooks/useTranslation';
 import { useCustomRouter } from '@hooks/useCustomRouter';
@@ -62,7 +63,13 @@ export default function PrivateHeaderClient(props: PrivateHeaderClientProps) {
               </span>
               <button className={styles.initialsAvatar} onClick={() => pushTo('/userProfile')} aria-label="Perfil">
                 {props.hasProfilePicture && !imageUnavailable ? (
-                  <img src="/api/profile-image" alt="Foto de perfil" onError={() => setImageUnavailable(true)} />
+                  <Image
+                    src="/api/profile-image"
+                    alt="Foto de perfil"
+                    width={40}
+                    height={40}
+                    onError={() => setImageUnavailable(true)}
+                  />
                 ) : initials}
               </button>
               <div className={styles.languageActions}>
