@@ -27,6 +27,14 @@
   }
 }
 
+.paycheck { min-width: min(100%, 470px); }
+.paycheckContent { margin-left: 15px; }
+.paymentData { margin: 0 0 8px; }
+.copyBtn { width: 15px; height: 15px; margin-left: 8px; border: 0; background: transparent url('/images/icons/icons-copiar-blanco.png') center / contain no-repeat; cursor: pointer; vertical-align: middle; }
+.fileInput input { display: none; }
+.uploadRow { display: flex; align-items: center; cursor: pointer; }
+.uploadBtn { width: 25px; height: 21px; margin: 8px 8px 5px 0; background: transparent url('/images/icons/uploadIcon.png') center / contain no-repeat; }
+
 .amount {
   font-size: 1.25rem;
   font-weight: 700;

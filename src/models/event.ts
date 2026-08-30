@@ -2,6 +2,7 @@ import { EventStatesEnum } from '../enums/EventState.enum';
 import { EventRatingData } from './ratings';
 import { IUser } from './user';
 import { IOption } from './options';
+import { IPurchaseReceipt } from './purchases';
 
 export interface IEvent {
   title: string;
@@ -14,7 +15,7 @@ export interface IEvent {
   organizer: IUser;
   shoppingDesignee: IUser[];
   transferReceipts: [];
-  purchaseReceipts: [];
+  purchaseReceipts: IPurchaseReceipt[];
   ratings: [];
   options?: IOption[];
   _id: string;
