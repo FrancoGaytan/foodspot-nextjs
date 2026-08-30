@@ -20,6 +20,15 @@ import { IUserFromCookie } from '@utils/cookies/localeCookies';
 import { IPublicUser } from '@models/user';
 import { useEffect, useState } from 'react';
 import { useTranslation } from '@hooks/useTranslation';
+import { useRouter } from 'next/navigation';
+import {
+  deleteEventAction,
+  editEventAction,
+  subscribeToAnEventAction,
+  unsubscribeFromEventAction,
+} from 'app/[lang]/event/actions';
+import { EventStatesEnum } from 'enums/EventState.enum';
+import { showToast, ToastType } from '@utils/services/toastService';
 
 interface EventBtnsProps {
   event: IEvent;
@@ -28,10 +37,51 @@ interface EventBtnsProps {
 
 export default function EventBtns(props: EventBtnsProps) {
   const { t } = useTranslation('eventHome');
+  const router = useRouter();
   const [user, setUser] = useState<IPublicUser | null>(null);
   const [eventPaymentInfo, setEventPaymentInfo] = useState<PayCheckInfoResponse[]>([]);
   const [eventParticipantsInfo, setEventParticipantsInfo] = useState<ITransferReceiptInfoResponse[]>([]);
   const myInfo = eventPaymentInfo.find((member: PayCheckInfoResponse) => member.userId === props.user.id);
+
+  async function updateEventState(state: EventStatesEnum): Promise<void> {
+    try {
+      await editEventAction(props.event._id, { ...props.event, state });
+      showToast(state === EventStatesEnum.CLOSED ? t.eventClosed : t.eventOpen, ToastType.SUCCESS);
+      router.refresh();
+    } catch {
+      showToast(t.eventClosingFailure, ToastType.ERROR);
+    }
+  }
+
+  async function participate(): Promise<void> {
+    try {
+      await subscribeToAnEventAction(props.user.id, props.event._id);
+      showToast(t.userAddedSuccessfully, ToastType.SUCCESS);
+      router.refresh();
+    } catch {
+      showToast(t.userAddingFailure, ToastType.ERROR);
+    }
+  }
+
+  async function quit(): Promise<void> {
+    try {
+      await unsubscribeFromEventAction(props.user.id, props.event._id);
+      showToast(t.userRemovedSuccessfully, ToastType.SUCCESS);
+      router.refresh();
+    } catch {
+      showToast(t.userRemovingFailure, ToastType.ERROR);
+    }
+  }
+
+  async function removeEvent(): Promise<void> {
+    try {
+      await deleteEventAction(props.event._id);
+      showToast(t.eventDeleted, ToastType.SUCCESS);
+      router.push('/eventHome');
+    } catch {
+      showToast(t.eventDeletingFailure, ToastType.ERROR);
+    }
+  }
 
   useEffect(() => {
     async function fetchUser() {
@@ -69,27 +119,27 @@ export default function EventBtns(props: EventBtnsProps) {
             </Button>
           )}
           {showCloseEventBtn(props.event, user) && (
-            <Button className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
+            <Button onClick={() => updateEventState(EventStatesEnum.CLOSED)} className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
               {t.closeEventBtn}
             </Button>
           )}
           {showReopenEventBtn(props.event, user) && (
-            <Button className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
+            <Button onClick={() => updateEventState(EventStatesEnum.AVAILABLE)} className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
               {t.reopenEventBtn}
             </Button>
           )}
           {showDeleteEventBtn(props.event, user) && (
-            <Button className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
+            <Button onClick={removeEvent} className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
               {t.deleteEventBtn}
             </Button>
           )}
           {showParticipationBtn(props.event, user) && (
-            <Button className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
+            <Button onClick={participate} className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
               {t.participateBtn}
             </Button>
           )}
           {showQuitEventBtn(props.event, user) && (
-            <Button className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
+            <Button onClick={quit} className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
               {t.getOff}
             </Button>
           )}

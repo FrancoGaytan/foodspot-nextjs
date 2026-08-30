@@ -32,12 +32,12 @@ function FilesPreview(props: FilesPreviewProps) {
 
   const [imgDimensions, setImgDimensions] = useState<{ width: number; height: number }>({ width: 300, height: 300 });
 
-  const handleImageLoad = (e: any) => {
+  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     setImgDimensions({
-      width: e.target.naturalWidth,
-      height: e.target.naturalHeight,
+      width: e.currentTarget.naturalWidth,
+      height: e.currentTarget.naturalHeight,
     });
-    setImageHeight(e.target.naturalHeight);
+    setImageHeight(e.currentTarget.naturalHeight);
   };
 
   return (
@@ -45,7 +45,7 @@ function FilesPreview(props: FilesPreviewProps) {
       <button onClick={props.onClose} className={styles.closeButton}>
         ✕
       </button>
-      {props.doc[0].fileType === 'png' || props.doc[0].fileType === 'jpg' ? (
+      {['png', 'jpg', 'jpeg'].includes(props.doc[0]?.fileType) ? (
         <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Image
             src={props.doc[0].uri}

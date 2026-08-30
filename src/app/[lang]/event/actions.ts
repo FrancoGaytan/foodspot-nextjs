@@ -2,7 +2,16 @@
 
 import { IEvent } from '@models/event';
 import { IsUserDebtorResponse } from '@models/user';
-import { editRoles, getEventById, getMembersAmount, getMembersAndReceiptsInfo, subscribeToAnEvent } from '@services/eventServiceServer';
+import {
+  deleteEvent,
+  editEvent,
+  editRoles,
+  getEventById,
+  getMembersAmount,
+  getMembersAndReceiptsInfo,
+  subscribeToAnEvent,
+  unsubscribeFromEvent,
+} from '@services/eventServiceServer';
 import { ITransferReceiptInfoResponse, PayCheckInfoResponse } from '@models/transfer';
 import { isUserDebtor } from '@services/userServiceServer';
 import { getImage } from '@services/purchaseReceiptsServer';
@@ -25,6 +34,10 @@ export async function subscribeToAnEventAction(userId: string, eventId: string):
   return await subscribeToAnEvent(userId, eventId);
 }
 
+export async function unsubscribeFromEventAction(userId: string, eventId: string): Promise<IEvent> {
+  return await unsubscribeFromEvent(userId, eventId);
+}
+
 export async function getUserByIdAction(userId: string) {
   const { getUserById } = await import('@services/userServiceServer');
   return await getUserById(userId);
@@ -40,6 +53,14 @@ export async function getMembersAndReceiptsInfoAction(eventId: string): Promise<
 
 export async function editRolesAction(eventId: string, event: IEvent): Promise<IEvent> {
   return await editRoles(eventId, event);
+}
+
+export async function editEventAction(eventId: string, event: IEvent): Promise<IEvent> {
+  return await editEvent(eventId, event);
+}
+
+export async function deleteEventAction(eventId: string): Promise<IEvent> {
+  return await deleteEvent(eventId);
 }
 
 export async function approvePaymentWithoutReceiptAction(userId: string, eventId: string): Promise<void> {

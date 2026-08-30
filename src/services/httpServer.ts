@@ -143,12 +143,11 @@ export async function putFileServer<T>(path: string, formFile: File, signal?: Ab
 }
 
 export async function deleteServer<T = any>(path: string, signal?: AbortSignal): Promise<T> {
+  const headers = await getAuthHeadersWithAuth();
   const res = await fetch(buildUrl(path), {
     method: 'DELETE',
     signal,
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers,
     cache: 'no-store',
   });
 

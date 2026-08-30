@@ -1,5 +1,5 @@
 import { IEvent, IPublicEvent } from '@models/event';
-import { getServer, putServer } from './httpServer';
+import { deleteServer, getServer, putServer } from './httpServer';
 import { ITransferReceiptInfoResponse, PayCheckInfoResponse } from '@models/transfer';
 
 export async function getPublicEvents(signal?: AbortSignal): Promise<IPublicEvent[]> {
@@ -22,9 +22,24 @@ export async function subscribeToAnEvent(userId: string, eventId: string, signal
   return await putServer<IEvent>(url, undefined, signal);
 }
 
+export async function unsubscribeFromEvent(userId: string, eventId: string, signal?: AbortSignal): Promise<IEvent> {
+  const url = `/events/unsubscribeFromEvent/${userId}/${eventId}`;
+  return await putServer<IEvent>(url, undefined, signal);
+}
+
 export async function editRoles(id: string, payload: IEvent, signal?: AbortSignal): Promise<IEvent> {
   const url = `/events/editRoles/${id}`;
   return await putServer<IEvent, IEvent>(url, payload, signal);
+}
+
+export async function editEvent(id: string, payload: IEvent, signal?: AbortSignal): Promise<IEvent> {
+  const url = `/events/editEvent/${id}`;
+  return await putServer<IEvent, IEvent>(url, payload, signal);
+}
+
+export async function deleteEvent(id: string, signal?: AbortSignal): Promise<IEvent> {
+  const url = `/events/deleteEvent/${id}`;
+  return await deleteServer<IEvent>(url, signal);
 }
 
 export async function getMembersAmount(eventId: string, signal?: AbortSignal): Promise<PayCheckInfoResponse[]> {
