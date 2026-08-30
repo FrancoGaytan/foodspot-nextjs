@@ -13,3 +13,7 @@ export async function isUserDebtor(idUser: string, signal?: AbortSignal): Promis
   const url = `/users/isDebtor/${idUser}`;
   return await getServer<IsUserDebtorResponse>(url, signal);
 }
+
+export async function getPendingTransferEventIds(userId: string, signal?: AbortSignal): Promise<string[]> {
+  return await getServer<string[]>(`/users/hasPendingTransfers/${userId}`, signal);
+}

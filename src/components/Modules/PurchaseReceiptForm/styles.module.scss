@@ -11,3 +11,7 @@
 
   input { padding: 8px; }
 }
+
+.fileInput input { display: none; }
+.uploadRow { display: flex; align-items: center; cursor: pointer; }
+.uploadBtn { width: 25px; height: 21px; margin: 8px 8px 5px 0; background: transparent url('/images/icons/uploadIcon.png') center / contain no-repeat; }

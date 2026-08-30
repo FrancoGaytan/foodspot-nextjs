@@ -1,7 +1,19 @@
-.wrapper { display: grid; gap: 16px; min-width: min(100%, 420px); }
+.wrapper { display: grid; gap: 16px; min-width: min(100%, 520px); }
 .options { display: grid; gap: 8px; }
-.option { display: flex; align-items: center; gap: 8px; }
-.option > :first-child { flex: 1; }
-.option > button:last-child { border: 0; background: transparent; cursor: pointer; }
+.heading, .option { display: grid; grid-template-columns: minmax(150px, 1fr) 48px 64px 60px; align-items: center; gap: 8px; }
+.heading { color: var(--textSecondary); font-size: 12px; text-transform: uppercase; }
+.titleCell { min-width: 0; }
+.titleButton { border: 0; background: transparent; padding: 0; text-align: left; cursor: pointer; color: inherit; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.titleCell input { width: 100%; box-sizing: border-box; padding: 5px; }
+.progress { height: 5px; margin-top: 5px; background: var(--backgroundNeutralLighter); border-radius: 3px; overflow: hidden; }
+.progress span { display: block; height: 100%; background: var(--primaryColor); }
+.votes { text-align: center; }
+.checkbox { display: flex; justify-content: center; }
+.checkbox input { position: absolute; opacity: 0; }
+.checkbox span { width: 18px; height: 18px; border: 1px solid currentColor; display: block; cursor: pointer; }
+.checkbox input:checked + span { background: var(--primaryColor); box-shadow: inset 0 0 0 4px var(--backgroundNeutral); }
+.actions { display: flex; justify-content: flex-end; gap: 5px; }
+.actions button { border: 0; background: transparent; cursor: pointer; }
+.detail { display: grid; gap: 7px; border-top: 1px solid currentColor; padding-top: 12px; }
 .add { display: flex; gap: 8px; }
 .add input { flex: 1; min-width: 0; padding: 8px; }

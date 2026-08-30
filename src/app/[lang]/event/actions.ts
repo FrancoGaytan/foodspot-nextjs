@@ -13,7 +13,7 @@ import {
   unsubscribeFromEvent,
 } from '@services/eventServiceServer';
 import { ITransferReceiptInfoResponse, PayCheckInfoResponse } from '@models/transfer';
-import { isUserDebtor } from '@services/userServiceServer';
+import { getPendingTransferEventIds, isUserDebtor } from '@services/userServiceServer';
 import {
   assignMembersToReceipt,
   createPurchaseReceipt,
@@ -150,4 +150,8 @@ export async function getMembersWhoHaventVotedAction(eventId: string): Promise<{
 
 export async function getPurchaseReceiptsAction(eventId: string) {
   return await getPurchaseReceipts(eventId);
+}
+
+export async function getPendingTransferEventIdsAction(userId: string): Promise<string[]> {
+  return await getPendingTransferEventIds(userId);
 }

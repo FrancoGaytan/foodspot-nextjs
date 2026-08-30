@@ -51,6 +51,7 @@ export default Object.seal({
   eventReadyForPayment: 'The event is now ready to start the payment process',
   eventOpen: 'The event has been opened successfully',
   eventClosingFailure: 'There has been a failure closing the event',
+  eventWithApprovedReceiptsCannotBeReclosed: 'The event cannot be closed again because it has approved payments',
   eventReadyForPaymentFailure: "There has been a failure enabling the event's payments",
   organizationTitle: 'Event Organization',
   date: 'Date: ',
@@ -103,4 +104,6 @@ export default Object.seal({
   fastApprovalTitle: 'Fast Approval',
   validatePaymentTitle: 'Validate Payment',
   surveyBtn: 'Food Survey'
+  ,pendingTransferWarning: 'You have a pending transfer approval for the event',
+  goToEvent: 'Go to event'
 });

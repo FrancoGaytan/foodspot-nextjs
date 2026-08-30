@@ -50,45 +50,84 @@ export default function EventBtns(props: EventBtnsProps) {
   const [user, setUser] = useState<IPublicUser | null>(null);
   const [eventPaymentInfo, setEventPaymentInfo] = useState<PayCheckInfoResponse[]>([]);
   const [eventParticipantsInfo, setEventParticipantsInfo] = useState<ITransferReceiptInfoResponse[]>([]);
+  const [isPending, setIsPending] = useState(false);
   const myInfo = eventPaymentInfo.find((member: PayCheckInfoResponse) => member.userId === props.user.id);
 
   async function updateEventState(state: EventStatesEnum): Promise<void> {
+    if (isPending) return;
+    if (state === EventStatesEnum.CLOSED) {
+      if (props.event.shoppingDesignee.length === 0) {
+        showToast(t.unassignAtClosing, ToastType.ERROR);
+        return;
+      }
+      if (eventParticipantsInfo.some(member => member.hasReceiptApproved)) {
+        showToast(t.eventWithApprovedReceiptsCannotBeReclosed, ToastType.ERROR);
+        return;
+      }
+    }
+    if (state === EventStatesEnum.READY_FOR_PAYMENT && props.event.purchaseReceipts.length === 0) {
+      showToast(t.eventCantBeReadyForPaymentWithoutPurchases, ToastType.ERROR);
+      return;
+    }
+    setIsPending(true);
     try {
       await editEventAction(props.event._id, { ...props.event, state });
       showToast(state === EventStatesEnum.CLOSED ? t.eventClosed : t.eventOpen, ToastType.SUCCESS);
       router.refresh();
     } catch {
       showToast(t.eventClosingFailure, ToastType.ERROR);
+    } finally {
+      setIsPending(false);
     }
   }
 
   async function participate(): Promise<void> {
+    if (isPending) return;
+    setIsPending(true);
     try {
       await subscribeToAnEventAction(props.user.id, props.event._id);
       showToast(t.userAddedSuccessfully, ToastType.SUCCESS);
       router.refresh();
     } catch {
       showToast(t.userAddingFailure, ToastType.ERROR);
+    } finally {
+      setIsPending(false);
     }
   }
 
   async function quit(): Promise<void> {
+    if (isPending) return;
+    if (user && userIsAShoppingDesignee(props.event, user)) {
+      showToast(t.shoppingDesigneeTryingToGetOff, ToastType.ERROR);
+      return;
+    }
+    if (props.event.purchaseReceipts.some(receipt => receipt.shoppingDesignee?._id === props.user.id)) {
+      showToast(t.sdCanNotRemove, ToastType.ERROR);
+      return;
+    }
+    setIsPending(true);
     try {
       await unsubscribeFromEventAction(props.user.id, props.event._id);
       showToast(t.userRemovedSuccessfully, ToastType.SUCCESS);
       router.refresh();
     } catch {
       showToast(t.userRemovingFailure, ToastType.ERROR);
+    } finally {
+      setIsPending(false);
     }
   }
 
   async function removeEvent(): Promise<void> {
+    if (isPending) return;
+    setIsPending(true);
     try {
       await deleteEventAction(props.event._id);
       showToast(t.eventDeleted, ToastType.SUCCESS);
       router.push('/eventHome');
     } catch {
       showToast(t.eventDeletingFailure, ToastType.ERROR);
+    } finally {
+      setIsPending(false);
     }
   }
 
@@ -159,12 +198,12 @@ export default function EventBtns(props: EventBtnsProps) {
         <>
           {' '}
           {showPayBtn(props.event, user, eventParticipantsInfo, myInfo) && (
-            <Button onClick={openPaymentForm} className={styles.btnEvent} kind={ButtonKind.PRIMARY} size="short">
+              <Button disabled={isPending} onClick={openPaymentForm} className={styles.btnEvent} kind={ButtonKind.PRIMARY} size="short">
               {t.payBtn}
             </Button>
           )}
           {showCloseEventBtn(props.event, user) && (
-            <Button onClick={() => updateEventState(EventStatesEnum.CLOSED)} className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
+            <Button disabled={isPending} onClick={() => updateEventState(EventStatesEnum.CLOSED)} className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
               {t.closeEventBtn}
             </Button>
           )}

@@ -8,6 +8,9 @@ import { ButtonKind } from '@components/UI/Button';
 import ImageSlider from '@components/Shared/Slider';
 import HomeInfo from '@components/Shared/HomeInfo';
 import EventsFilters, { EventHomeFilter } from './EventsFilters';
+import { getUserFromCookieServer } from '@utils/cookies/localeCookiesServer';
+import { getPendingTransferEventIds } from '@services/userServiceServer';
+import PendingTransferWarning from './PendingTransferWarning';
 
 interface EventHomeProps {
   filter?: EventHomeFilter;
@@ -15,6 +18,8 @@ interface EventHomeProps {
 
 export default async function eventHome({ filter = 'available' }: EventHomeProps) {
   const { t } = await getTranslation('eventHome');
+  const user = await getUserFromCookieServer();
+  const pendingTransferEventIds = user ? await getPendingTransferEventIds(user.id).catch(() => []) : [];
   return (
     <div className={styles.eventHomeContent}>
       <HomeHeader />
@@ -38,6 +43,7 @@ export default async function eventHome({ filter = 'available' }: EventHomeProps
       <section className={styles.homeInfoContainer}>
         <HomeInfo />
       </section>
+      {pendingTransferEventIds[0] && <PendingTransferWarning eventId={pendingTransferEventIds[0]} />}
     </div>
   );
 }
