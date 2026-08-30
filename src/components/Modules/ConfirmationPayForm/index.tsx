@@ -1,4 +1,5 @@
 'use client';
+import dynamic from 'next/dynamic';
 import Button, { ButtonKind } from '@components/UI/Button';
 import { useTranslation } from '@hooks/useTranslation';
 import { showToast, ToastType } from '@utils/services/toastService';
@@ -14,7 +15,9 @@ import { useEffect, useState } from 'react';
 import { ITransferReceiptResponse } from '@models/transfer';
 import { IEvent } from '@models/event';
 import { gettingDateDiference } from '@utils/common/utilities';
-import FilesPreview from '@components/Shared/FilesPreview/FilesPreview';
+const FilesPreview = dynamic(() => import('@components/Shared/FilesPreview/FilesPreview'), {
+  ssr: false,
+});
 
 interface ConfirmationPayProps {
   event: IEvent;

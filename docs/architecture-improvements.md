@@ -44,6 +44,8 @@ The document viewer stylesheet was imported as a side effect from `utilities.ts`
 
 The unused legacy preview implementation in `utils/common/filesUtilities.jsx` was also removed. The production preview has one remaining owner in `components/Shared/FilesPreview`. The event-detail bundle remains at approximately `285 kB` First Load JS, so dynamic loading of the viewer is reserved for a later iteration with browser validation.
 
+The payment confirmation flow now loads `FilesPreview` dynamically on the client. This keeps the document viewer out of the initial route bundle and loads it only when the payment preview flow is rendered. Image previews continue to use `next/image`.
+
 #### 2026-08-30: Add the frontend test harness
 
 Vitest, Testing Library, and `jsdom` are now available through `pnpm test`. The initial suite covers middleware behavior with deterministic `NextRequest` instances, including locale redirect, protected routes, authenticated access, and public access. Vite's native `tsconfig` path resolution is used instead of an additional alias plugin.
