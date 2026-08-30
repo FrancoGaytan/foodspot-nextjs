@@ -12,12 +12,12 @@ interface EventsContainerProps {
 export default async function EventsContainer(props: EventsContainerProps) {
   const user = await getUserFromCookieServer();
   let eventsToShow: IPublicEvent[] = [];
-  let debtorEventId: string | null = null;
+  let debtorEventIds: string[] = [];
 
   try {
     eventsToShow = user ? await getPublicAndPrivateEvents() : await getPublicEvents();
     if (user) {
-      debtorEventId = (await isUserDebtor(user.id)).eventId;
+      debtorEventIds = await isUserDebtor(user.id);
     }
   } catch (e) {
     console.error('Error loading events:', e);
@@ -54,7 +54,7 @@ export default async function EventsContainer(props: EventsContainerProps) {
           return currentEvent.state !== 'canceled';
         })
         .map(({ event, currentEvent }) => (
-        <EventCard key={event._id} event={event} user={user} currentEvent={currentEvent} debtorEventId={debtorEventId} />
+          <EventCard key={event._id} event={event} user={user} currentEvent={currentEvent} debtorEventId={debtorEventIds.includes(event._id) ? event._id : null} />
         ))}
     </>
   );

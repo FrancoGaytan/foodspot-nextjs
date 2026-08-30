@@ -1,0 +1,3 @@
+.dropzone { border: 1px dashed transparent; border-radius: 6px; cursor: pointer; }
+.dropzone input { display: none; }
+.dragging { border-color: var(--primaryColor); background: color-mix(in srgb, var(--primaryColor) 10%, transparent); }

@@ -1,0 +1,4 @@
+.rating { display: flex; gap: 3px; }
+.rating button { border: 0; background: transparent; color: #c5c5c5; cursor: pointer; font-size: 25px; line-height: 1; padding: 0; }
+.rating button.active { color: rgb(240, 191, 28); }
+.rating button:disabled { cursor: wait; }
