@@ -4,7 +4,7 @@ import { FormEvent, useState } from 'react';
 import Button, { ButtonKind } from '@components/UI/Button';
 import { useTranslation } from '@hooks/useTranslation';
 import { showToast, ToastType } from '@utils/services/toastService';
-import { createTransferReceiptAction, uploadTransferReceiptFileAction } from 'app/[lang]/event/actions';
+import { createTransferReceiptAction, deleteTransferReceiptAction, uploadTransferReceiptFileAction } from 'app/[lang]/event/actions';
 import { IEvent } from '@models/event';
 import { PayCheckInfoResponse } from '@models/transfer';
 import styles from './styles.module.scss';
@@ -15,6 +15,7 @@ interface PaymentFormProps {
   paymentInfo: PayCheckInfoResponse;
   closeModal: () => void;
   refetchEvent: () => void;
+  existingReceiptId?: string;
 }
 
 export default function PaymentForm(props: PaymentFormProps) {
@@ -48,6 +49,9 @@ export default function PaymentForm(props: PaymentFormProps) {
       });
       if (method === 'transfer' && file) {
         await uploadTransferReceiptFileAction(receipt._id, file);
+      }
+      if (props.existingReceiptId) {
+        await deleteTransferReceiptAction(props.existingReceiptId);
       }
       showToast(t.transferReceiptLoaded, ToastType.SUCCESS);
       props.closeModal();

@@ -137,8 +137,9 @@ export default function EventBtns(props: EventBtnsProps) {
 
   function openPaymentForm(): void {
     if (!myInfo) return;
+    const existingReceiptId = eventParticipantsInfo.find(member => member.userId === props.user.id)?.transferReceipt ?? undefined;
     open(
-      <PaymentForm event={props.event} userId={props.user.id} paymentInfo={myInfo} closeModal={close} refetchEvent={refreshEvent} />,
+      <PaymentForm event={props.event} userId={props.user.id} paymentInfo={myInfo} existingReceiptId={existingReceiptId} closeModal={close} refetchEvent={refreshEvent} />,
       { title: t.payBtn }
     );
   }
