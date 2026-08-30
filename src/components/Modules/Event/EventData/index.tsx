@@ -16,7 +16,7 @@ export default async function EventData(props: EventDataProps) {
 
   return (
     <div className={styles.eventDataContainer}>
-      {event.organizer?._id === props.userId && <EditEventBtn eventId={event._id} />}
+      {event.organizer?._id === props.userId && <EditEventBtn event={event} />}
       {!event.isPrivate && <CopyLinkBtn />}
       <section className={styles.eventDataTitle}>
         <div className={styles.calendarLogo}></div>

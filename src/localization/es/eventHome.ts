@@ -101,5 +101,6 @@ export default Object.seal({
   backBtn: 'VOLVER',
   addmeOpt: 'Agregame',
   fastApprovalTitle: 'Aprobación rápida',
-  validatePaymentTitle: 'Validar pago'
+  validatePaymentTitle: 'Validar pago',
+  surveyBtn: 'Encuesta de comida'
 });

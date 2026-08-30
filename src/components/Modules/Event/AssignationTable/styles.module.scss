@@ -1,0 +1,24 @@
+.wrapper {
+  display: grid;
+  gap: 16px;
+  min-width: min(100%, 620px);
+}
+
+.tableWrapper {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  td:not(:first-child), th:not(:first-child) { text-align: center; }
+}

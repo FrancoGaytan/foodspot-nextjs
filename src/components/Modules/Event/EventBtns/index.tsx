@@ -15,6 +15,9 @@ import {
   showQuitEventBtn,
   showReadyToPayBtn,
   showReopenEventBtn,
+  isUserIntoEvent,
+  userIsAShoppingDesignee,
+  userIsTheOrganizer,
 } from './eventBtnsActions';
 import { IUserFromCookie } from '@utils/cookies/localeCookies';
 import { IPublicUser } from '@models/user';
@@ -29,6 +32,11 @@ import {
 } from 'app/[lang]/event/actions';
 import { EventStatesEnum } from 'enums/EventState.enum';
 import { showToast, ToastType } from '@utils/services/toastService';
+import { useModal } from '@contexts/ModalContext';
+import PaymentForm from '@components/Modules/PaymentForm';
+import PurchaseReceiptForm from '@components/Modules/PurchaseReceiptForm';
+import AssignationTable from '@components/Modules/Event/AssignationTable';
+import FoodSurvey from '@components/Modules/Event/FoodSurvey';
 
 interface EventBtnsProps {
   event: IEvent;
@@ -38,6 +46,7 @@ interface EventBtnsProps {
 export default function EventBtns(props: EventBtnsProps) {
   const { t } = useTranslation('eventHome');
   const router = useRouter();
+  const { open, close } = useModal();
   const [user, setUser] = useState<IPublicUser | null>(null);
   const [eventPaymentInfo, setEventPaymentInfo] = useState<PayCheckInfoResponse[]>([]);
   const [eventParticipantsInfo, setEventParticipantsInfo] = useState<ITransferReceiptInfoResponse[]>([]);
@@ -83,6 +92,42 @@ export default function EventBtns(props: EventBtnsProps) {
     }
   }
 
+  function refreshEvent(): void {
+    router.refresh();
+  }
+
+  function openPaymentForm(): void {
+    if (!myInfo) return;
+    open(
+      <PaymentForm event={props.event} userId={props.user.id} paymentInfo={myInfo} closeModal={close} refetchEvent={refreshEvent} />,
+      { title: t.payBtn }
+    );
+  }
+
+  function openPurchaseReceiptForm(): void {
+    open(<PurchaseReceiptForm event={props.event} closeModal={close} refetchEvent={refreshEvent} />, { title: t.loadPurchase });
+  }
+
+  function openAssignationTable(): void {
+    open(
+      <AssignationTable eventId={props.event._id} userId={props.user.id} closeModal={close} />,
+      { title: t.purchasesMade }
+    );
+  }
+
+  function openSurvey(): void {
+    open(
+      <FoodSurvey
+        eventId={props.event._id}
+        userId={props.user.id}
+        options={props.event.options ?? []}
+        canEdit={Boolean(user && (userIsTheOrganizer(props.event, user) || userIsAShoppingDesignee(props.event, user)))}
+        closeModal={close}
+      />,
+      { title: t.surveyBtn }
+    );
+  }
+
   useEffect(() => {
     async function fetchUser() {
       const fetchedUser = await getUserByIdAction(props.user.id);
@@ -114,7 +159,7 @@ export default function EventBtns(props: EventBtnsProps) {
         <>
           {' '}
           {showPayBtn(props.event, user, eventParticipantsInfo, myInfo) && (
-            <Button className={styles.btnEvent} kind={ButtonKind.PRIMARY} size="short">
+            <Button onClick={openPaymentForm} className={styles.btnEvent} kind={ButtonKind.PRIMARY} size="short">
               {t.payBtn}
             </Button>
           )}
@@ -144,17 +189,27 @@ export default function EventBtns(props: EventBtnsProps) {
             </Button>
           )}
           {showReadyToPayBtn(props.event, user) && (
-            <Button className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
-              {t.READY_FOR_PAYMENT}
+            <Button onClick={() => updateEventState(EventStatesEnum.READY_FOR_PAYMENT)} className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
+              {t.readyforpayment}
             </Button>
           )}
           {showModifyPayBtn(props.event, user, eventParticipantsInfo, myInfo) && (
-            <Button className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
+            <Button onClick={openPaymentForm} className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
               {t.modifyPay}
             </Button>
           )}
+          {props.event.state === EventStatesEnum.READY_FOR_PAYMENT && userIsAShoppingDesignee(props.event, user) && (
+            <Button onClick={openAssignationTable} className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
+              {t.purchasesMade}
+            </Button>
+          )}
+          {props.event.state === EventStatesEnum.AVAILABLE && user && isUserIntoEvent(props.event, user) && (
+            <Button onClick={openSurvey} className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
+              {t.surveyBtn}
+            </Button>
+          )}
           {showNewPurchaseReceiptBtn(props.event, user) && (
-            <Button className={styles.btnEvent} kind={ButtonKind.PRIMARY} size="short">
+            <Button onClick={openPurchaseReceiptForm} className={styles.btnEvent} kind={ButtonKind.PRIMARY} size="short">
               {t.loadPurchase}
             </Button>
           )}
