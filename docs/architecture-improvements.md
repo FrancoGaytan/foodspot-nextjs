@@ -56,6 +56,8 @@ The `Pay`, `Modify Payment`, `Ready to Pay`, and `New Purchase Receipt` buttons 
 
 Validation: `pnpm test`, `pnpm lint`, `pnpm exec tsc --noEmit`, and `pnpm build` pass.
 
+Manual deployment check: after deploying the branch, the event page and receipt flows returned `200` responses consistently; the previous Server Action `500` responses were no longer reproduced.
+
 #### 2026-08-30: Add the frontend test harness
 
 Vitest, Testing Library, and `jsdom` are now available through `pnpm test`. The initial suite covers middleware behavior with deterministic `NextRequest` instances, including locale redirect, protected routes, authenticated access, and public access. Vite's native `tsconfig` path resolution is used instead of an additional alias plugin.
