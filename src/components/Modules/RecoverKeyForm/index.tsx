@@ -37,7 +37,7 @@ export default function RecoverKeyForm() {
     if (formState.error === 'recoverKeyFailure') {
       showToast(t.recoverError, ToastType.ERROR);
     }
-  }, [formState]);
+  }, [formState, pushTo, t.emailSentConfirmation, t.noMatchingEmail, t.recoverError, t.wrongDataEntered]);
 
   return (
     <FormLayout>

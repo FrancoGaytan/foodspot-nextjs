@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import type { Metadata } from 'next';
 import '@styles/main.scss';
 import '@styles/globals.css';
+import '@cyntler/react-doc-viewer/dist/index.css';
 import ToastContainer from '@components/UI/Toaster';
 import { AuthProvider } from '@contexts/AuthContext';
 import { ModalProvider } from '@contexts/ModalContext';

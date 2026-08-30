@@ -45,7 +45,6 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
 
   function refetchMembersAndReceiptInfo() {
     if (!props.event) return;
-    const abortController = new AbortController();
     getMembersAndReceiptsInfoAction(props.event._id)
       .then(res => {
         setEventParticipants(res);
@@ -88,7 +87,6 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
     if (!props.event) {
       return;
     }
-    const abortController = new AbortController();
     getMembersAndReceiptsInfoAction(props.event._id)
       .then(res => {
         setEventParticipants(res);
@@ -102,7 +100,6 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
     if (!props.event) {
       return;
     }
-    const abortController = new AbortController();
     getMembersAmountAction(props.event?._id)
       .then(res => {
         setTotalPaymentInfo(res);

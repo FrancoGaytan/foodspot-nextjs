@@ -25,9 +25,9 @@ const NOTIFICATIONS = [
   ['penalizationOneWeek', 'Recordatorio de penalización'],
 ] as const;
 
-export default function UserProfile({ user }: UserProfileProps) {
+export default function UserProfile(props: UserProfileProps) {
   const [state, action, isPending] = useActionState(updateProfile, INITIAL_STATE);
-  const data: ProfileData = user ?? { name: '', lastName: '', email: '', specialDiet: [] };
+  const data: ProfileData = props.user ?? { name: '', lastName: '', email: '', specialDiet: [] };
 
   return (
     <main className={styles.page}>
@@ -38,7 +38,7 @@ export default function UserProfile({ user }: UserProfileProps) {
         </header>
 
         {!data.cbu && <p className={styles.notice}>Completá tu CBU o alias para poder recibir pagos en tus eventos.</p>}
-        {!user && <p className={`${styles.notice} ${styles.error}`}>No pudimos cargar tus datos. Podés volver a intentar guardar el perfil.</p>}
+        {!props.user && <p className={`${styles.notice} ${styles.error}`}>No pudimos cargar tus datos. Podés volver a intentar guardar el perfil.</p>}
 
         <div className={styles.twoColumns}>
           <section className={styles.card}>
