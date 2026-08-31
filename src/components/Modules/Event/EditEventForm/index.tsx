@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from 'react';
 import Button, { ButtonKind } from '@components/UI/Button';
+import Spinner from '@components/UI/Spinner';
 import { useTranslation } from '@hooks/useTranslation';
 import { editEventAction } from 'app/[lang]/event/actions';
 import { IEvent } from '@models/event';
@@ -73,6 +74,6 @@ export default function EditEventForm(props: EditEventFormProps) {
     <label><span>{t.isPrivate}</span><input type="checkbox" checked={isPrivate} onChange={event => setIsPrivate(event.target.checked)} /></label>
     <label>{t.amountPenalization}<input type="number" min="0" value={penalization} onChange={event => setPenalization(event.target.value)} /></label>
     {penalization && <label>{t.penalizationStartingDate}<input type="datetime-local" value={penalizationStartDate} onChange={event => setPenalizationStartDate(event.target.value)} /></label>}
-    <Button type="submit" kind={ButtonKind.PRIMARY} size="medium" disabled={isPending}>{isPending ? '...' : t.editEventBtn}</Button>
+    <Button type="submit" kind={ButtonKind.PRIMARY} size="medium" disabled={isPending} aria-label={isPending ? t.editEventBtn : undefined}>{isPending ? <Spinner size={20} /> : t.editEventBtn}</Button>
   </form>;
 }

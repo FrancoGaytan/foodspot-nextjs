@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { createEvent, type CreateEventActionState } from './actions';
+import Spinner from '@components/UI/Spinner';
 import styles from './styles.module.scss';
 
 const STEPS = ['Datos', 'Configuración', 'Invitados', 'Roles'];
@@ -107,7 +108,7 @@ export default function CreateEvent() {
           {(validationError || state.error) && <p className={styles.error}>{validationError || 'No se pudo crear el evento. Revisá los datos e intentá nuevamente.'}</p>}
           <footer className={styles.actions}>
             <button type="button" className={styles.secondary} onClick={() => setStep(current => Math.max(current - 1, 0))} disabled={step === 0 || isPending}>Volver</button>
-            {step < STEPS.length - 1 ? <button type="button" onClick={nextStep}>Continuar</button> : <button type="submit" disabled={isPending}>{isPending ? 'Creando...' : 'Crear evento'}</button>}
+            {step < STEPS.length - 1 ? <button type="button" onClick={nextStep}>Continuar</button> : <button type="submit" disabled={isPending} aria-label={isPending ? 'Creando evento' : undefined}>{isPending ? <Spinner size={20} /> : 'Crear evento'}</button>}
           </footer>
         </section>
       </form>

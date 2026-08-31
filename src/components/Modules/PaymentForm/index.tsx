@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from 'react';
 import Button, { ButtonKind } from '@components/UI/Button';
+import Spinner from '@components/UI/Spinner';
 import { useTranslation } from '@hooks/useTranslation';
 import { showToast, ToastType } from '@utils/services/toastService';
 import { createTransferReceiptAction, deleteTransferReceiptAction, uploadTransferReceiptFileAction } from 'app/[lang]/event/actions';
@@ -81,7 +82,7 @@ export default function PaymentForm(props: PaymentFormProps) {
       </fieldset>
       <label>{t.description}<input value={description} onChange={event => setDescription(event.target.value)} /></label>
       {method === 'transfer' && <div><span>{t.uploadTransferReceipt}</span><DragAndDrop accept="image/jpeg,image/png,application/pdf" onFile={setFile}><span className={styles.uploadRow}><span className={styles.uploadBtn} />{file?.name || t.uploadTransferReceipt}</span></DragAndDrop></div>}
-      <Button type="submit" kind={ButtonKind.PRIMARY} size="medium" disabled={isPending}>{isPending ? '...' : t.confirmPayBtn}</Button>
+      <Button type="submit" kind={ButtonKind.PRIMARY} size="medium" disabled={isPending} aria-label={isPending ? t.confirmPayBtn : undefined}>{isPending ? <Spinner size={20} /> : t.confirmPayBtn}</Button>
       </form>
       </div>
     </div>

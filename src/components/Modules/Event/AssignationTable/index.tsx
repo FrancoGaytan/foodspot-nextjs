@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { assignMembersToReceiptAction, getEventByIdAction, getPurchaseReceiptsAction } from 'app/[lang]/event/actions';
 import { IParticipant, IPurchaseReceipt } from '@models/purchases';
 import Button, { ButtonKind } from '@components/UI/Button';
+import Spinner from '@components/UI/Spinner';
 import { useTranslation } from '@hooks/useTranslation';
 import { showToast, ToastType } from '@utils/services/toastService';
 import styles from './styles.module.scss';
@@ -84,8 +85,8 @@ export default function AssignationTable(props: AssignationTableProps) {
           </tr>)}</tbody>
         </table>
       </div>
-      <Button type="button" kind={ButtonKind.PRIMARY} size="medium" onClick={save} disabled={isPending}>
-        {isPending ? '...' : t.confirmChangeBtn}
+      <Button type="button" kind={ButtonKind.PRIMARY} size="medium" onClick={save} disabled={isPending} aria-label={isPending ? t.confirmChangeBtn : undefined}>
+        {isPending ? <Spinner size={20} /> : t.confirmChangeBtn}
       </Button>
     </div>
   );

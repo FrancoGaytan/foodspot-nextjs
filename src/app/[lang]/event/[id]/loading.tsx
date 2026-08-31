@@ -8,7 +8,7 @@ export default async function LoadingEvent() {
     <>
       <PrivateHeader />
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
-        <Spinner size={50} color="grey" />
+        <Spinner size={64} />
       </div>
     </>
   );

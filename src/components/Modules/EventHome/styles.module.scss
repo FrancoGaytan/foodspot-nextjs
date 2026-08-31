@@ -92,6 +92,15 @@
     }
   }
 
+  .loadingEventsContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: min(100%, 75rem);
+    min-height: 20rem;
+    margin: 0 auto;
+  }
+
   .carouselContainer {
     display: grid;
     grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr);

@@ -1,21 +1,116 @@
-.path {
-  stroke-linecap: round;
-  stroke-dasharray: 150;
-  stroke-dashoffset: 0;
-  animation: dash 1.5s ease-in-out infinite;
+.overlay {
+  position: fixed;
+  z-index: 1100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(2px);
 }
 
-@keyframes dash {
+.spinner {
+  --spinner-speed: 1.2s;
+  position: relative;
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: visible;
+  color: #111111;
+}
+
+.flame {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 76%;
+  height: 82%;
+  object-fit: contain;
+  filter: brightness(0);
+  transform-origin: 50% 88%;
+  animation: flame-flicker var(--spinner-speed) ease-in-out infinite;
+}
+
+:global(html[data-theme='dark']) .spinner {
+  color: #ffffff;
+
+  .flame {
+    filter: brightness(0) invert(1);
+  }
+}
+
+:global(html[data-theme='dark']) .overlay {
+  background: rgba(15, 23, 42, 0.72);
+}
+
+.smoke {
+  position: absolute;
+  z-index: 0;
+  bottom: 58%;
+  left: 50%;
+  width: 58%;
+  height: 74%;
+  transform: translateX(-50%);
+}
+
+.smoke span {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 23%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0;
+  animation: smoke-rise calc(var(--spinner-speed) * 1.75) ease-out infinite;
+}
+
+.smoke span:nth-child(1) {
+  margin-left: -18%;
+}
+
+.smoke span:nth-child(2) {
+  margin-left: -4%;
+  animation-delay: calc(var(--spinner-speed) * -0.58);
+}
+
+.smoke span:nth-child(3) {
+  margin-left: 12%;
+  animation-delay: calc(var(--spinner-speed) * -1.16);
+}
+
+@keyframes flame-flicker {
   0% {
-    stroke-dasharray: 1, 150;
-    stroke-dashoffset: 0;
+    transform: rotate(-3deg) scale(0.96, 1.03);
   }
   50% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -35;
+    transform: rotate(4deg) scale(1.04, 0.97);
   }
   100% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -124;
+    transform: rotate(-3deg) scale(0.96, 1.03);
+  }
+}
+
+@keyframes smoke-rise {
+  0% {
+    transform: translate(-50%, 0) scale(0.55);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.28;
+  }
+  100% {
+    transform: translate(-12%, -125%) scale(1.45);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flame,
+  .smoke span {
+    animation: none;
+  }
+
+  .smoke span {
+    display: none;
   }
 }

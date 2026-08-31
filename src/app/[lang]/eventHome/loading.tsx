@@ -1,7 +1,7 @@
-import SkeletonEventCard from '@components/Shared/SkeletonEventCard';
 import styles from '../../../components/Modules/EventHome/styles.module.scss';
 import HomeHeader from '@components/Modules/EventHome/HomeHeader';
 import PrivateHeader from '@components/Shared/layout/PrivateHeader';
+import Spinner from '@components/UI/Spinner';
 import { getTranslation } from '@utils/common/getTranslation';
 
 export default async function LoadingEventHome() {
@@ -13,10 +13,8 @@ export default async function LoadingEventHome() {
         <HomeHeader />
         <div className={styles.eventHomeContent}>
           <div className={styles.incomingEventTitle}>{t.incomingEvents}</div>
-          <section className={styles.eventsContainer}>
-            {Array.from({ length: 6 }).map((_, i) => (
-              <SkeletonEventCard key={i} />
-            ))}
+          <section className={styles.loadingEventsContainer}>
+            <Spinner size={72} />
           </section>
         </div>
       </div>

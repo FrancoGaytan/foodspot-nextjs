@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { deletePurchaseReceiptAction } from 'app/[lang]/event/actions';
 import { IPurchaseReceipt } from '@models/purchases';
 import Button, { ButtonKind } from '@components/UI/Button';
+import Spinner from '@components/UI/Spinner';
 import { showToast, ToastType } from '@utils/services/toastService';
 import { useTranslation } from '@hooks/useTranslation';
 import styles from './styles.module.scss';
@@ -47,7 +48,7 @@ export default function PurchasesList(props: PurchasesListProps) {
               onClick={() => removePurchase(purchase._id)}
               disabled={deletingId === purchase._id}
               aria-label={t.purchaseDeleted}>
-              {deletingId === purchase._id ? '...' : 'x'}
+              {deletingId === purchase._id ? <Spinner size={18} /> : 'x'}
             </Button>}
         </div>
       ))}
