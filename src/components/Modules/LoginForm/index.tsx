@@ -39,7 +39,7 @@ export default function LoginForm() {
   }, [formState, t, pushTo]);
 
   return (
-    <FormLayout>
+    <FormLayout showPublicHeader={false}>
       <ToastQueryTrigger queryKey="success" matchValue="1" message={t.userRegistered} type={ToastType.SUCCESS} />
       <ToastQueryTrigger queryKey="success" matchValue="2" message={t.passwordChangedSuccessfully} type={ToastType.SUCCESS} />
       <form action={formAction}>

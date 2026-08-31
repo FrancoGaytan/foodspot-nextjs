@@ -9,11 +9,11 @@ function createRequest(path: string, token?: string): NextRequest {
 }
 
 describe('middleware', () => {
-  it('redirects the root path to the default locale', () => {
+  it('redirects the root path to the default locale event home', () => {
     const response = middleware(createRequest('/'));
 
     expect(response.status).toBe(307);
-    expect(response.headers.get('location')).toBe('http://localhost/en-US');
+    expect(response.headers.get('location')).toBe('http://localhost/en-US/eventHome');
   });
 
   it('redirects protected routes to login without a token', () => {
