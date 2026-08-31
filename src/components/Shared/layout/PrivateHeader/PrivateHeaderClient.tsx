@@ -16,14 +16,14 @@ interface PrivateHeaderClientProps {
 }
 
 const NAVIGATION_ITEMS = [
-  { href: '/eventHome', label: 'Mis Eventos' },
-  { href: '/createEvent', label: 'Crear Evento' },
-  { href: '/userProfile', label: 'Perfil' },
-  { href: '/faq', label: 'FAQ' },
+  { href: '/eventHome', label: 'Eventos', desktopLabel: 'Mis Eventos', icon: 'calendar_month' },
+  { href: '/createEvent', label: 'Crear', desktopLabel: 'Crear Evento', icon: 'add' },
+  { href: '/userProfile', label: 'Perfil', desktopLabel: 'Perfil', icon: 'person_outline' },
+  { href: '/faq', label: 'FAQ', desktopLabel: 'FAQ', icon: 'help_outline' },
 ] as const;
 
 export default function PrivateHeaderClient(props: PrivateHeaderClientProps) {
-  const { pushTo, switchLanguage } = useCustomRouter();
+  const { pushTo } = useCustomRouter();
   const pathname = usePathname();
   const { t } = useTranslation('userProfile');
   const [imageUnavailable, setImageUnavailable] = useState(false);
@@ -37,50 +37,71 @@ export default function PrivateHeaderClient(props: PrivateHeaderClientProps) {
   return (
     <div className={styles.headerWrapper}>
       <header className={styles.privateHeader}>
-        <nav className={styles.navbar}>
+        <div className={styles.navbar}>
           <LinkCustom href="/eventHome" className={styles.brand} aria-label="FoodSpot">
             <span className={styles.brandMark} aria-hidden />
             <span>FoodSpot</span>
           </LinkCustom>
 
-          <div className={styles.mainNavigation} aria-label="Navegación principal">
+          <nav
+            className={styles.mainNavigation}
+            aria-label="Navegación principal"
+          >
             {NAVIGATION_ITEMS.map(item => {
               const isActive = pathname.endsWith(item.href);
               const className = `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`;
 
               return (
-                <LinkCustom href={item.href} className={className} key={item.href}>
-                  {item.label}
+                <LinkCustom href={item.href} className={className} key={item.href} aria-current={isActive ? 'page' : undefined}>
+                  {item.desktopLabel}
                 </LinkCustom>
               );
             })}
-          </div>
+          </nav>
 
           {props.user && (
             <div className={styles.userActions}>
               <span className={styles.welcomeMsg}>
                 {t.headerWelcome} <strong>{props.user.name}</strong>
               </span>
-              <button className={styles.initialsAvatar} onClick={() => pushTo('/userProfile')} aria-label="Perfil">
+              <button type="button" className={styles.initialsAvatar} onClick={() => pushTo('/userProfile')} aria-label="Perfil">
                 {props.hasProfilePicture && !imageUnavailable ? (
                   <Image
                     src="/api/profile-image"
                     alt="Foto de perfil"
                     width={40}
                     height={40}
+                    unoptimized
+                    priority
+                    onLoad={() => setImageUnavailable(false)}
                     onError={() => setImageUnavailable(true)}
                   />
                 ) : initials}
               </button>
-              <div className={styles.languageActions}>
-                <button className={styles.spanishFlag} aria-label="Cambiar a español" onClick={() => switchLanguage('es-AR', pathname)} />
-                <button className={styles.englishFlag} aria-label="Switch to English" onClick={() => switchLanguage('en-US', pathname)} />
-              </div>
             </div>
           )}
           <LogButton user={props.user} className={styles.authAction} />
-        </nav>
+        </div>
       </header>
+      {props.user && (
+        <nav className={styles.bottomNavigation} aria-label="Navegación principal">
+          {NAVIGATION_ITEMS.map(item => {
+            const isActive = pathname.endsWith(item.href);
+
+            return (
+              <LinkCustom
+                href={item.href}
+                key={item.href}
+                className={`${styles.bottomNavLink} ${isActive ? styles.bottomNavLinkActive : ''}`}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                <span className="material-icons" aria-hidden>{item.icon}</span>
+                <span>{item.label}</span>
+              </LinkCustom>
+            );
+          })}
+        </nav>
+      )}
     </div>
   );
 }

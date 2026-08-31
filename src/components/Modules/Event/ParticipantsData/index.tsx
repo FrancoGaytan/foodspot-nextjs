@@ -11,6 +11,8 @@ import Button, { ButtonKind } from '@components/UI/Button';
 import { useModal } from '@contexts/ModalContext';
 import FastApprovalModal from './Modals/FastApprovalModal';
 import ConfirmationPayModal from './Modals/ConfirmationPayModal';
+import FoodSurvey from '../FoodSurvey';
+import { isUserIntoEvent, userIsAShoppingDesignee, userIsTheOrganizer } from '../EventBtns/eventBtnsActions';
 
 interface ParticipantsDataProps {
   event: IEvent;
@@ -75,6 +77,20 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
     );
   }
 
+  function openSurvey(): void {
+    if (!user) return;
+    open(
+      <FoodSurvey
+        eventId={props.event._id}
+        userId={user._id}
+        options={props.event.options ?? []}
+        canEdit={userIsTheOrganizer(props.event, user) || userIsAShoppingDesignee(props.event, user)}
+        closeModal={close}
+      />,
+      { title: t.surveyBtn }
+    );
+  }
+
   useEffect(() => {
     getUserByIdAction(props.userId as string)
       .then(res => setUser(res))
@@ -117,6 +133,11 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
           {t.diners}
           {props.event.members.length}/{props.event.memberLimit}
         </h3>
+        {user && props.event.state === EventStatesEnum.AVAILABLE && isUserIntoEvent(props.event, user) && (
+          <Button type="button" className={styles.surveyButton} kind={ButtonKind.TERTIARY} size="small" onClick={openSurvey} aria-label={t.surveyBtn} title={t.surveyBtn}>
+            <span className="material-icons" aria-hidden>restaurant_menu</span>
+          </Button>
+        )}
       </section>
       <section className={styles.eventParticipants}>
         {eventParticipants.map((member: EventUserResponse, i: number) => (

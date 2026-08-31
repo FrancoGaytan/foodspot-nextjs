@@ -7,9 +7,9 @@ export default function BackBtn() {
   const { pushTo } = useCustomRouter();
 
   return (
-    <section className={styles.backBtnSection} onClick={() => pushTo('/eventHome')}>
-      <button className={styles.backBtn}></button>
+    <button type="button" className={styles.backBtnSection} onClick={() => pushTo('/eventHome')}>
+      <span className={styles.backBtn} aria-hidden />
       <span className={styles.backText}>{t.backBtn}</span>
-    </section>
+    </button>
   );
 }

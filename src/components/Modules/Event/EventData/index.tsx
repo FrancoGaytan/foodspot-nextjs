@@ -8,11 +8,12 @@ import EditEventBtn from '@components/Modules/Event/EventData/EditEventBtn';
 interface EventDataProps {
   event: IEvent;
   userId?: string;
+  lang: string;
 }
 
 export default async function EventData(props: EventDataProps) {
   const event = props.event;
-  const { t } = await getTranslation('eventHome');
+  const { t } = await getTranslation('eventHome', props.lang);
 
   return (
     <div className={styles.eventDataContainer}>

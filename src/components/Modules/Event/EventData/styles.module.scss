@@ -4,37 +4,52 @@
 
 .eventDataContainer {
   position: relative;
+  padding: var(--space-md) 0 var(--space-lg);
+
   .eventDataTitle {
     display: flex;
     align-items: center;
-    margin-top: 30px;
-    gap: 10px;
+    margin: var(--space-md) var(--space-lg) var(--space-sm);
+    gap: var(--space-sm);
     @media #{variables.media-query(max, md)} {
-      justify-content: center;
+      margin-inline: var(--space-md);
     }
     .calendarLogo {
-      margin-left: 15px;
-      width: 36px;
-      height: 40px;
+      width: 2rem;
+      height: 2rem;
       background-image: url('/images/icons/calendarLogo2.png');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
     }
     .restaurantLogo {
-      margin-left: 15px;
-      width: 39px;
-      height: 40px;
+      width: 2rem;
+      height: 2rem;
       background-image: url('/images/icons/restaurantLogo.png');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
     }
     .logoTitle {
-      font-weight: bold;
-      font-size: larger;
+      color: var(--color-text);
+      font-family: var(--secondaryFont);
+      font-size: 1.125rem;
+      font-weight: 400;
     }
   }
   .infoData {
-    margin: 10px 25px;
-    font-size: 0.83em;
-    font-weight: bold;
-    @media #{variables.media-query(max, md)} {
-      justify-self: center;
-    }
+    margin: 0 var(--space-lg) var(--space-sm);
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+}
+
+html[data-theme='dark'] .eventDataContainer {
+  .calendarLogo,
+  .restaurantLogo {
+    filter: brightness(0) invert(1);
   }
 }

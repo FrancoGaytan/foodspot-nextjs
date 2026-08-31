@@ -59,11 +59,19 @@ export async function getUserByIdAction(userId: string) {
 }
 
 export async function getMembersAmountAction(eventId: string): Promise<PayCheckInfoResponse[]> {
-  return await getMembersAmount(eventId);
+  try {
+    return await getMembersAmount(eventId);
+  } catch {
+    return [];
+  }
 }
 
 export async function getMembersAndReceiptsInfoAction(eventId: string): Promise<ITransferReceiptInfoResponse[]> {
-  return await getMembersAndReceiptsInfo(eventId);
+  try {
+    return await getMembersAndReceiptsInfo(eventId);
+  } catch {
+    return [];
+  }
 }
 
 export async function editRolesAction(eventId: string, event: IEvent): Promise<IEvent> {

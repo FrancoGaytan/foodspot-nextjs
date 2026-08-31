@@ -3,24 +3,33 @@
 @use '/src/styles/custom-properties';
 
 .participantsDataContent {
+  padding: var(--space-md) 0 var(--space-lg);
+
   .participantsDataTitle {
     display: flex;
     align-items: center;
-    margin-top: 30px;
-    gap: 10px;
+    margin: var(--space-md) var(--space-lg) var(--space-sm);
+    gap: var(--space-sm);
     @media #{variables.media-query(max, md)} {
-      justify-content: center;
+      margin-inline: var(--space-md);
     }
     .participantsLogo {
-      margin-left: 15px;
-      width: 40px;
-      height: 40px;
+      width: 2rem;
+      height: 2rem;
       background-image: url('/images/icons/peopleLogo.png');
       background-size: cover;
     }
     .logoTitle {
-      font-weight: bold;
-      font-size: larger;
+      margin: 0;
+      color: var(--color-text);
+      font-family: var(--secondaryFont);
+      font-size: 1.125rem;
+      font-weight: 400;
+    }
+    .surveyButton {
+      margin-left: auto;
+      width: 2.25rem;
+      padding: 0;
     }
   }
   ::-webkit-scrollbar {
@@ -38,33 +47,36 @@
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    margin: 10px 25px;
+    margin: var(--space-sm) var(--space-lg);
+    padding-right: var(--space-xs);
     flex-grow: 1;
-    font-family: 'Raleway';
-    font-size: 12px;
-    font-weight: bold;
-    max-height: 180px;
-    @media #{variables.media-query(max, md)} {
-      align-items: center;
-    }
+    color: var(--color-text-secondary);
+    font-family: var(--primaryFont);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    max-height: 15rem;
 
     .infoDataRow {
       display: flex;
-      margin-top: 15px;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-top: var(--space-sm);
+      padding: var(--space-sm);
+      border-bottom: 1px solid var(--color-border);
 
       .infoDataUsernamePayed {
-        margin: 0 0 0 10px;
-        color: green;
+        margin: 0;
+        color: var(--color-success);
         align-self: center;
       }
       .infoDataUsernameDidntPay {
-        margin: 0 0 0 10px;
-        color: red;
+        margin: 0;
+        color: var(--color-danger);
         align-self: center;
       }
       .waitingValidationPay {
-        margin: 0 0 0 10px;
-        color: blue;
+        margin: 0;
+        color: var(--color-primary);
         align-self: center;
       }
       .fastAproveBtn {
@@ -74,7 +86,7 @@
         background-size: 70% 70%;
         background-position: center;
         background-repeat: no-repeat;
-        background-color: white;
+        background-color: var(--color-surface);
         margin-left: 15px;
         border-radius: 50%;
         box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.15);
@@ -84,4 +96,8 @@
       }
     }
   }
+}
+
+html[data-theme='dark'] .participantsDataContent .participantsLogo {
+  filter: brightness(0) invert(1);
 }

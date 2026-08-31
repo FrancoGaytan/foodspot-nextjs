@@ -25,19 +25,19 @@ export default function LogButton(props: LogButtonProps) {
   return (
     <div className={`${styles.logBtnSection} ${props.className ?? ''}`}>
       {!!user?.name ? (
-        <>
-          <button className={styles.logoutBtn} onClick={handleLogoutClick}></button>
-          <span className={styles.loginLogoutDesc} onClick={handleLogoutClick}>
+        <button type="button" className={styles.authButton} onClick={handleLogoutClick}>
+          <span className={styles.logoutBtn} aria-hidden />
+          <span className={styles.loginLogoutDesc}>
             {t.logoutBtn}
           </span>
-        </>
+        </button>
       ) : (
-        <>
-          <button className={styles.loginBtn} onClick={() => pushTo(`/login`)}></button>
-          <span className={styles.loginLogoutDesc} onClick={() => pushTo(`/login`)}>
+        <button type="button" className={styles.authButton} onClick={() => pushTo(`/login`)}>
+          <span className={styles.loginBtn} aria-hidden />
+          <span className={styles.loginLogoutDesc}>
             {t.loginBtn}
           </span>
-        </>
+        </button>
       )}
     </div>
   );

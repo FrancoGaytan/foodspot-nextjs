@@ -129,11 +129,13 @@ export async function putServer<T, P = unknown>(path: string, payload?: P, signa
 export async function putFileServer<T>(path: string, formFile: File, signal?: AbortSignal): Promise<T> {
   const formData = new FormData();
   formData.append('file', formFile);
+  const token = await getToken();
 
   const res = await fetch(buildUrl(path), {
     method: 'PUT',
     body: formData,
     signal,
+    headers: token ? { Authorization: token } : undefined,
     cache: 'no-store',
   });
 

@@ -90,6 +90,7 @@ After those checks pass, deploy the branch to the existing frontend test environ
 - Add an aggregated event-home endpoint to remove the current `N + 2` request pattern. The proposal and acceptance criteria are described below.
 - Align authentication/API contracts if the backend changes token or response formats.
 - Add direct event invitations. The legacy UI has an invitation selector, but the current backend exposes no invitation route or event payload contract for invited users. The Next.js app intentionally keeps the creation step informational until that API contract exists.
+- Add event chat. The prototype presents chat as a future product capability, but the current backend exposes no message model, event chat endpoint, real-time transport, retention policy, or authorization contract. The Next.js app must not show a sendable chat interface until those contracts exist.
 
 ## Event Home Aggregated Data Endpoint
 

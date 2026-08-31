@@ -6,6 +6,8 @@ import '@cyntler/react-doc-viewer/dist/index.css';
 import ToastContainer from '@components/UI/Toaster';
 import { AuthProvider } from '@contexts/AuthContext';
 import { ModalProvider } from '@contexts/ModalContext';
+import ThemeInitializer from '@components/Shared/ThemeInitializer/index';
+import PageTransition from '@components/Shared/PageTransition';
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] });
@@ -13,6 +15,9 @@ const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin']
 export const metadata: Metadata = {
   title: 'FoodSpot-NextJs',
   description: 'FoodSpot es una aplicacion de gestion de eventos y usuarios',
+  icons: {
+    icon: '/images/icons/logo-rojo.png',
+  },
 };
 
 interface RootLayoutProps {
@@ -31,9 +36,11 @@ export default async function RootLayout(props: RootLayoutProps) {
       </head>
 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ThemeInitializer />
         <AuthProvider>
           <ModalProvider>
-          <ToastContainer /> {props.children}
+            <ToastContainer />
+            <PageTransition>{props.children}</PageTransition>
           </ModalProvider>
         </AuthProvider>
       </body>
