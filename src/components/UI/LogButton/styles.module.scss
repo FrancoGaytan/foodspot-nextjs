@@ -5,8 +5,20 @@
 .logBtnSection {
   display: flex;
 
+  .authButton {
+    display: flex;
+    align-items: center;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    color: inherit;
+    cursor: pointer;
+  }
+
   .logoutBtn {
-    margin-top: 13px;
+    display: block;
+    flex: 0 0 auto;
+    margin: 0;
     background-image: url('/images/icons/icons-logout-white.png');
     height: 35px;
     width: 35px;
@@ -15,7 +27,7 @@
     cursor: pointer;
   }
   .loginBtn {
-    align-self: center;
+    display: block;
     background-image: url('/images/icons/icons-login-white.png');
     height: 28px;
     width: 28px;
@@ -28,11 +40,16 @@
     font-weight: bold;
     font-size: 16px;
     margin-left: 5px;
-    align-self: center;
+    line-height: 1;
     cursor: pointer;
   }
-  &:hover {
-    cursor: pointer;
+
+  .authButton:hover {
     transform: scale(1.04);
+  }
+
+  .authButton:focus-visible {
+    outline: 2px solid var(--focus-ring-color);
+    outline-offset: 4px;
   }
 }

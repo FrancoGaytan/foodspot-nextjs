@@ -2,27 +2,71 @@
 
 @mixin define {
   :root {
-  --primaryFont: var(--font-geist-sans), sans-serif;
-  --secondaryFont: var(--font-geist-sans), sans-serif;
+  --primaryFont: 'Raleway', sans-serif;
+  --secondaryFont: 'Della Respira', serif;
 
   --color-text: #0f172a;
   --color-text-secondary: #475569;
+  --color-text-muted: #475569;
+  --color-text-subtle: #64748b;
   --color-surface: #ffffff;
   --color-bg: #f8fafc;
+  --color-bg-muted: #f1f5f9;
   --color-border: #cbd5e1;
+  --color-border-strong: #94a3b8;
+  --color-surface-border: rgba(203, 213, 225, 0.85);
+  --color-glass-border: rgba(255, 255, 255, 0.65);
+  --color-overlay: rgba(15, 23, 42, 0.65);
+  --color-header: #0f172a;
+  --color-page-accent: rgba(37, 99, 235, 0.06);
   --color-brand: #dc2626;
   --color-brand-hover: #b91c1c;
+  --color-brand-light: #fee2e2;
+  --color-brand-soft-text: #991b1b;
   --color-primary: #1d4ed8;
   --color-primary-hover: #1e3a8a;
+  --color-primary-light: #dbeafe;
+  --color-primary-soft-text: #1e3a8a;
+  --color-primary-border: #2563eb;
   --color-success: #15803d;
+  --color-success-light: #dcfce7;
+  --color-danger: #b91c1c;
+  --color-danger-light: #fee2e2;
+  --color-danger-soft-text: #991b1b;
+  --color-warning: #b45309;
+  --color-warning-light: #fef3c7;
+  --color-info: #0369a1;
+  --color-info-light: #e0f2fe;
   --color-on-dark: #ffffff;
   --color-on-dark-secondary: #e2e8f0;
+  --color-disabled-bg: #e2e8f0;
+  --color-disabled-text: #64748b;
+  --color-placeholder: #64748b;
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
-  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 18px 40px -12px rgba(15, 23, 42, 0.24);
+  --radius-pill: 999px;
+  --shadow-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06), 0 2px 8px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 2px 4px rgba(15, 23, 42, 0.04), 0 10px 24px -8px rgba(15, 23, 42, 0.14);
+  --shadow-lg: 0 4px 8px rgba(15, 23, 42, 0.05), 0 18px 40px -12px rgba(15, 23, 42, 0.2);
   --focus-ring: 0 0 0 3px #bfdbfe;
+  --focus-ring-color: #2563eb;
+  --elevation-resting: var(--shadow-sm), var(--shadow-highlight);
+  --elevation-raised: var(--shadow-md), var(--shadow-highlight);
+  --elevation-overlay: var(--shadow-lg);
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --motion-fast: 160ms;
+  --motion-base: 240ms;
+  --motion-slow: 320ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Compatibility aliases for the existing component library. */
   --btnPrimary: var(--color-brand);
@@ -34,7 +78,7 @@
   --backgroundNeutralLighter: var(--color-on-dark);
   --backgroundNeutral: #e2e8f0;
   --textPrimary: var(--color-text);
-  --placeholderColor: #64748b;
+  --placeholderColor: var(--color-placeholder);
   --availabilityPrimary: var(--color-success);
   --subscribedPrimary: var(--color-primary);
   --messageSuccessPrimary: var(--color-success);
@@ -52,4 +96,58 @@
   --dropShadow2: 0 1px 2px rgba(15, 23, 42, 0.08);
     --inputShadow: 0 1px 2px rgba(15, 23, 42, 0.12);
   }
+
+    html[data-theme='dark'] {
+      --color-text: #f8fafc;
+      --color-text-secondary: #cbd5e1;
+      --color-text-muted: #94a3b8;
+      --color-text-subtle: #94a3b8;
+      --color-surface: #172033;
+      --color-bg: #0b1220;
+      --color-bg-muted: #202c40;
+      --color-border: #34445f;
+      --color-border-strong: #52637d;
+      --color-surface-border: rgba(82, 99, 125, 0.82);
+      --color-glass-border: rgba(203, 213, 225, 0.18);
+      --color-overlay: rgba(2, 6, 23, 0.8);
+      --color-header: #0a1120;
+      --color-page-accent: rgba(96, 165, 250, 0.1);
+      --color-brand-light: #48171b;
+      --color-brand-soft-text: #fca5a5;
+      --color-primary: #60a5fa;
+      --color-primary-hover: #93c5fd;
+      --color-primary-light: #18345f;
+      --color-primary-soft-text: #bfdbfe;
+      --color-primary-border: #93c5fd;
+      --color-success: #4ade80;
+      --color-success-light: #16452b;
+      --color-danger: #fb7185;
+      --color-danger-light: #4a1923;
+      --color-danger-soft-text: #fecdd3;
+      --color-warning: #fbbf24;
+      --color-warning-light: #4a3810;
+      --color-info: #7dd3fc;
+      --color-info-light: #123c59;
+      --color-on-dark: #ffffff;
+      --color-on-dark-secondary: #dbeafe;
+      --color-disabled-bg: #334155;
+      --color-disabled-text: #94a3b8;
+      --color-placeholder: #94a3b8;
+      --shadow-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24), 0 2px 8px rgba(0, 0, 0, 0.2);
+      --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.26), 0 10px 24px -8px rgba(0, 0, 0, 0.42);
+      --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.3), 0 18px 40px -12px rgba(0, 0, 0, 0.5);
+      --focus-ring: 0 0 0 3px rgba(147, 197, 253, 0.38);
+      --focus-ring-color: #bfdbfe;
+      --backgroundSecondaryLighter: var(--color-primary-light);
+      --backgroundNeutralDarker: var(--color-header);
+      --backgroundNeutral: var(--color-bg-muted);
+      --messageSuccessSecondary: var(--color-success-light);
+      --messageInfoPrimary: var(--color-info);
+      --messageInfoSecondary: var(--color-info-light);
+      --messageErrorSecondary: var(--color-danger-light);
+      --messageWarningSecondary: var(--color-warning-light);
+      --inputShadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    }
 }

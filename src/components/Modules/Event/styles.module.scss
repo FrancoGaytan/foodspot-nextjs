@@ -3,85 +3,89 @@
 @use '/src/styles/custom-properties';
 
 .eventContainer {
-  display: flex;
-  align-items: center;
-  position: relative;
-  flex-direction: column;
-  margin-top: 20px;
-  font-family: 'Raleway';
+  width: min(100%, 75rem);
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-md) calc(var(--space-2xl) + 2.5rem);
+  font-family: var(--primaryFont);
 
   .eventTitle {
-    font-family: 'Raleway';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 50px;
-    line-height: 66px;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    text-decoration: solid underline var(--btnPrimary);
-    opacity: 0;
-    animation: fadeInTitle 2s ease forwards;
-    @keyframes fadeInTitle {
-      to {
-        opacity: 1;
-      }
-    }
+    display: flex;
+    align-items: flex-end;
+    min-height: 13rem;
+    margin: var(--space-md) 0 var(--space-xl);
+    padding: var(--space-xl);
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-lg);
+    background:
+      linear-gradient(90deg, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.38)),
+      url('/images/imageMeat2.png') center / cover;
+    box-shadow: var(--shadow-lg);
+    color: var(--color-on-dark);
+    font-family: var(--secondaryFont);
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
   }
 
   .eventContent {
-    display: flex;
-    flex-direction: row;
-    width: 90%;
-    gap: 20px;
-    min-height: 400px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
+    gap: var(--space-lg);
     align-items: stretch;
 
     @media #{variables.media-query(max, md)} {
-      flex-direction: column;
-      min-height: unset;
+      grid-template-columns: 1fr;
     }
 
     .leftColumn,
     .rightColumn {
-      flex: 1;
-      width: 100%;
-      background-color: var(--eventPrimaryBackground);
-      border-radius: 10px;
+      min-width: 0;
+      background: var(--color-surface);
+      border: 1px solid var(--color-surface-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--elevation-raised);
       display: flex;
       flex-direction: column;
-      opacity: 0;
-      transform: translate(10px, 10px);
-    }
-
-    .leftColumn {
-      animation: fadeInLeftColumn 1s ease forwards;
-      @keyframes fadeInLeftColumn {
-        to {
-          opacity: 1;
-          transform: translate(0, 0);
-        }
-      }
-    }
-    .rightColumn {
-      animation: fadeInRightColumn 1s ease forwards;
-      animation-delay: 0.7s;
-      @keyframes fadeInRightColumn {
-        to {
-          opacity: 1;
-          transform: translate(0, 0);
-        }
-      }
     }
   }
 
   .btnSection {
-    gap: 5px;
     display: flex;
-    flex-direction: row;
-    margin-top: 20px;
-    margin-bottom: 70px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: center;
+    gap: var(--space-sm);
+    margin: var(--space-xl) 0 0;
+    padding: 0;
+
+    button {
+      flex: 0 1 auto;
+      min-width: 0;
+      white-space: nowrap;
+    }
+  }
+}
+
+@media #{variables.media-query(max, md)} {
+  .eventContainer {
+    padding-top: var(--space-md);
+
+    .eventTitle {
+      min-height: 10rem;
+      margin-bottom: var(--space-lg);
+      padding: var(--space-lg);
+      font-size: 1.5rem;
+    }
+
+    .btnSection {
+      gap: var(--space-xs);
+
+      button {
+        min-height: 2rem;
+        padding: 0.35rem 0.5rem;
+        font-size: 0.72rem;
+      }
+    }
   }
 }

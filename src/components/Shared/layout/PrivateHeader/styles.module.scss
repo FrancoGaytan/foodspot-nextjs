@@ -5,10 +5,13 @@
 .headerWrapper {
   .privateHeader {
     min-height: 4.25rem;
-    background-color: #111827;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--color-header);
     display: flex;
     border-bottom: 1px solid rgba(148, 163, 184, 0.16);
-    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.16);
+    box-shadow: var(--shadow-lg);
 
     .navbar {
       display: flex;
@@ -24,7 +27,7 @@
         display: inline-flex;
         align-items: center;
         gap: 0.7rem;
-        color: #f8fafc;
+        color: var(--color-on-dark);
         font-family: var(--secondaryFont);
         font-size: 1.15rem;
         font-weight: 800;
@@ -35,8 +38,7 @@
       .brandMark {
         width: 1.35rem;
         height: 1.8rem;
-        background: #ef2020;
-        clip-path: polygon(54% 0, 80% 35%, 67% 45%, 92% 68%, 54% 100%, 13% 75%, 32% 53%, 8% 39%);
+        background: url('/images/icons/logo-rojo.png') center / contain no-repeat;
       }
 
       .mainNavigation {
@@ -45,21 +47,21 @@
         gap: 0.1rem;
         padding: 0.25rem;
         border: 1px solid rgba(148, 163, 184, 0.3);
-        border-radius: 999px;
+        border-radius: var(--radius-pill);
         background: rgba(30, 41, 59, 0.62);
       }
 
       .navLink {
         padding: 0.6rem 0.95rem;
         border-radius: 999px;
-        color: #cbd5e1;
+        color: var(--color-on-dark-secondary);
         font-size: 0.875rem;
         font-weight: 700;
         text-decoration: none;
         white-space: nowrap;
 
         &:hover {
-          color: #ffffff;
+          color: var(--color-on-dark);
           background: rgba(96, 165, 250, 0.18);
         }
 
@@ -69,9 +71,9 @@
       }
 
       .navLinkActive {
-        background: #2563eb;
-        box-shadow: 0 5px 12px rgba(37, 99, 235, 0.38);
-        color: #ffffff;
+        background: var(--color-primary);
+        box-shadow: 0 5px 12px rgba(29, 78, 216, 0.38);
+        color: var(--color-on-dark);
       }
 
       .userActions {
@@ -82,12 +84,12 @@
       }
 
       .welcomeMsg {
-        color: #dbe3ef;
+        color: var(--color-on-dark-secondary);
         font-size: 0.875rem;
         white-space: nowrap;
 
         strong {
-          color: #ffffff;
+          color: var(--color-on-dark);
         }
       }
 
@@ -98,8 +100,8 @@
         border: 0;
         border-radius: 50%;
         overflow: hidden;
-        background: #2563eb;
-        color: #ffffff;
+        background: var(--color-primary);
+        color: var(--color-on-dark);
         font-size: 0.7rem;
         font-weight: 800;
         cursor: pointer;
@@ -111,51 +113,40 @@
         }
       }
 
-      .languageActions {
-        display: flex;
-        gap: 0.35rem;
-      }
-
-      .spanishFlag,
-      .englishFlag {
-        width: 1.35rem;
-        height: 0.9rem;
-        border: 0;
-        border-radius: 1px;
-        background-size: cover;
-        cursor: pointer;
-      }
-
-      .spanishFlag {
-        background-image: url('/images/icons/spainFlag.png');
-      }
-
-      .englishFlag {
-        background-image: url('/images/icons/usaFlag.jpg');
-      }
-
       .authAction {
         display: block;
         margin-left: 0.15rem;
 
-        button {
-          display: none;
-        }
-
-        span {
+        .authButton {
           display: inline-flex;
           align-items: center;
+          justify-content: center;
           min-height: 2.25rem;
-          margin: 0;
-          padding: 0 0.85rem;
+          padding: 0.3rem 0.65rem;
           border: 1px solid rgba(148, 163, 184, 0.52);
-          border-radius: 999px;
-          color: #f8fafc;
+          border-radius: var(--radius-pill);
+        }
+
+        .logoutBtn,
+        .loginBtn {
+          width: 1.15rem;
+          height: 1.15rem;
+          margin: 0;
+        }
+
+        .loginLogoutDesc {
+          margin-left: 0.35rem;
+          color: var(--color-on-dark);
           font-size: 0.75rem;
           font-weight: 800;
         }
       }
     }
+
+  }
+
+  .bottomNavigation {
+    display: none;
   }
 }
 
@@ -169,8 +160,7 @@
       max-width: 48vw;
     }
 
-    .welcomeMsg,
-    .languageActions {
+    .welcomeMsg {
       display: none;
     }
   }
@@ -178,14 +168,69 @@
 
 @media #{variables.media-query(max, md)} {
   .headerWrapper .privateHeader .navbar {
-    .brand span:last-child,
-    .mainNavigation,
+    .mainNavigation {
+      display: none;
+    }
+
     .userActions {
       display: none;
     }
 
     .authAction {
+      display: flex;
       margin-left: auto;
+
+      .authButton {
+        width: 2.25rem;
+        min-height: 2.25rem;
+        padding: 0;
+      }
+
+      .loginLogoutDesc {
+        display: none;
+      }
     }
+  }
+
+  .headerWrapper .bottomNavigation {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 120;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    padding: 0.4rem var(--space-sm) calc(0.4rem + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--color-border);
+    background: color-mix(in srgb, var(--color-surface) 94%, transparent);
+    box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.1);
+    backdrop-filter: blur(12px);
+  }
+
+  .headerWrapper .bottomNavLink {
+    display: grid;
+    min-width: 0;
+    min-height: 3.5rem;
+    place-items: center;
+    align-content: center;
+    gap: 0.15rem;
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-decoration: none;
+
+    :global(.material-icons) {
+      font-size: 1.375rem;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--focus-ring-color);
+      outline-offset: -3px;
+    }
+  }
+
+  .headerWrapper .bottomNavLinkActive {
+    color: var(--color-primary);
   }
 }

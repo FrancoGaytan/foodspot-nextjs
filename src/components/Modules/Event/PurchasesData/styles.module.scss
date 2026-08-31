@@ -3,69 +3,119 @@
 @use '/src/styles/custom-properties';
 
 .purchaseDataContainer {
+  padding: var(--space-md) 0 var(--space-lg);
+
   .purchaseDataTitle {
     display: flex;
     align-items: center;
-    margin-top: 30px;
-    gap: 10px;
-    @media #{variables.media-query(max, md)} {
-      justify-content: center;
-    }
+    gap: var(--space-sm);
+    margin: var(--space-md) var(--space-lg) var(--space-sm);
+
     .purchaseLogo {
-      margin-left: 15px;
-      width: 40px;
-      height: 40px;
-      background-image: url('/images/icons/carritodecompras.png');
-      background-size: cover;
+      width: 2rem;
+      height: 2rem;
+      background: url('/images/icons/carritodecompras.png') center / contain no-repeat;
     }
+
     .logoTitle {
-      font-weight: bold;
-      font-size: larger;
+      margin: 0;
+      color: var(--color-text);
+      font-family: var(--secondaryFont);
+      font-size: 1.125rem;
+      font-weight: 400;
     }
   }
+
+  .purchasesList {
+    display: grid;
+    gap: var(--space-xs);
+    max-height: 15rem;
+    overflow-y: auto;
+    margin: var(--space-sm) var(--space-lg) 0;
+    padding-right: var(--space-xs);
+
+    .purchasesRow {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr) auto auto;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm);
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text-secondary);
+      font-family: var(--primaryFont);
+      font-size: 0.8125rem;
+      font-weight: 600;
+
+      span {
+        min-width: 0;
+        overflow-wrap: anywhere;
+      }
+
+      span:nth-child(3) {
+        color: var(--color-text);
+        font-weight: 800;
+        white-space: nowrap;
+      }
+    }
+
+    .deleteBtn {
+      display: grid;
+      width: 2rem;
+      height: 2rem;
+      min-height: 2rem;
+      place-items: center;
+      padding: 0;
+      border: 1px solid var(--color-danger);
+      border-radius: 50%;
+      background: var(--color-surface);
+      color: var(--color-danger);
+      box-shadow: none;
+      font-family: var(--primaryFont);
+      font-size: 1rem;
+
+      &:hover {
+        transform: none;
+        background: var(--color-danger);
+        color: var(--color-on-dark);
+      }
+    }
+  }
+
   ::-webkit-scrollbar {
     width: 4px;
   }
-  ::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
 
   ::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.554);
-    border-radius: 1px;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-border);
   }
-  .purchasesList {
-    margin: 10px 25px;
-    font-size: 0.83em;
-    font-weight: bold;
-    max-height: 180px;
-    @media #{variables.media-query(max, md)} {
-      justify-self: center;
+}
+
+html[data-theme='dark'] .purchaseDataContainer .purchaseLogo {
+  filter: brightness(0) invert(1);
+}
+
+@media #{variables.media-query(max, md)} {
+  .purchaseDataContainer {
+    .purchaseDataTitle,
+    .purchasesList {
+      margin-inline: var(--space-md);
     }
-    .purchasesRow {
-      font-family: 'Raleway';
-      font-size: 12px;
-      font-weight: bold;
-      display: grid;
-      grid-template-columns: 1fr auto auto auto;
-      align-items: center;
-      padding: 0.2rem 0;
-      gap: 5px;
-    }
-    .deleteBtn {
-      background-image: url('/images/icons/deleteIcon.png');
-      width: 27px;
-      height: 27px;
-      background-size: 50% 50%;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-color: white;
-      border-radius: 50%;
-      margin: auto 0 auto 10px;
-      cursor: pointer;
-      box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.15);
-      &:hover {
-        scale: 1.1;
+
+    .purchasesList .purchasesRow {
+      grid-template-columns: minmax(0, 1fr) auto;
+
+      span:nth-child(2) {
+        grid-column: 1;
+      }
+
+      span:nth-child(3) {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+      }
+
+      .deleteBtn {
+        grid-column: 2;
       }
     }
   }

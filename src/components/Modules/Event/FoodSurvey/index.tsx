@@ -102,9 +102,18 @@ export default function FoodSurvey(props: FoodSurveyProps) {
     }
   }
 
+  const allVoted = options.length > 0 && options.every(option => option.participants.some(participant => participant._id === props.userId));
+
   return <div className={styles.wrapper}>
-    <div className={styles.options}>
-      <div className={styles.heading}><span>Opción</span><span>Votos</span><span>Mi voto</span><button type="button" onClick={toggleAllVotes} disabled={isPending}>{options.length > 0 && options.every(option => option.participants.some(participant => participant._id === props.userId)) ? 'Quitar todos' : 'Seleccionar todos'}</button></div>
+    <div className={styles.options} aria-busy={isPending}>
+      <div className={styles.heading}>
+        <span>Opción</span>
+        <span>Votos</span>
+        <span>Mi voto</span>
+        <button type="button" className={styles.bulkButton} onClick={toggleAllVotes} disabled={isPending || options.length === 0}>
+          {allVoted ? 'Quitar todos' : 'Seleccionar todos'}
+        </button>
+      </div>
       {options.map(option => {
         const voted = option.participants.some(participant => participant._id === props.userId);
         const totalVotes = options.reduce((total, item) => total + item.participants.length, 0);
@@ -115,14 +124,20 @@ export default function FoodSurvey(props: FoodSurveyProps) {
             <div className={styles.progress}><span style={{ width: `${percentage}%` }} /></div>
           </div>
           <span className={styles.votes}>{option.participants.length}</span>
-          <label className={styles.checkbox}><input type="checkbox" checked={voted} onChange={() => toggleVote(option)} /><span /></label>
-          <div className={styles.actions}><button type="button" onClick={() => setViewing(option)} aria-label="Ver participantes">◉</button>{props.canEdit && <button type="button" onClick={() => removeOption(option._id)} aria-label="Eliminar opción">x</button>}</div>
+          <label className={styles.checkbox}>
+            <input type="checkbox" checked={voted} onChange={() => toggleVote(option)} disabled={isPending} />
+            <span className={styles.checkmark} aria-hidden />
+          </label>
+          <div className={styles.actions}>
+            <button type="button" onClick={() => setViewing(option)} aria-label="Ver participantes" title="Ver participantes"><span className="material-icons" aria-hidden>visibility</span></button>
+            {props.canEdit && <button type="button" onClick={() => removeOption(option._id)} aria-label="Eliminar opción" title="Eliminar opción"><span className="material-icons" aria-hidden>delete</span></button>}
+          </div>
         </div>;
       })}
     </div>
-    {viewing && <div className={styles.detail}><strong>{viewing.title}</strong>{viewing.participants.length ? viewing.participants.map(participant => <span key={participant._id}>{participant.name} {participant.lastName}</span>) : <span>Sin votos todavía</span>}<Button type="button" kind={ButtonKind.TERTIARY} size="small" onClick={() => setViewing(null)}>Cerrar detalle</Button></div>}
-    <p>{missing === 0 ? 'Todos votaron' : `${missing} participante(s) sin votar`}</p>
-    {props.canEdit && <div className={styles.add}><input value={newTitle} onChange={event => setNewTitle(event.target.value)} placeholder="Nueva opción" /><Button type="button" kind={ButtonKind.PRIMARY} size="small" onClick={addOption} disabled={isPending}>Agregar</Button></div>}
-    <Button type="button" kind={ButtonKind.TERTIARY} size="small" onClick={props.closeModal}>Cerrar</Button>
+    {viewing && <section className={styles.detail} aria-live="polite"><strong>{viewing.title}</strong><div className={styles.participants}>{viewing.participants.length ? viewing.participants.map((participant, index) => <span key={`${participant._id ?? 'participant'}-${participant.name}-${participant.lastName}-${index}`}>{participant.name} {participant.lastName}</span>) : <span>Sin votos todavía</span>}</div><Button type="button" kind={ButtonKind.TERTIARY} size="small" onClick={() => setViewing(null)}>Volver a las opciones</Button></section>}
+    <p className={styles.status}>{missing === 0 ? 'Todos votaron' : `${missing} participante(s) sin votar`}</p>
+    {props.canEdit && <div className={styles.add}><input value={newTitle} onChange={event => setNewTitle(event.target.value)} onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); addOption(); } }} placeholder="Nueva opción" /><Button type="button" kind={ButtonKind.PRIMARY} size="small" onClick={addOption} disabled={isPending || !newTitle.trim()}>Agregar</Button></div>}
+    <div className={styles.footer}><Button type="button" kind={ButtonKind.TERTIARY} size="small" onClick={props.closeModal}>Cerrar</Button></div>
   </div>;
 }

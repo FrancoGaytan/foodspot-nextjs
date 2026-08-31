@@ -10,19 +10,20 @@ import PurchasesList from './PurchasesList';
 interface PurchasesDataProps {
   event: IEvent;
   user: IUserFromCookie;
+  lang: string;
 }
 
 export default async function PurchasesData(props: PurchasesDataProps) {
   const event = props.event;
   const user = await getUserById(props.user?.id);
   const purchasesMade = isUserIntoEvent(event, user) ? await getPurchaseReceipts(props.event._id) : [];
-  const { t } = await getTranslation('eventHome');
+  const { t } = await getTranslation('eventHome', props.lang);
 
   return (
     <div className={styles.purchaseDataContainer}>
       <section className={styles.purchaseDataTitle}>
         <div className={styles.purchaseLogo}></div>
-        <h3 className={styles.logoTitle}>{t.organizationTitle}</h3>
+        <h3 className={styles.logoTitle}>{t.purchasesMade}</h3>
       </section>
       {isUserIntoEvent(event, user) && (
         <PurchasesList

@@ -1,6 +1,6 @@
 'use server';
 
-import { putServer } from '@services/httpServer';
+import { putFileServer, putServer } from '@services/httpServer';
 import { getUserFromCookieServer } from '@utils/cookies/localeCookiesServer';
 
 export type ProfileActionState = { success: boolean; error?: 'unauthorized' | 'updateFailed' };
@@ -31,4 +31,15 @@ export async function updateProfile(_previousState: ProfileActionState, formData
     console.error('Error updating profile:', error);
     return { success: false, error: 'updateFailed' };
   }
+}
+
+export async function updateProfileImage(formData: FormData): Promise<void> {
+  const user = await getUserFromCookieServer();
+  const file = formData.get('file');
+
+  if (!user || !(file instanceof File) || !file.type.startsWith('image/')) {
+    throw new Error('Invalid profile image');
+  }
+
+  await putFileServer(`/users/editProfilePicture/${user.id}`, file);
 }

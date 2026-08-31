@@ -25,6 +25,12 @@ interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export default function Button(props: PropsWithChildren<IButtonProps>): JSX.Element {
+  const buttonProps = { ...props };
+  delete buttonProps.children;
+  delete buttonProps.className;
+  delete buttonProps.kind;
+  delete buttonProps.size;
+
   const baseClasses = [styles.button, styles[`size-${props.size ?? 'auto'}`]];
 
   const conditionalClasses = {
@@ -38,7 +44,7 @@ export default function Button(props: PropsWithChildren<IButtonProps>): JSX.Elem
   };
 
   return (
-    <button onClick={props.onClick} {...className(baseClasses, conditionalClasses)} style={{ ...props.style }} id={props.id}>
+    <button {...buttonProps} {...className(baseClasses, conditionalClasses)} style={props.style}>
       {props.children}
     </button>
   );

@@ -15,9 +15,7 @@ import {
   showQuitEventBtn,
   showReadyToPayBtn,
   showReopenEventBtn,
-  isUserIntoEvent,
   userIsAShoppingDesignee,
-  userIsTheOrganizer,
 } from './eventBtnsActions';
 import { IUserFromCookie } from '@utils/cookies/localeCookies';
 import { IPublicUser } from '@models/user';
@@ -36,7 +34,6 @@ import { useModal } from '@contexts/ModalContext';
 import PaymentForm from '@components/Modules/PaymentForm';
 import PurchaseReceiptForm from '@components/Modules/PurchaseReceiptForm';
 import AssignationTable from '@components/Modules/Event/AssignationTable';
-import FoodSurvey from '@components/Modules/Event/FoodSurvey';
 
 interface EventBtnsProps {
   event: IEvent;
@@ -52,6 +49,8 @@ export default function EventBtns(props: EventBtnsProps) {
   const [eventParticipantsInfo, setEventParticipantsInfo] = useState<ITransferReceiptInfoResponse[]>([]);
   const [isPending, setIsPending] = useState(false);
   const myInfo = eventPaymentInfo.find((member: PayCheckInfoResponse) => member.userId === props.user.id);
+  const hasPurchaseReceipts = props.event.purchaseReceipts.length > 0;
+  const canLoadPaymentInfo = hasPurchaseReceipts && props.event.state === EventStatesEnum.READY_FOR_PAYMENT;
 
   async function updateEventState(state: EventStatesEnum): Promise<void> {
     if (isPending) return;
@@ -155,19 +154,6 @@ export default function EventBtns(props: EventBtnsProps) {
     );
   }
 
-  function openSurvey(): void {
-    open(
-      <FoodSurvey
-        eventId={props.event._id}
-        userId={props.user.id}
-        options={props.event.options ?? []}
-        canEdit={Boolean(user && (userIsTheOrganizer(props.event, user) || userIsAShoppingDesignee(props.event, user)))}
-        closeModal={close}
-      />,
-      { title: t.surveyBtn }
-    );
-  }
-
   useEffect(() => {
     async function fetchUser() {
       const fetchedUser = await getUserByIdAction(props.user.id);
@@ -178,19 +164,37 @@ export default function EventBtns(props: EventBtnsProps) {
 
   useEffect(() => {
     async function fetchEventParticipantsInfo() {
-      const fetchedEventParticipantsInfo = await getMembersAndReceiptsInfoAction(props.event._id);
-      setEventParticipantsInfo(fetchedEventParticipantsInfo);
+      if (!canLoadPaymentInfo) {
+        setEventParticipantsInfo([]);
+        return;
+      }
+
+      try {
+        const fetchedEventParticipantsInfo = await getMembersAndReceiptsInfoAction(props.event._id);
+        setEventParticipantsInfo(fetchedEventParticipantsInfo);
+      } catch {
+        setEventParticipantsInfo([]);
+      }
     }
     fetchEventParticipantsInfo();
-  }, [props.event._id]);
+  }, [canLoadPaymentInfo, props.event._id]);
 
   useEffect(() => {
     async function fetchEventPaymentInfo() {
-      const fetchedEventPaymentInfo = await getMembersAmountAction(props.event._id);
-      setEventPaymentInfo(fetchedEventPaymentInfo);
+      if (!canLoadPaymentInfo) {
+        setEventPaymentInfo([]);
+        return;
+      }
+
+      try {
+        const fetchedEventPaymentInfo = await getMembersAmountAction(props.event._id);
+        setEventPaymentInfo(fetchedEventPaymentInfo);
+      } catch {
+        setEventPaymentInfo([]);
+      }
     }
     fetchEventPaymentInfo();
-  }, [props.event._id]);
+  }, [canLoadPaymentInfo, props.event._id]);
 
 
   return (
@@ -241,11 +245,6 @@ export default function EventBtns(props: EventBtnsProps) {
           {props.event.state === EventStatesEnum.READY_FOR_PAYMENT && userIsAShoppingDesignee(props.event, user) && (
             <Button onClick={openAssignationTable} className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
               {t.purchasesMade}
-            </Button>
-          )}
-          {props.event.state === EventStatesEnum.AVAILABLE && user && isUserIntoEvent(props.event, user) && (
-            <Button onClick={openSurvey} className={styles.btnEvent} kind={ButtonKind.SECONDARY} size="short">
-              {t.surveyBtn}
             </Button>
           )}
           {showNewPurchaseReceiptBtn(props.event, user) && (

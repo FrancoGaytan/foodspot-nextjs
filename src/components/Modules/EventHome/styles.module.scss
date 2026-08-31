@@ -8,10 +8,7 @@
   flex-direction: column;
   gap: 2.5rem;
   padding: 2rem clamp(1rem, 4vw, 4rem) 5rem;
-  background:
-    radial-gradient(circle at 0 0, rgba(219, 234, 254, 0.72), transparent 28rem),
-    radial-gradient(circle at 100% 55%, rgba(254, 226, 226, 0.52), transparent 24rem),
-    var(--color-bg);
+  background: var(--color-bg);
 
   .header {
     width: 100%;
@@ -147,4 +144,8 @@
     width: min(100%, 75rem);
     margin-bottom: 2rem;
   }
+}
+
+html[data-theme='dark'] .eventHomeContent {
+  background: var(--color-bg);
 }

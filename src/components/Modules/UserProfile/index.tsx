@@ -1,9 +1,15 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
+import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
 import type { IPublicUser } from '@models/user';
-import { updateProfile, type ProfileActionState } from './actions';
+import { updateProfile, updateProfileImage, type ProfileActionState } from './actions';
+import { useCustomRouter } from '@hooks/useCustomRouter';
+import { useTranslation } from '@hooks/useTranslation';
 import styles from './styles.module.scss';
+import ThemeSelector from './ThemeSelector';
+import SegmentedControl from '@components/UI/SegmentedControl';
 
 interface UserProfileProps {
   user: IPublicUser | null;
@@ -13,89 +19,155 @@ type ProfileData = Pick<IPublicUser, 'name' | 'lastName' | 'email' | 'alternativ
 
 const INITIAL_STATE: ProfileActionState = { success: false };
 const DIETS = [
-  ['vegan', 'Vegana', 'Sin productos de origen animal'],
-  ['vegetarian', 'Vegetariana', 'Sin carne ni pescado'],
-  ['celiac', 'Celíaca', 'Sin gluten'],
-  ['hypertensive', 'Hipertensa', 'Baja en sodio'],
+  ['vegan', 'veganDiet', 'veganDietDescription'],
+  ['vegetarian', 'vegetarianDiet', 'vegetarianDietDescription'],
+  ['celiac', 'celiacDiet', 'celiacDietDescription'],
+  ['hypertensive', 'hypertensiveDiet', 'hypertensiveDietDescription'],
 ] as const;
 const NOTIFICATIONS = [
-  ['newEvent', 'Nuevo evento'],
-  ['eventStart', 'Inicio de evento'],
-  ['penalizationStart', 'Inicio de penalización'],
-  ['penalizationOneWeek', 'Recordatorio de penalización'],
+  ['newEvent', 'newEventNotification'],
+  ['eventStart', 'eventComingNotification'],
+  ['penalizationStart', 'penalizationStartedNotification'],
+  ['penalizationOneWeek', 'oneWeekDebtorNotification'],
 ] as const;
 
 export default function UserProfile(props: UserProfileProps) {
   const [state, action, isPending] = useActionState(updateProfile, INITIAL_STATE);
+  const pathname = usePathname();
+  const router = useRouter();
+  const { lang, switchLanguage } = useCustomRouter();
+  const { t } = useTranslation('userProfile');
   const data: ProfileData = props.user ?? { name: '', lastName: '', email: '', specialDiet: [] };
+  const [imageVersion, setImageVersion] = useState(0);
+  const [imageAvailable, setImageAvailable] = useState(Boolean(props.user?.profilePicture));
+  const [isImageUploading, setIsImageUploading] = useState(false);
+
+  async function uploadProfileImage(file?: File) {
+    if (!file || !file.type.startsWith('image/')) return;
+    setIsImageUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      await updateProfileImage(formData);
+      setImageAvailable(true);
+      setImageVersion(Date.now());
+      router.refresh();
+    } catch {
+      setImageAvailable(false);
+    } finally {
+      setIsImageUploading(false);
+    }
+  }
 
   return (
     <main className={styles.page}>
       <form action={action} className={styles.content}>
         <header className={styles.header}>
-          <h1>Mi perfil</h1>
-          <p>Datos personales, pagos y preferencias.</p>
+          <h1>{t.profileTitle}</h1>
+          <p>{t.profileDescription}</p>
         </header>
 
-        {!data.cbu && <p className={styles.notice}>Completá tu CBU o alias para poder recibir pagos en tus eventos.</p>}
-        {!props.user && <p className={`${styles.notice} ${styles.error}`}>No pudimos cargar tus datos. Podés volver a intentar guardar el perfil.</p>}
+        {!data.cbu && <p className={styles.notice}>{t.paymentNotice}</p>}
+        {!props.user && <p className={`${styles.notice} ${styles.error}`}>{t.profileLoadError}</p>}
 
         <div className={styles.twoColumns}>
           <section className={styles.card}>
-            <h2 className={styles.cardTitle}>Información personal</h2>
+            <h2 className={styles.cardTitle}>{t.personalData}</h2>
             <div className={styles.cardBody}>
               <div className={styles.avatarRow}>
-                <span className={styles.avatar} aria-hidden>{data.name.slice(0, 1)}{data.lastName.slice(0, 1)}</span>
-                <span>Datos de tu cuenta</span>
+                <label className={styles.avatarPicker} aria-label={t.editImg}>
+                  {imageAvailable ? (
+                    <Image
+                      className={styles.avatarImage}
+                      key={imageVersion}
+                      src="/api/profile-image"
+                      alt={t.editImg}
+                      width={88}
+                      height={88}
+                      unoptimized
+                      onError={() => setImageAvailable(false)}
+                    />
+                  ) : <span className={styles.avatar} aria-hidden>{data.name.slice(0, 1)}{data.lastName.slice(0, 1)}</span>}
+                  <input type="file" accept="image/png,image/jpeg" disabled={isImageUploading} onChange={event => uploadProfileImage(event.target.files?.[0])} />
+                  <span className={styles.avatarEdit} aria-hidden><span className="material-icons">photo_camera</span></span>
+                </label>
+                <span>{isImageUploading ? t.savingBtn : t.editImg}</span>
               </div>
               <div className={styles.fields}>
-              <label>Nombre<input name="name" required defaultValue={data.name} /></label>
-              <label>Apellido<input name="lastName" required defaultValue={data.lastName} /></label>
-              <label className={styles.full}>Correo electrónico<input type="email" value={data.email} readOnly /></label>
-              <label className={styles.full}>Correo alternativo<input name="alternativeEmail" type="email" defaultValue={data.alternativeEmail ?? ''} placeholder="nombre@correo.com" /></label>
+              <label>{t.name}<input name="name" required autoComplete="given-name" defaultValue={data.name} /></label>
+              <label>{t.lastName}<input name="lastName" required autoComplete="family-name" defaultValue={data.lastName} /></label>
+              <label className={styles.full}>{t.personalEmail}<input type="email" autoComplete="email" value={data.email} readOnly /></label>
+              <label className={styles.full}>{t.alternativeEmail}<input name="alternativeEmail" type="email" autoComplete="email" defaultValue={data.alternativeEmail ?? ''} placeholder="nombre@correo.com" /></label>
               </div>
             </div>
           </section>
 
           <section className={styles.card}>
-            <h2 className={styles.cardTitle}>Información financiera</h2>
+            <h2 className={styles.cardTitle}>{t.financialData}</h2>
             <div className={styles.cardBody}>
               <div className={styles.fields}>
-              <label className={styles.full}>CBU<input name="cbu" inputMode="numeric" defaultValue={data.cbu ?? ''} placeholder="000000310001..." /></label>
-              <label className={styles.full}>Alias<input name="alias" defaultValue={data.alias ?? ''} placeholder="tu.alias" /></label>
+              <label className={styles.full}>{t.cbu}<input name="cbu" inputMode="numeric" defaultValue={data.cbu ?? ''} placeholder="000000310001..." /></label>
+              <label className={styles.full}>{t.alias}<input name="alias" defaultValue={data.alias ?? ''} placeholder="tu.alias" /></label>
               </div>
             </div>
           </section>
         </div>
 
         <section className={`${styles.card} ${styles.dietCard}`}>
-          <h2 className={styles.cardTitle}>Preferencias dietéticas</h2>
+          <h2 className={styles.cardTitle}>{t.specialDietTitle}</h2>
           <div className={`${styles.cardBody} ${styles.optionsGrid}`}>
-            {DIETS.map(([value, label, description]) => (
+            {DIETS.map(([value, labelKey, descriptionKey]) => (
               <label className={styles.option} key={value}>
                 <input name="specialDiet" type="checkbox" value={value} defaultChecked={data.specialDiet.includes(value)} />
-                <span><strong>{label}</strong><small>{description}</small></span>
+                <span><strong>{t[labelKey]}</strong><small>{t[descriptionKey]}</small></span>
               </label>
             ))}
           </div>
         </section>
 
         <section className={styles.card}>
-          <h2 className={styles.cardTitle}>Notificaciones</h2>
+          <h2 className={styles.cardTitle}>{t.notificationsTitle}</h2>
           <div className={`${styles.cardBody} ${styles.optionsGrid}`}>
-            {NOTIFICATIONS.map(([value, label]) => (
+            {NOTIFICATIONS.map(([value, labelKey]) => (
               <label className={styles.toggle} key={value}>
-                <span>{label}</span>
+                <span>{t[labelKey]}</span>
                 <input name={value} type="checkbox" defaultChecked={data.notifications?.[value] ?? false} />
               </label>
             ))}
           </div>
         </section>
 
+        <section className={styles.card}>
+          <h2 className={styles.cardTitle}>{t.languageTitle}</h2>
+          <div className={styles.cardBody}>
+            <div className={styles.languageField}>
+              <span>{t.languageLabel}</span>
+              <SegmentedControl
+                ariaLabel={t.languageLabel}
+                value={lang}
+                onChange={value => switchLanguage(value, pathname)}
+                options={[
+                  { value: 'es-AR', label: t.spanishLanguage, icon: <span className={styles.flag}>AR</span> },
+                  { value: 'en-US', label: t.englishLanguage, icon: <span className={styles.flag}>US</span> },
+                ]}
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.card}>
+          <h2 className={styles.cardTitle}>{t.themeTitle}</h2>
+          <div className={styles.cardBody}>
+            <ThemeSelector />
+          </div>
+        </section>
+
         <footer className={styles.actions}>
-          {state.success && <p className={styles.success}>La información se modificó con éxito.</p>}
-          {state.error && <p className={styles.failure}>No se pudo actualizar la información. Volvé a intentarlo.</p>}
-          <button type="submit" disabled={isPending}>{isPending ? 'Guardando...' : 'Guardar cambios'}</button>
+          <div aria-live="polite">
+            {state.success && <p className={styles.success}>{t.successMsg}</p>}
+            {state.error && <p className={styles.failure}>{t.failureMsg}</p>}
+          </div>
+          <button type="submit" disabled={isPending}>{isPending ? t.savingBtn : t.saveChangesBtn}</button>
         </footer>
       </form>
     </main>

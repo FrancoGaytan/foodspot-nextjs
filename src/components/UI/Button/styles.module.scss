@@ -3,74 +3,99 @@
 @use '/src/styles/custom-properties';
 
 .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
   border: none;
-  border-radius: 45px;
-  color: white;
-  font-size: 15px;
-  font-family: var(--secondaryFont);
-  font-weight: bold;
-  overflow-y: hidden;
+  border-radius: var(--radius-md);
+  color: var(--color-on-dark);
+  font-size: 0.9375rem;
+  font-family: var(--primaryFont);
+  font-weight: 700;
+  line-height: 1.2;
   cursor: pointer;
-  box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease;
-  overflow-x: hidden;
-  line-height: 1.1;
-  &:hover {
-    transform: scale(1.02);
+  box-shadow: var(--shadow-sm);
+  transition: background-color var(--motion-fast) ease, border-color var(--motion-fast) ease, color var(--motion-fast) ease, transform var(--motion-fast) ease;
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-ring-color);
+    outline-offset: 3px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+    box-shadow: none;
+    transform: none;
+  }
+
+  &:not(:disabled):active {
+    transform: scale(0.98);
   }
 
   //kind
 
   &.primary {
-    background-color: var(--btnPrimary);
-    &:hover {
+    background-color: var(--color-primary);
+    &:not(:disabled):hover {
       background-color: var(--btnPrimaryDarker);
     }
   }
   &.secondary {
-    background-color: white;
-    color: var(--btnPrimary);
-    border: 3px solid var(--btnPrimary);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    &:not(:disabled):hover {
+      background-color: var(--color-bg);
+    }
+  }
+  &.tertiary {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 1px solid currentColor;
   }
   &.validation {
-    background-color: rgb(61, 61, 233);
-    color: white;
-    border: 0px;
+    background-color: var(--color-success);
   }
   &.whitePrimary {
-    background-color: #dce0d2;
+    background-color: var(--color-surface);
     color: var(--messageSuccessPrimary);
   }
   &.whiteSecondary {
-    background-color: #dce0d2;
+    background-color: var(--color-surface);
     color: var(--btnPrimaryDarker);
   }
 
   //size
 
   &.size-small {
-    width: 100px;
-    height: 40px;
+    min-height: 2.25rem;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8125rem;
   }
 
   &.size-short {
-    width: 140px;
-    height: 40px;
+    min-height: 2.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
   }
 
   &.size-medium {
   }
 
   &.size-large {
-    width: 300px;
-    min-height: 40px;
-    max-height: 40px;
+    width: min(100%, 18.75rem);
+    min-height: 2.75rem;
+    padding: 0.7rem 1.25rem;
+    font-size: 0.9375rem;
   }
 
   &.size-full {
   }
   &.size-micro {
-    width: 80px;
-    height: 20px;
+    min-height: 1.75rem;
+    padding: 0.15rem 0.4rem;
+    font-size: 0.75rem;
   }
 }

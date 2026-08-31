@@ -3,89 +3,101 @@
 @use '/src/styles/custom-properties';
 
 .responsibilitiesContainer {
+  padding: var(--space-md) 0 var(--space-lg);
+
   .eventResponsibilitiesTitle {
     display: flex;
     align-items: center;
-    margin-top: 30px;
-    gap: 10px;
-    @media #{variables.media-query(max, md)} {
-      justify-content: center;
-    }
+    gap: var(--space-sm);
+    margin: var(--space-md) var(--space-lg) var(--space-sm);
+
     .inChargeLogo {
-      width: 40px;
-      margin-left: 15px;
-      height: 43px;
-      background-image: url('/images/icons/inChargeLogo.png');
+      width: 2rem;
+      height: 2rem;
+      background: url('/images/icons/inChargeLogo.png') center / contain no-repeat;
     }
+
     .logoTitle {
-      font-weight: bold;
-      font-size: larger;
+      margin: 0;
+      color: var(--color-text);
+      font-family: var(--secondaryFont);
+      font-size: 1.125rem;
+      font-weight: 400;
     }
   }
-  .chefDesigneeSection {
-    display: flex;
-    align-items: center;
-    .infoData {
-      margin: 10px 10px 10px 25px;
-      font-size: 0.83em;
-      font-weight: bold;
-      @media #{variables.media-query(max, md)} {
-        justify-self: center;
-      }
-    }
-    @media #{variables.media-query(max, md)} {
-        justify-content: center;
-      }
-  }
+
+  .chefDesigneeSection,
   .shoppingDesigneeSection {
     display: flex;
     align-items: center;
-    .infoData {
-      margin: 10px 10px 10px 25px;
-      font-size: 0.83em;
-      font-weight: bold;
-      @media #{variables.media-query(max, md)} {
-        justify-self: center;
-      }
-    }
-    @media #{variables.media-query(max, md)} {
-        justify-content: center;
-      }
+    justify-content: space-between;
+    gap: var(--space-sm);
+    margin: 0 var(--space-lg);
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--color-border);
   }
+
+  .infoData {
+    min-width: 0;
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
   .assignTransitionWrapper {
-    transition:
-      opacity 1s ease,
-      transform 1s ease;
+    flex: 0 0 auto;
+    transition: opacity var(--motion-base) ease, transform var(--motion-base) ease;
 
     :global(button) {
-      animation: fadeInAssign 1s ease;
-    }
-
-    @keyframes fadeInAssign {
-      from {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+      animation: fadeInAssign var(--motion-base) ease;
     }
   }
+
   .shoppingDesigneeListSection {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-left: 35px;
-    @media #{variables.media-query(max, md)} {
-        align-items: center;
-      }
-    .singleDesigneeSection {
-      display: flex;
-      align-items: center;
-      min-height: 25px;
-      font-size: 0.83em;
-      font-weight: bold;
+    display: grid;
+    gap: var(--space-xs);
+    margin: var(--space-sm) var(--space-lg) 0;
+  }
+
+  .singleDesigneeSection {
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+    color: var(--color-text-secondary);
+    font-size: 0.8125rem;
+    overflow-wrap: anywhere;
+
+    h5 {
+      margin: 0;
+    }
+  }
+}
+
+html[data-theme='dark'] .responsibilitiesContainer .inChargeLogo {
+  filter: brightness(0) invert(1);
+}
+
+@keyframes fadeInAssign {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media #{variables.media-query(max, md)} {
+  .responsibilitiesContainer {
+    .eventResponsibilitiesTitle,
+    .chefDesigneeSection,
+    .shoppingDesigneeSection,
+    .shoppingDesigneeListSection {
+      margin-inline: var(--space-md);
     }
   }
 }
