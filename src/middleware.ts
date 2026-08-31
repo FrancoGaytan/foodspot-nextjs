@@ -8,10 +8,10 @@ const PROTECTED_PATHS = ['userProfile', 'createEvent', 'event'];
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Redirect root path `/` to default locale
+  // Redirect root path `/` to the default locale's event home.
   if (pathname === '/') {
     const url = request.nextUrl.clone();
-    url.pathname = `/${DEFAULT_LOCALE}`;
+    url.pathname = `/${DEFAULT_LOCALE}/eventHome`;
     return NextResponse.redirect(url);
   }
 
@@ -31,7 +31,7 @@ export function middleware(request: NextRequest) {
 
 /**
  * This config makes sure that:
- * '/' must redirect to '/lang'
+ * '/' must redirect to '/lang/eventHome'
  * '/lang/userProfile-createEvent-event' will be protected
  * It won't stop the user in public routes such as '/lang/faq'
  */
