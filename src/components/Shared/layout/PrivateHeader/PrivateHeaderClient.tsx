@@ -71,6 +71,9 @@ export default function PrivateHeaderClient(props: PrivateHeaderClientProps) {
                     alt="Foto de perfil"
                     width={40}
                     height={40}
+                    unoptimized
+                    priority
+                    onLoad={() => setImageUnavailable(false)}
                     onError={() => setImageUnavailable(true)}
                   />
                 ) : initials}
