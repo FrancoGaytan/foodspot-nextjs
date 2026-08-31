@@ -1,6 +1,7 @@
 'use client';
 
 import Button, { ButtonKind } from '@components/UI/Button';
+import Spinner from '@components/UI/Spinner';
 import styles from '../styles.module.scss';
 import { IEvent } from '@models/event';
 import { getMembersAmountAction, getMembersAndReceiptsInfoAction, getUserByIdAction } from 'app/[lang]/event/actions';
@@ -198,8 +199,9 @@ export default function EventBtns(props: EventBtnsProps) {
 
 
   return (
-    <section className={styles.btnSection}>
+    <section className={styles.btnSection} aria-busy={isPending}>
       {user && (
+        isPending ? <Spinner size={32} /> : (
         <>
           {' '}
           {showPayBtn(props.event, user, eventParticipantsInfo, myInfo) && (
@@ -253,6 +255,7 @@ export default function EventBtns(props: EventBtnsProps) {
             </Button>
           )}
         </>
+        )
       )}
     </section>
   );

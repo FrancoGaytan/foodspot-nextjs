@@ -8,6 +8,7 @@ import { updateProfile, updateProfileImage, type ProfileActionState } from './ac
 import { useCustomRouter } from '@hooks/useCustomRouter';
 import { useTranslation } from '@hooks/useTranslation';
 import styles from './styles.module.scss';
+import Spinner from '@components/UI/Spinner';
 import ThemeSelector from './ThemeSelector';
 import SegmentedControl from '@components/UI/SegmentedControl';
 
@@ -91,7 +92,7 @@ export default function UserProfile(props: UserProfileProps) {
                   <input type="file" accept="image/png,image/jpeg" disabled={isImageUploading} onChange={event => uploadProfileImage(event.target.files?.[0])} />
                   <span className={styles.avatarEdit} aria-hidden><span className="material-icons">photo_camera</span></span>
                 </label>
-                <span>{isImageUploading ? t.savingBtn : t.editImg}</span>
+                <span>{isImageUploading ? <Spinner size={24} /> : t.editImg}</span>
               </div>
               <div className={styles.fields}>
               <label>{t.name}<input name="name" required autoComplete="given-name" defaultValue={data.name} /></label>
@@ -167,7 +168,7 @@ export default function UserProfile(props: UserProfileProps) {
             {state.success && <p className={styles.success}>{t.successMsg}</p>}
             {state.error && <p className={styles.failure}>{t.failureMsg}</p>}
           </div>
-          <button type="submit" disabled={isPending}>{isPending ? t.savingBtn : t.saveChangesBtn}</button>
+          <button type="submit" disabled={isPending} aria-label={isPending ? t.savingBtn : undefined}>{isPending ? <Spinner size={20} /> : t.saveChangesBtn}</button>
         </footer>
       </form>
     </main>

@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from 'react';
 import Button, { ButtonKind } from '@components/UI/Button';
+import Spinner from '@components/UI/Spinner';
 import { useTranslation } from '@hooks/useTranslation';
 import { showToast, ToastType } from '@utils/services/toastService';
 import { createPurchaseReceiptAction, uploadPurchaseReceiptFileAction } from 'app/[lang]/event/actions';
@@ -49,7 +50,7 @@ export default function PurchaseReceiptForm(props: PurchaseReceiptFormProps) {
       <label>{t.description}<input value={description} onChange={event => setDescription(event.target.value)} required /></label>
       <label>{t.amountLabel}<input type="number" min="0.01" step="0.01" value={amount} onChange={event => setAmount(event.target.value)} required /></label>
       <div><span>{t.uploadPurchaseReceipt}</span><DragAndDrop accept="image/jpeg,image/png,application/pdf" onFile={setFile}><span className={styles.uploadRow}><span className={styles.uploadBtn} />{file?.name || t.uploadPurchaseReceipt}</span></DragAndDrop></div>
-      <Button type="submit" kind={ButtonKind.PRIMARY} size="medium" disabled={isPending}>{isPending ? '...' : t.confirmPayBtn}</Button>
+      <Button type="submit" kind={ButtonKind.PRIMARY} size="medium" disabled={isPending} aria-label={isPending ? t.confirmPayBtn : undefined}>{isPending ? <Spinner size={20} /> : t.confirmPayBtn}</Button>
     </form>
   );
 }

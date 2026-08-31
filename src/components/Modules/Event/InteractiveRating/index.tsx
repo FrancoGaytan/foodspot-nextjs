@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createRatingAction, getRatingFromUserAction } from 'app/[lang]/event/actions';
+import Spinner from '@components/UI/Spinner';
 import { showToast, ToastType } from '@utils/services/toastService';
 import styles from './styles.module.scss';
 
@@ -30,7 +31,7 @@ export default function InteractiveRating(props: { eventId: string; userId: stri
     }
   }
 
-  return <div className={styles.rating} aria-label="Calificar evento" onMouseLeave={() => setHovered(0)}>
-    {[1, 2, 3, 4, 5].map(score => <button key={score} type="button" disabled={isPending} className={(hovered || rating) >= score ? styles.active : ''} onMouseEnter={() => setHovered(score)} onClick={() => rate(score)} aria-label={`${score} estrellas`}>★</button>)}
+  return <div className={styles.rating} aria-label="Calificar evento" aria-busy={isPending} onMouseLeave={() => setHovered(0)}>
+    {isPending ? <Spinner size={28} /> : [1, 2, 3, 4, 5].map(score => <button key={score} type="button" className={(hovered || rating) >= score ? styles.active : ''} onMouseEnter={() => setHovered(score)} onClick={() => rate(score)} aria-label={`${score} estrellas`}>★</button>)}
   </div>;
 }

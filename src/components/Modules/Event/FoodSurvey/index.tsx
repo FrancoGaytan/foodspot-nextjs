@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createOptionAction, deleteOptionAction, editOptionAction, getMembersWhoHaventVotedAction } from 'app/[lang]/event/actions';
 import { IOption } from '@models/options';
 import Button, { ButtonKind } from '@components/UI/Button';
+import Spinner from '@components/UI/Spinner';
 import { showToast, ToastType } from '@utils/services/toastService';
 import styles from './styles.module.scss';
 
@@ -136,7 +137,7 @@ export default function FoodSurvey(props: FoodSurveyProps) {
       })}
     </div>
     {viewing && <section className={styles.detail} aria-live="polite"><strong>{viewing.title}</strong><div className={styles.participants}>{viewing.participants.length ? viewing.participants.map((participant, index) => <span key={`${participant._id ?? 'participant'}-${participant.name}-${participant.lastName}-${index}`}>{participant.name} {participant.lastName}</span>) : <span>Sin votos todavía</span>}</div><Button type="button" kind={ButtonKind.TERTIARY} size="small" onClick={() => setViewing(null)}>Volver a las opciones</Button></section>}
-    <p className={styles.status}>{missing === 0 ? 'Todos votaron' : `${missing} participante(s) sin votar`}</p>
+    <p className={styles.status}>{isPending ? <Spinner size={24} /> : missing === 0 ? 'Todos votaron' : `${missing} participante(s) sin votar`}</p>
     {props.canEdit && <div className={styles.add}><input value={newTitle} onChange={event => setNewTitle(event.target.value)} onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); addOption(); } }} placeholder="Nueva opción" /><Button type="button" kind={ButtonKind.PRIMARY} size="small" onClick={addOption} disabled={isPending || !newTitle.trim()}>Agregar</Button></div>}
     <div className={styles.footer}><Button type="button" kind={ButtonKind.TERTIARY} size="small" onClick={props.closeModal}>Cerrar</Button></div>
   </div>;
