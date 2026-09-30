@@ -8,3 +8,24 @@
   input, textarea { padding: 8px; }
   textarea { min-height: 90px; resize: vertical; }
 }
+
+.privateField {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  min-height: 44px;
+  padding: 8px 0;
+}
+
+.privateField input {
+  width: 18px !important;
+  height: 18px;
+  flex: 0 0 auto;
+}
+
+.submitButton {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 4px;
+}

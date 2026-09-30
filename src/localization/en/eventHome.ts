@@ -47,7 +47,7 @@ export default Object.seal({
   userAddingFailure: 'There has been a failure adding you to the event',
   userRemovedSuccessfully: 'You have been removed from the event successfully',
   userRemovingFailure: 'There has been a failure removing you from the event',
-  shoppingDesigneeTryingToGetOff: "You can't leave the event if you are a shopping designee",
+  responsibilityTryingToGetOff: "You can't leave the event while assigned as chef or shopping designee",
   userResponsabilityChange: 'You have changed your responsibility successfully',
   userResponsabilityFailure: 'There has been a failure changing your responsibility',
   eventDeleted: 'The event has been deleted successfully',

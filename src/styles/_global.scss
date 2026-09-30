@@ -49,6 +49,52 @@ html[data-theme='dark'] body {
 	outline-offset: 2px;
 }
 
+#app-portal form {
+	max-width: 100%;
+}
+
+#app-portal form label,
+#app-portal form legend {
+	color: var(--color-text-secondary);
+	font-weight: 700;
+}
+
+#app-portal form input:not([type='checkbox']):not([type='radio']):not([type='file']),
+#app-portal form textarea,
+#app-portal form select {
+	width: 100%;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-sm);
+	background: var(--color-surface);
+	color: var(--color-text);
+	font: inherit;
+}
+
+#app-portal form input:not([type='checkbox']):not([type='radio']):not([type='file']),
+#app-portal form select {
+	min-height: 2.75rem;
+	padding: 0.65rem 0.75rem;
+}
+
+#app-portal form textarea {
+	min-height: 7rem;
+	padding: 0.7rem 0.75rem;
+	resize: vertical;
+}
+
+#app-portal form input:focus,
+#app-portal form textarea:focus,
+#app-portal form select:focus {
+	border-color: var(--color-primary-border);
+	outline: 2px solid var(--focus-ring-color);
+	outline-offset: 1px;
+}
+
+#app-portal form input[type='checkbox'],
+#app-portal form input[type='radio'] {
+	accent-color: var(--color-primary);
+}
+
 @media (prefers-reduced-motion: reduce) {
 	*,
 	*::before,

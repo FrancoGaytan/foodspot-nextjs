@@ -84,6 +84,7 @@ export default function ParticipantsData(props: ParticipantsDataProps) {
         eventId={props.event._id}
         userId={user._id}
         options={props.event.options ?? []}
+        memberCount={props.event.members.length}
         canEdit={userIsTheOrganizer(props.event, user) || userIsAShoppingDesignee(props.event, user)}
         closeModal={close}
       />,

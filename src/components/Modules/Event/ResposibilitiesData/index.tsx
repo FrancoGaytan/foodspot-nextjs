@@ -9,6 +9,7 @@ import { useTranslation } from '@hooks/useTranslation';
 import { useEffect, useState } from 'react';
 import { IPublicUser, IUser } from '@models/user';
 import { showToast, ToastType } from '@utils/services/toastService';
+import { useRouter } from 'next/navigation';
 
 interface ResponsibilitiesDataProps {
   event: IEvent;
@@ -16,6 +17,7 @@ interface ResponsibilitiesDataProps {
 }
 export default function ResponsibilitiesData(props: ResponsibilitiesDataProps) {
   const { t } = useTranslation('eventHome');
+  const router = useRouter();
   const [user, setUser] = useState<IPublicUser>();
   const [event, setEvent] = useState<IEvent>(props.event);
 
@@ -74,6 +76,7 @@ export default function ResponsibilitiesData(props: ResponsibilitiesDataProps) {
     editRolesAction(event._id, { ...event, shoppingDesignee: updatedDesignees, isPrivate: event.isPrivate ?? false })
       .then(() => {
         showToast(`${t.userResponsabilityChange}!`, ToastType.SUCCESS);
+        router.refresh();
       })
       .catch(() => showToast(`${t.userResponsabilityFailure}`, ToastType.ERROR))
       .finally(() => refetchEvent());
@@ -95,6 +98,7 @@ export default function ResponsibilitiesData(props: ResponsibilitiesDataProps) {
       editRolesAction(event._id, { ...event, chef: user ?? null, isPrivate: event.isPrivate ?? false })
         .then(() => {
           showToast(t.userResponsabilityChange, ToastType.SUCCESS);
+          router.refresh();
         })
         .catch(() => showToast(`${t.userResponsabilityFailure}`, ToastType.ERROR))
         .finally(() => refetchEvent());
@@ -102,11 +106,16 @@ export default function ResponsibilitiesData(props: ResponsibilitiesDataProps) {
       editRolesAction(event._id, { ...event, chef: null, isPrivate: event.isPrivate ?? false })
         .then(() => {
           showToast(`${t.userResponsabilityChange}!`, ToastType.SUCCESS);
+          router.refresh();
         })
         .catch(() => showToast(`${t.userResponsabilityFailure}`, ToastType.ERROR))
         .finally(() => refetchEvent());
     }
   }
+
+  useEffect(() => {
+    setEvent(props.event);
+  }, [props.event]);
 
   useEffect(() => {
     getUserByIdAction(props.userId as string)
