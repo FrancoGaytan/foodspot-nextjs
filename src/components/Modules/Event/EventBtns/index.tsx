@@ -97,8 +97,11 @@ export default function EventBtns(props: EventBtnsProps) {
 
   async function quit(): Promise<void> {
     if (isPending) return;
-    if (user && userIsAShoppingDesignee(props.event, user)) {
-      showToast(t.shoppingDesigneeTryingToGetOff, ToastType.ERROR);
+    if (
+      user &&
+      (props.event.chef?._id === user._id || userIsAShoppingDesignee(props.event, user))
+    ) {
+      showToast(t.responsibilityTryingToGetOff, ToastType.ERROR);
       return;
     }
     if (props.event.purchaseReceipts.some(receipt => receipt.shoppingDesignee?._id === props.user.id)) {

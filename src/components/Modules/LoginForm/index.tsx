@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useEffect } from 'react';
+import { useActionState, useEffect, useRef, useState } from 'react';
 import { handleLogin } from 'app/[lang]/(auth)/login/actions';
 import FormLayout from '@components/Shared/layout/FormLayout';
 import Button, { ButtonKind } from '@components/UI/Button';
@@ -18,12 +18,19 @@ export type LoginFormState = { success: true; error?: undefined } | { success?: 
 export default function LoginForm() {
   const { pushTo } = useCustomRouter();
   const { t, lang } = useTranslation('login');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [formState, formAction] = useActionState<LoginFormState, FormData>(handleLogin, {
     error: '',
   });
+  const processedFormState = useRef<LoginFormState | null>(null);
 
   useEffect(() => {
     if (!formState) return;
+    if (processedFormState.current === formState) return;
+
+    processedFormState.current = formState;
+
     if (formState.success) {
       showToast(t.welcomeMessage, ToastType.SUCCESS);
       pushTo('eventHome?success=1');
@@ -46,8 +53,14 @@ export default function LoginForm() {
         <input type="hidden" name="lang" value={lang} />
         <h3 className={styles.title}>{t.loginTitle}</h3>
 
-        <EmailInput name="email" label={t.email} placeholder={t.email} />
-        <PasswordInput name="password" label={t.password} placeholder={t.password} />
+        <EmailInput name="email" label={t.email} placeholder={t.email} value={email} onChange={(event) => setEmail(event.target.value)} />
+        <PasswordInput
+          name="password"
+          label={t.password}
+          placeholder={t.password}
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+        />
 
         <Button kind={ButtonKind.PRIMARY} size="large" type="submit" className={styles.submitButton}>
           {t.loginBtn}

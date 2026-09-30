@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, type ChangeEvent } from 'react';
 import styles from './styles.module.scss';
 import { getBrowserName } from '@utils/common/clientUtilities';
 
@@ -10,6 +10,8 @@ interface PasswordInputProps {
   placeholder: string;
   className?: string;
   defaultValue?: string;
+  value?: string;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export function PasswordInput(props: PasswordInputProps) {
@@ -36,6 +38,8 @@ export function PasswordInput(props: PasswordInputProps) {
           placeholder={props.placeholder}
           type={!canRenderEye ? 'password' : showPassword ? 'password' : 'text'}
           defaultValue={props.defaultValue}
+          value={props.value}
+          onChange={props.onChange}
           aria-label={props.label}
         />
         {canRenderEye && (

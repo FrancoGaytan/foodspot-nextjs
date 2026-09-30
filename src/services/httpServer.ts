@@ -9,7 +9,7 @@ export class ServerHttpError extends Error {
     public readonly status: number,
     public readonly responseBody?: string
   ) {
-    super(`${method} ${path} failed: ${status}`);
+    super(`${method} ${path} failed: ${status}${responseBody ? ` - ${responseBody}` : ''}`);
     this.name = 'ServerHttpError';
   }
 }
@@ -120,7 +120,7 @@ export async function putServer<T, P = unknown>(path: string, payload?: P, signa
   });
 
   if (!res.ok) {
-    throw new Error(`PUT ${path} failed: ${res.status}`);
+    throw new ServerHttpError('PUT', path, res.status, await res.text());
   }
 
   return res.json();
@@ -156,7 +156,7 @@ export async function deleteServer<T = any>(path: string, signal?: AbortSignal):
   });
 
   if (!res.ok) {
-    throw new Error(`DELETE ${path} failed: ${res.status}`);
+    throw new ServerHttpError('DELETE', path, res.status, await res.text());
   }
 
   return res.json();

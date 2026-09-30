@@ -81,7 +81,7 @@ function ModalShell(props: {
 }) {
   const title = props.title;
   const isBlocking = props.isBlocking;
-  const width = props.width !== undefined ? props.width : 560;
+  const width = props.width !== undefined ? props.width : "min(560px, calc(100vw - 32px))";
   const maxHeight = props.maxHeight !== undefined ? props.maxHeight : "80vh";
   const onClose = props.onClose;
   const children = props.children;
@@ -162,39 +162,49 @@ const styles: Record<string, React.CSSProperties> = {
     display: "grid",
     placeItems: "center",
     padding: 16,
+    overflow: "auto",
   },
   panel: {
-    background: "#23272f",
-    color: "#fff",
-    borderRadius: 14,
-    boxShadow: "0 10px 40px rgba(0,0,0,0.25)",
-    maxWidth: "90vw",
-    width: 560,
+    boxSizing: "border-box",
+    background: "var(--color-surface)",
+    color: "var(--color-text)",
+    border: "1px solid var(--color-border)",
+    borderRadius: "var(--radius-lg)",
+    boxShadow: "var(--elevation-overlay)",
+    maxWidth: "min(100%, 720px)",
+    width: "100%",
     display: "flex",
     flexDirection: "column",
-    maxHeight: "80vh",
+    minHeight: 0,
+    maxHeight: "calc(100dvh - 32px)",
     outline: "none",
   },
   header: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: "12px 16px",
-    borderBottom: "1px solid #444",
-    color: "#fff",
+    flex: "0 0 auto",
+    padding: "clamp(12px, 4vw, 16px) clamp(14px, 5vw, 20px)",
+    borderBottom: "1px solid var(--color-border)",
+    color: "var(--color-text)",
+    fontSize: 18,
   },
   body: {
-    padding: 16,
+    boxSizing: "border-box",
+    minWidth: 0,
+    minHeight: 0,
+    padding: "clamp(12px, 4vw, 20px)",
     overflow: "auto",
-    color: "#fff",
+    color: "var(--color-text)",
   },
   closeBtn: {
     border: "none",
     background: "transparent",
-    fontSize: 22,
+    color: "var(--color-text-secondary)",
+    fontSize: 24,
     lineHeight: 1,
     cursor: "pointer",
     padding: 4,
-    color: "#fff",
+    borderRadius: "var(--radius-sm)",
   },
 };

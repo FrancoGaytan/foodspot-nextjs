@@ -47,7 +47,7 @@ export default Object.seal({
   userAddingFailure: 'Ha habido un error al agregarte al evento',
   userRemovedSuccessfully: 'Has sido removido del evento exitosamente',
   userRemovingFailure: 'Ha habido un error al removerte del evento',
-  shoppingDesigneeTryingToGetOff: 'No podés bajarte del evento si sos encargado de las compras',
+  responsibilityTryingToGetOff: 'No podés salir del evento mientras seas chef o encargado de las compras',
   userResponsabilityChange: 'Responsabilidad modificada con éxito',
   userResponsabilityFailure: 'Ha habido un error al modificar tu responsabilidad',
   eventDeleted: 'El evento ha sido eliminado con éxito',

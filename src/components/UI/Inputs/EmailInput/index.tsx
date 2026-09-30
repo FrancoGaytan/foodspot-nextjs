@@ -1,3 +1,4 @@
+import type { ChangeEvent } from 'react';
 import styles from './styles.module.scss';
 
 interface EmailInputProps {
@@ -7,6 +8,8 @@ interface EmailInputProps {
   className?: string;
   darkInput?: boolean;
   defaultValue?: string;
+  value?: string;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export function EmailInput(props: EmailInputProps) {
@@ -22,6 +25,8 @@ export function EmailInput(props: EmailInputProps) {
         placeholder={props.placeholder}
         type="email"
         defaultValue={props.defaultValue}
+        value={props.value}
+        onChange={props.onChange}
         aria-label={props.label}
       />
     </>

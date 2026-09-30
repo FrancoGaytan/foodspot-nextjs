@@ -1,14 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { createOptionAction, deleteOptionAction, editOptionAction, getMembersWhoHaventVotedAction } from 'app/[lang]/event/actions';
+import { useCallback, useEffect, useState } from 'react';
+import { createOptionAction, deleteOptionAction, editOptionAction, getEventByIdAction } from 'app/[lang]/event/actions';
 import { IOption } from '@models/options';
 import Button, { ButtonKind } from '@components/UI/Button';
 import Spinner from '@components/UI/Spinner';
 import { showToast, ToastType } from '@utils/services/toastService';
 import styles from './styles.module.scss';
 
-interface FoodSurveyProps { eventId: string; userId: string; options: IOption[]; canEdit: boolean; closeModal: () => void; }
+interface FoodSurveyProps { eventId: string; userId: string; options: IOption[]; memberCount: number; canEdit: boolean; closeModal: () => void; }
 
 export default function FoodSurvey(props: FoodSurveyProps) {
   const [options, setOptions] = useState(props.options ?? []);
@@ -19,15 +19,35 @@ export default function FoodSurvey(props: FoodSurveyProps) {
   const [editingTitle, setEditingTitle] = useState('');
   const [viewing, setViewing] = useState<IOption | null>(null);
 
-  function refreshMissing() {
-    getMembersWhoHaventVotedAction(props.eventId).then(result => setMissing(result.membersWhoHaventVoted.length)).catch(() => setMissing(0));
-  }
+  const refreshOptions = useCallback(async () => {
+    try {
+      const event = await getEventByIdAction(props.eventId);
+      const refreshedOptions = event.options ?? [];
+      const votedMembers = new Set(refreshedOptions.flatMap(option => option.participants.map(participant => participant._id)));
+      setOptions(refreshedOptions);
+      setMissing((event.members ?? []).filter(member => !votedMembers.has(member._id)).length);
+    } catch (error) {
+      console.error('Unable to refresh survey options:', error);
+    }
+  }, [props.eventId]);
 
   useEffect(() => {
-    getMembersWhoHaventVotedAction(props.eventId)
-      .then(result => setMissing(result.membersWhoHaventVoted.length))
-      .catch(() => setMissing(0));
-  }, [props.eventId]);
+    setOptions(props.options ?? []);
+    refreshOptions();
+  }, [props.options, refreshOptions]);
+
+  useEffect(() => {
+    const refreshWhenActive = () => {
+      if (document.visibilityState === 'visible') refreshOptions();
+    };
+
+    document.addEventListener('visibilitychange', refreshWhenActive);
+    window.addEventListener('focus', refreshWhenActive);
+    return () => {
+      document.removeEventListener('visibilitychange', refreshWhenActive);
+      window.removeEventListener('focus', refreshWhenActive);
+    };
+  }, [refreshOptions]);
 
   async function addOption() {
     if (!newTitle.trim()) return;
@@ -36,7 +56,7 @@ export default function FoodSurvey(props: FoodSurveyProps) {
       const option = await createOptionAction(props.eventId, newTitle.trim());
       setOptions(current => [...current, option]);
       setNewTitle('');
-      refreshMissing();
+      refreshOptions();
     } catch (error) {
       console.error('Unable to add survey option:', error);
       showToast('No se pudo agregar la opción', ToastType.ERROR);
@@ -47,7 +67,7 @@ export default function FoodSurvey(props: FoodSurveyProps) {
     try {
       await deleteOptionAction(optionId);
       setOptions(current => current.filter(option => option._id !== optionId));
-      refreshMissing();
+      refreshOptions();
     } catch (error) {
       console.error('Unable to delete survey option:', error);
       showToast('No se pudo eliminar la opción', ToastType.ERROR);
@@ -62,7 +82,7 @@ export default function FoodSurvey(props: FoodSurveyProps) {
     try {
       const updated = await editOptionAction(option._id, { participants });
       setOptions(current => current.map(item => item._id === updated._id ? updated : item));
-      refreshMissing();
+      refreshOptions();
     } catch (error) {
       console.error('Unable to vote on survey option:', error);
       showToast('No se pudo registrar el voto', ToastType.ERROR);
@@ -83,7 +103,7 @@ export default function FoodSurvey(props: FoodSurveyProps) {
         return editOptionAction(option._id, { participants });
       }));
       setOptions(updated);
-      refreshMissing();
+      refreshOptions();
     } catch (error) {
       console.error('Unable to update all survey votes:', error);
       showToast('No se pudieron actualizar los votos', ToastType.ERROR);
@@ -117,8 +137,7 @@ export default function FoodSurvey(props: FoodSurveyProps) {
       </div>
       {options.map(option => {
         const voted = option.participants.some(participant => participant._id === props.userId);
-        const totalVotes = options.reduce((total, item) => total + item.participants.length, 0);
-        const percentage = totalVotes ? Math.round(option.participants.length / totalVotes * 100) : 0;
+        const percentage = props.memberCount ? Math.min(100, Math.round(option.participants.length / props.memberCount * 100)) : 0;
         return <div className={styles.option} key={option._id}>
           <div className={styles.titleCell}>
             {editingId === option._id ? <input autoFocus value={editingTitle} onChange={event => setEditingTitle(event.target.value)} onBlur={() => saveTitle(option)} onKeyDown={event => { if (event.key === 'Enter') saveTitle(option); if (event.key === 'Escape') setEditingId(null); }} /> : <button type="button" className={styles.titleButton} onClick={() => props.canEdit && (setEditingId(option._id), setEditingTitle(option.title))}>{option.title}</button>}
@@ -138,7 +157,6 @@ export default function FoodSurvey(props: FoodSurveyProps) {
     </div>
     {viewing && <section className={styles.detail} aria-live="polite"><strong>{viewing.title}</strong><div className={styles.participants}>{viewing.participants.length ? viewing.participants.map((participant, index) => <span key={`${participant._id ?? 'participant'}-${participant.name}-${participant.lastName}-${index}`}>{participant.name} {participant.lastName}</span>) : <span>Sin votos todavía</span>}</div><Button type="button" kind={ButtonKind.TERTIARY} size="small" onClick={() => setViewing(null)}>Volver a las opciones</Button></section>}
     <p className={styles.status}>{isPending ? <Spinner size={24} /> : missing === 0 ? 'Todos votaron' : `${missing} participante(s) sin votar`}</p>
-    {props.canEdit && <div className={styles.add}><input value={newTitle} onChange={event => setNewTitle(event.target.value)} onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); addOption(); } }} placeholder="Nueva opción" /><Button type="button" kind={ButtonKind.PRIMARY} size="small" onClick={addOption} disabled={isPending || !newTitle.trim()}>Agregar</Button></div>}
-    <div className={styles.footer}><Button type="button" kind={ButtonKind.TERTIARY} size="small" onClick={props.closeModal}>Cerrar</Button></div>
+    {props.canEdit && <div className={styles.add}><input value={newTitle} onChange={event => setNewTitle(event.target.value)} onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); addOption(); } }} placeholder="Nueva opción" /><Button className={styles.addButton} type="button" kind={ButtonKind.PRIMARY} size="small" onClick={addOption} disabled={isPending || !newTitle.trim()} aria-label="Agregar opción" title="Agregar opción"><span className="material-icons" aria-hidden>add</span></Button></div>}
   </div>;
 }
