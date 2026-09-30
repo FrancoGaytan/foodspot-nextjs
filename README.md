@@ -18,6 +18,9 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 ## Architecture Notes
 
 - [Pending architecture improvements](docs/architecture-improvements.md)
+- [Testing strategy](docs/testing-strategy.md)
+- [Authentication module](docs/modules/authentication.md)
+- [Event Home module](docs/modules/event-home.md)
 
 ## Learn More
 

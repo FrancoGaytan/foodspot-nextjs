@@ -26,17 +26,36 @@ export enum EventStatus {
   BLOCKED = 'blocked',
 }
 
+export function getEventStatus(currentEvent: IEventHomeDetails | null, userId: string, debtorEventId: string | null): EventStatus {
+  const isUserIntoEvent = currentEvent?.members.some(member => member._id === userId) ?? false;
+  const isEventFull = currentEvent ? Number(currentEvent.members.length) >= Number(currentEvent.memberLimit) : false;
+
+  if (debtorEventId) {
+    return debtorEventId === currentEvent?._id ? EventStatus.DEBTOR : EventStatus.BLOCKED;
+  }
+
+  switch (currentEvent?.state) {
+    case 'available':
+      return isUserIntoEvent ? EventStatus.SUBSCRIBED : isEventFull ? EventStatus.FULL : EventStatus.AVAILABLE;
+    case 'closed':
+      return isUserIntoEvent ? EventStatus.SUBSCRIBED : EventStatus.CLOSED;
+    case 'canceled':
+      return EventStatus.CANCELED;
+    case 'finished':
+      return EventStatus.FINISHED;
+    case 'readyforpayment':
+      return isUserIntoEvent ? EventStatus.READY_FOR_PAYMENT : EventStatus.CLOSED;
+    default:
+      return EventStatus.AVAILABLE;
+  }
+}
+
 export function useEventHome(props: useEventHomeParams) {
   const [currentEvent] = useState<IEventHomeDetails | null>(props.initialEvent);
-  const userDebtor = props.debtorEventId;
   const { t } = useTranslation('eventHome');
   const { pushTo } = useCustomRouter();
 
   const isUserIntoEvent = currentEvent?.members.some(member => member._id === props.userId) ?? false;
-
-  const isEventFull = (): boolean => {
-    return Number(currentEvent?.members.length) >= Number(currentEvent?.memberLimit);
-  };
 
   function subscribeUserToEvent(): void {
     if (!props.userId || !props.eventId) return;
@@ -65,26 +84,7 @@ export function useEventHome(props: useEventHomeParams) {
     }
   };
 
-  const getMyEventStatus = (): EventStatus => {
-    if (userDebtor) {
-      return userDebtor === currentEvent?._id ? EventStatus.DEBTOR : EventStatus.BLOCKED;
-    }
-    switch (currentEvent?.state) {
-      case 'available':
-        return isUserIntoEvent ? EventStatus.SUBSCRIBED : isEventFull() ? EventStatus.FULL : EventStatus.AVAILABLE;
-      case 'closed':
-        return isUserIntoEvent ? EventStatus.SUBSCRIBED : EventStatus.CLOSED;
-      case 'canceled':
-        return EventStatus.CANCELED;
-      case 'finished':
-        return EventStatus.FINISHED;
-      case 'readyforpayment':
-        return isUserIntoEvent ? EventStatus.READY_FOR_PAYMENT : EventStatus.CLOSED;
-      default:
-        return EventStatus.AVAILABLE;
-    }
-  };
-  const userStatusInEvent: EventStatus = getMyEventStatus();
+  const userStatusInEvent = getEventStatus(currentEvent, props.userId, props.debtorEventId);
   const isLoading = !currentEvent;
 
   return { userStatusInEvent, currentEvent, isUserIntoEvent, handleParticipation, handleInfo, isLoading };
