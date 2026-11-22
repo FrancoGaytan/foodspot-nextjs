@@ -5,8 +5,16 @@ export async function createOption(eventId: string, title: string, signal?: Abor
   return await postServer<IOption, { title: string }>(`/options/createOption/${eventId}`, { title }, signal);
 }
 
-export async function editOption(optionId: string, payload: { title?: string; participants?: string[] }, signal?: AbortSignal): Promise<IOption> {
+export async function editOption(optionId: string, payload: { title: string }, signal?: AbortSignal): Promise<IOption> {
   return await putServer<IOption, typeof payload>(`/options/editOption/${optionId}`, payload, signal);
+}
+
+export async function voteOption(optionId: string, signal?: AbortSignal): Promise<IOption> {
+  return await putServer<IOption>(`/options/vote/${optionId}`, {}, signal);
+}
+
+export async function unvoteOption(optionId: string, signal?: AbortSignal): Promise<IOption> {
+  return await deleteServer<IOption>(`/options/vote/${optionId}`, signal);
 }
 
 export async function deleteOption(optionId: string, signal?: AbortSignal): Promise<IOption> {

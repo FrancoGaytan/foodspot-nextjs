@@ -1,6 +1,6 @@
 import { ITransferReceiptResponse } from '@models/transfer';
 import { deleteServer, getServer, postFileServer, postServer, putServer } from './httpServer';
-import { ITransferReceiptRequest, IUploadFileResponse } from '@models/transfer';
+import { IUploadFileResponse } from '@models/transfer';
 
 export async function approvePaymentWithoutReceipt(idUser: string, idEvent: string, signal?: AbortSignal): Promise<ITransferReceiptResponse> {
   const url = `/transferReceipts/approvePaymentWithoutReceipt/${idEvent}/${idUser}`;
@@ -28,7 +28,7 @@ export async function getTransferReceipt(idTransferReceipt?: string, signal?: Ab
 
 export async function createTransferReceipt(
   eventId: string,
-  payload: Omit<ITransferReceiptRequest, 'file'> & { receiver: string },
+  payload: { description?: string; paymentMethod?: string },
   signal?: AbortSignal
 ): Promise<ITransferReceiptResponse> {
   const url = `/transferReceipts/createTransferReceipt/${eventId}`;
