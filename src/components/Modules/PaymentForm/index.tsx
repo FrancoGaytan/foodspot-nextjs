@@ -5,7 +5,7 @@ import Button, { ButtonKind } from '@components/UI/Button';
 import Spinner from '@components/UI/Spinner';
 import { useTranslation } from '@hooks/useTranslation';
 import { showToast, ToastType } from '@utils/services/toastService';
-import { createTransferReceiptAction, deleteTransferReceiptAction, uploadTransferReceiptFileAction } from 'app/[lang]/event/actions';
+import { createTransferReceiptAction, uploadTransferReceiptFileAction } from 'app/[lang]/event/actions';
 import { IEvent } from '@models/event';
 import { PayCheckInfoResponse } from '@models/transfer';
 import styles from './styles.module.scss';
@@ -43,17 +43,11 @@ export default function PaymentForm(props: PaymentFormProps) {
     setIsPending(true);
     try {
       const receipt = await createTransferReceiptAction(props.event._id, {
-        amount,
         description,
         paymentMethod: method,
-        user: props.userId,
-        receiver: props.paymentInfo.receiver.receiverId,
       });
       if (method === 'transfer' && file) {
         await uploadTransferReceiptFileAction(receipt._id, file);
-      }
-      if (props.existingReceiptId) {
-        await deleteTransferReceiptAction(props.existingReceiptId);
       }
       showToast(t.transferReceiptLoaded, ToastType.SUCCESS);
       props.closeModal();

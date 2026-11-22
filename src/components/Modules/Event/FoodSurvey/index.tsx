@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { createOptionAction, deleteOptionAction, editOptionAction, getEventByIdAction } from 'app/[lang]/event/actions';
+import { createOptionAction, deleteOptionAction, editOptionAction, getEventByIdAction, unvoteOptionAction, voteOptionAction } from 'app/[lang]/event/actions';
 import { IOption } from '@models/options';
 import Button, { ButtonKind } from '@components/UI/Button';
 import Spinner from '@components/UI/Spinner';
@@ -76,13 +76,10 @@ export default function FoodSurvey(props: FoodSurveyProps) {
 
   async function toggleVote(option: IOption) {
     const voted = option.participants.some(participant => participant._id === props.userId);
-    const participants = voted
-      ? option.participants.filter(participant => participant._id !== props.userId).map(participant => participant._id)
-      : [...option.participants.map(participant => participant._id), props.userId];
     try {
-      const updated = await editOptionAction(option._id, { participants });
-      setOptions(current => current.map(item => item._id === updated._id ? updated : item));
-      refreshOptions();
+      if (voted) await unvoteOptionAction(option._id);
+      else await voteOptionAction(option._id);
+      await refreshOptions();
     } catch (error) {
       console.error('Unable to vote on survey option:', error);
       showToast('No se pudo registrar el voto', ToastType.ERROR);
@@ -93,17 +90,12 @@ export default function FoodSurvey(props: FoodSurveyProps) {
     const allVoted = options.length > 0 && options.every(option => option.participants.some(participant => participant._id === props.userId));
     setIsPending(true);
     try {
-      const updated = await Promise.all(options.map(option => {
+      await Promise.all(options.map(option => {
         const hasVote = option.participants.some(participant => participant._id === props.userId);
-        const participants = allVoted
-          ? option.participants.filter(participant => participant._id !== props.userId).map(participant => participant._id)
-          : hasVote
-            ? option.participants.map(participant => participant._id)
-            : [...option.participants.map(participant => participant._id), props.userId];
-        return editOptionAction(option._id, { participants });
+        if (allVoted) return hasVote ? unvoteOptionAction(option._id) : Promise.resolve();
+        return hasVote ? Promise.resolve() : voteOptionAction(option._id);
       }));
-      setOptions(updated);
-      refreshOptions();
+      await refreshOptions();
     } catch (error) {
       console.error('Unable to update all survey votes:', error);
       showToast('No se pudieron actualizar los votos', ToastType.ERROR);

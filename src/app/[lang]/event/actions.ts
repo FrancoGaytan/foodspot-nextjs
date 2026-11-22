@@ -31,9 +31,9 @@ import {
   uploadTransferReceiptFile,
 } from '@services/transferReceiptsServer';
 import { IPurchaseReceiptRequest, IPurchaseByEvent } from '@models/purchases';
-import { ITransferReceiptRequest, ITransferReceiptResponse, IUploadFileResponse } from '@models/transfer';
+import { ITransferReceiptResponse, IUploadFileResponse } from '@models/transfer';
 import { IOption, ISurveyParticipant } from '@models/options';
-import { createOption, deleteOption, editOption, getMembersWhoHaventVoted } from '@services/optionsServer';
+import { createOption, deleteOption, editOption, getMembersWhoHaventVoted, unvoteOption, voteOption } from '@services/optionsServer';
 import { createRating, getRatingFromUser } from '@services/ratingServiceServer';
 import { IRatingRequest, IRatingResponse } from '@models/ratings';
 
@@ -114,7 +114,7 @@ export async function getImageAction(imageId: string | undefined): Promise<{ dat
 
 export async function createTransferReceiptAction(
   eventId: string,
-  payload: Omit<ITransferReceiptRequest, 'file'> & { receiver: string }
+  payload: { description?: string; paymentMethod?: string }
 ): Promise<ITransferReceiptResponse> {
   return await createTransferReceipt(eventId, payload);
 }
@@ -146,8 +146,16 @@ export async function createOptionAction(eventId: string, title: string): Promis
   return await createOption(eventId, title);
 }
 
-export async function editOptionAction(optionId: string, payload: { title?: string; participants?: string[] }): Promise<IOption> {
+export async function editOptionAction(optionId: string, payload: { title: string }): Promise<IOption> {
   return await editOption(optionId, payload);
+}
+
+export async function voteOptionAction(optionId: string): Promise<IOption> {
+  return await voteOption(optionId);
+}
+
+export async function unvoteOptionAction(optionId: string): Promise<IOption> {
+  return await unvoteOption(optionId);
 }
 
 export async function deleteOptionAction(optionId: string): Promise<IOption> {
